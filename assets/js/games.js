@@ -22,6 +22,7 @@ const ALL_SUPPORTED_GAMES = [
   { name: 'Graben und reinigen', place_id: 83038462357724, universe_id: 10475794799 },
   { name: 'Gakuran', place_id: 128736949265057, universe_id: 9199655655 },
   { name: 'Leaf Simulator', place_id: 100068273119174, universe_id: 10539411000 },
+  { name: 'RIVALS', place_id: 17625359962, universe_id: 6035872082 },
   { name: 'Universal', place_id: 0, universe_id: 0 }
 ];
 
@@ -37,6 +38,7 @@ const GAME_BANNERS = {
   'Graben und reinigen': 'https://tr.rbxcdn.com/180DAY-1912ba1aee413f812eeb5cc59ba88416/768/432/Image/Png/noFilter',
   'Gakuran': 'https://tr.rbxcdn.com/180DAY-f88dff1c6297298d0f8553ac1e61cb98/768/432/Image/Png/noFilter',
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-824636b18a8e11f045109235f8a0335d/768/432/Image/Png/noFilter',
+  'RIVALS': 'https://tr.rbxcdn.com/180DAY-99ae7910dac324d824e934988d8200d4/768/432/Image/Png/noFilter',
   'Universal': '/assets/Oxide.png'
 };
 
