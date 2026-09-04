@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Premium Shop — Oxide HUB</title>
+<meta name="description" content="Oxide HUB premium access — exclusive features, priority support, and early releases.">
+<link rel="icon" type="image/png" href="/assets/Oxide.png?v=2">
+<link rel="apple-touch-icon" href="/assets/Oxide.png?v=2">
+<link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="/" aria-label="Oxide HUB home"><img src="/assets/Oxide.png?v=2" alt=""><span>Oxide HUB</span></a>
+    <div class="topnav-links" aria-label="Primary navigation"><a href="/script/">Script</a><a href="/shop/" class="active" aria-current="page">Shop</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer" class="discord-link">Discord</a></div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <div class="shop-hero">
+    <div class="shop-hero-glow"></div>
+    <div class="page-kicker"><span class="status-dot"></span> Premium access</div>
+    <h1>Coming soon</h1>
+    <p class="tagline">A focused premium tier for players who want earlier releases, deeper support, and more from Oxide.</p>
+    <form class="shop-email" id="notify-form"><input type="email" required placeholder="your@email.com" aria-label="Email address"><button type="submit" class="btn accent"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-radio"></use></svg>Notify me</button></form>
+  </div>
+
+  <section class="shop-features" aria-label="Premium features">
+    <article class="feature-card glass"><span class="feature-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-key-round"></use></svg></span><h3>Premium keys</h3><p>One access path for premium-only scripts and future member features.</p></article>
+    <article class="feature-card glass"><span class="feature-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-sparkles"></use></svg></span><h3>Priority releases</h3><p>Get new game support and major feature updates before the public release.</p></article>
+    <article class="feature-card glass"><span class="feature-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-headphones"></use></svg></span><h3>Direct support</h3><p>Bring bugs, ideas, and setup questions directly to the Oxide team.</p></article>
+  </section>
+
+  <section class="cta-section glass" aria-labelledby="shop-cta-title"><h2 id="shop-cta-title">Stay in the loop</h2><p>Join the Discord for launch announcements and live updates while the shop is being built.</p><a class="btn accent big" href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-message-circle"></use></svg>Join Discord</a></section>
+  <footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/">Home</a><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
+</main>
+<script>
+document.getElementById('notify-form').addEventListener('submit', event => { event.preventDefault(); const toast = document.createElement('div'); toast.className = 'toast'; toast.textContent = "You're on the list"; document.body.appendChild(toast); event.currentTarget.reset(); setTimeout(() => toast.remove(), 2200); });
+</script>
+</body>
+</html>
