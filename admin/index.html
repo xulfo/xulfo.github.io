@@ -188,11 +188,11 @@
 
 <script>
 'use strict';
-const GAME_NAMES={83038462357724:'Graben und reinigen',94640181989498:'Grow a Chicken Fighter',107778070777162:'Steal an Egg',100068273119174:'Leaf Simulator',128736949265057:'Gakuran',126870639873289:'Jump for Pets!',112108865664273:'Dungeon Lootr',2788229376:'Da Hood',142823291:'Murder Mystery 2'};
+const GAME_NAMES={83038462357724:'Graben und reinigen',94640181989498:'Grow a Chicken Fighter',107778070777162:'Steal an Egg',100068273119174:'Leaf Simulator',128736949265057:'Gakuran',126870639873289:'Jump for Pets!',106484206883664:'Dungeon Lootr',2788229376:'Da Hood',142823291:'Murder Mystery 2'};
 const GAME_ICONS = {
   'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-b66a86d442d9311de8df77c49893aa04/512/512/Image/Png/noFilter',
   'Jump for Pets!': 'https://tr.rbxcdn.com/180DAY-c9220df34ffca9629b8ce653bb28a346/512/512/Image/Png/noFilter',
-  'Dungeon Lootr': 'https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980',
+  'Dungeon Lootr': 'https://tr.rbxcdn.com/180DAY-0055e850de2ff2bce341e9d300d6d1e1/512/512/Image/Png/noFilter',
   'Da Hood': 'https://tr.rbxcdn.com/180DAY-ae6cda2dcf44b42ebf33fd1f24578e42/512/512/Image/Png/noFilter',
   'Murder Mystery 2': 'https://tr.rbxcdn.com/180DAY-3ac5af325970a745b0156a5358174169/512/512/Image/Png/noFilter',
   'Grow a Chicken Fighter': 'https://tr.rbxcdn.com/180DAY-c59fd5b664ab396043aab3fc9e05d65a/512/512/Image/Png/noFilter',
@@ -214,6 +214,7 @@ const filterEl=document.getElementById('game-filter');
 const syncEl=document.getElementById('sync-label');
 let clients=[];
 let loading=false;
+let adminPass = sessionStorage.getItem('oxide_admin_pass') || '';
 const esc=(v)=>String(v??'');
 const initials=(v)=>{const parts=esc(v).trim().split(/\s+|_/).filter(Boolean);return (parts.slice(0,2).map(x=>x[0]).join('')||'?').toUpperCase();};
 const gameName=(c)=>GAME_NAMES[Number(c.placeId)]||String(c.placeId||'Unknown');
@@ -221,7 +222,24 @@ function formatTime(date){return date.toLocaleTimeString([], {hour:'2-digit',min
 function showDashboard(){loginView.hidden=true;dashboardView.hidden=false;loadClients();}
 function showLogin(){dashboardView.hidden=true;loginView.hidden=false;password.value='';setTimeout(()=>password.focus(),0);}
 const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
-async function api(path,options={}){const url = path.startsWith('http') ? path : (API_BASE + path); const res=await fetch(url,{credentials:'include',...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});let data={};try{data=await res.json();}catch{}if(!res.ok)throw Object.assign(new Error(data.error||'Request failed'),{status:res.status});return data;}
+async function api(path,options={}){
+  const url = path.startsWith('http') ? path : (API_BASE + path);
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (adminPass) {
+    headers['X-Admin-Password'] = adminPass;
+    headers['X-Admin-Key'] = adminPass;
+  }
+  let res;
+  try {
+    res = await fetch(url, { credentials: 'include', ...options, headers });
+  } catch (netErr) {
+    throw new Error('Connection failed: ' + (netErr.message || 'Network error'));
+  }
+  let data = {};
+  try { data = await res.json(); } catch {}
+  if (!res.ok) throw Object.assign(new Error(data.error || 'Request failed (' + res.status + ')'), { status: res.status });
+  return data;
+}
 function setLoading(value){loading=value;dashboardView.classList.toggle('admin-loading',value);}
 function refreshSummary(){const games=new Set(clients.map(c=>gameName(c)));const executors=new Set(clients.map(c=>c.executor||'Unknown'));document.getElementById('stat-clients').textContent=clients.length;document.getElementById('stat-games').textContent=games.size;document.getElementById('stat-executors').textContent=executors.size;document.getElementById('client-count').textContent=clients.length+' connected';document.getElementById('total-count').textContent=clients.length;}
 function populateFilters(){const selected=filterEl.value;const games=[...new Set(clients.map(gameName))].sort();filterEl.replaceChildren(new Option('All games',''));games.forEach(name=>filterEl.appendChild(new Option(name,name)));if(games.includes(selected))filterEl.value=selected;}
@@ -235,8 +253,8 @@ const actions=document.createElement('td');const actionWrap=document.createEleme
 async function loadClients(){if(loading)return;setLoading(true);dashboardError.textContent='';try{const data=await api('/admin/api/clients');clients=Array.isArray(data.clients)?data.clients:[];populateFilters();refreshSummary();renderClients();const now=new Date();document.getElementById('stat-sync').textContent=formatTime(now);syncEl.textContent='Last synced '+formatTime(now);}catch(e){if(e.status===401){showLogin();return;}dashboardError.textContent=e.message;}finally{setLoading(false);}}
 async function kickClient(userId,button){if(!confirm('Queue this client for disconnect?'))return;button.disabled=true;try{await api('/admin/api/kick',{method:'POST',body:JSON.stringify({user_id:userId})});await loadClients();}catch(e){dashboardError.textContent=e.message;button.disabled=false;}}
 document.getElementById('reveal-password').addEventListener('click',()=>{const visible=password.type==='text';password.type=visible?'password':'text';document.getElementById('reveal-password').setAttribute('aria-label',visible?'Show password':'Hide password');});
-loginForm.addEventListener('submit',async(e)=>{e.preventDefault();loginError.textContent='';try{await api('/admin/login',{method:'POST',body:JSON.stringify({password:password.value})});showDashboard();}catch(err){loginError.textContent=err.message;}});
-searchEl.addEventListener('input',renderClients);filterEl.addEventListener('change',renderClients);document.getElementById('refresh').addEventListener('click',loadClients);document.getElementById('logout').addEventListener('click',async()=>{await api('/admin/logout',{method:'POST'});showLogin();});
+loginForm.addEventListener('submit',async(e)=>{e.preventDefault();loginError.textContent='';try{const pass=password.value;adminPass=pass;await api('/admin/login',{method:'POST',body:JSON.stringify({password:pass})});sessionStorage.setItem('oxide_admin_pass',pass);showDashboard();}catch(err){adminPass='';sessionStorage.removeItem('oxide_admin_pass');loginError.textContent=err.message||'Login failed';}});
+searchEl.addEventListener('input',renderClients);filterEl.addEventListener('change',renderClients);document.getElementById('refresh').addEventListener('click',loadClients);document.getElementById('logout').addEventListener('click',async()=>{try{await api('/admin/logout',{method:'POST'});}catch(_){}adminPass='';sessionStorage.removeItem('oxide_admin_pass');showLogin();});
 api('/admin/api/clients').then(showDashboard).catch(()=>showLogin());setInterval(()=>{if(!dashboardView.hidden)loadClients();},15000);
 </script>
 </body>
