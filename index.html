@@ -83,37 +83,26 @@
 
 <script>
 'use strict';
-const API_PRIMARY = 'https://premium-keys.oxide-premium.workers.dev';
 const API_KOYEB = 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const fmt = new Intl.NumberFormat('en-US');
 
 function fetchStats() {
-  fetch(API_PRIMARY + '/stats?period=total')
+  fetch(API_KOYEB + '/stats')
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(d => { if (d && d.total) document.getElementById('hero-total').textContent = fmt.format(d.total); })
-    .catch(() => {
-      fetch(API_KOYEB + '/stats')
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(d => { if (d && d.total) document.getElementById('hero-total').textContent = fmt.format(d.total); })
-        .catch(() => {});
-    });
+    .catch(() => {});
 }
 
 function fetchOnline() {
-  fetch(API_PRIMARY + '/online')
+  fetch(API_KOYEB + '/online')
     .then(r => r.ok ? r.json() : Promise.reject())
     .then(d => { if (d && typeof d.total === 'number') document.getElementById('hero-online').textContent = fmt.format(d.total); })
-    .catch(() => {
-      fetch(API_KOYEB + '/online')
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(d => { if (d && typeof d.total === 'number') document.getElementById('hero-online').textContent = fmt.format(d.total); })
-        .catch(() => {});
-    });
+    .catch(() => {});
 }
 
 fetchStats();
 fetchOnline();
-setInterval(fetchOnline, 10000);
+setInterval(fetchOnline, 8000);
 </script>
 </body>
 </html>

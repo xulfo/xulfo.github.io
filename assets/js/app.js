@@ -6,10 +6,23 @@
  */
 'use strict';
 
-const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://premium-keys.oxide-premium.workers.dev';
+const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const EXEC_REFRESH_MS = 30_000;  // Executions — раз в 30с
 const LIVE_REFRESH_MS = 5_000;   // Live — раз в 5с (когда появится эндпоинт)
 const UNSUPPORTED = 'Unsupported';
+
+const GAME_ICONS = {
+  'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-b66a86d442d9311de8df77c49893aa04/512/512/Image/Png/noFilter',
+  'Jump for Pets!': 'https://tr.rbxcdn.com/180DAY-c9220df34ffca9629b8ce653bb28a346/512/512/Image/Png/noFilter',
+  'Dungeon Lootr': 'https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980',
+  'Da Hood': 'https://tr.rbxcdn.com/180DAY-ae6cda2dcf44b42ebf33fd1f24578e42/512/512/Image/Png/noFilter',
+  'Murder Mystery 2': 'https://tr.rbxcdn.com/180DAY-3ac5af325970a745b0156a5358174169/512/512/Image/Png/noFilter',
+  'Grow a Chicken Fighter': 'https://tr.rbxcdn.com/180DAY-c59fd5b664ab396043aab3fc9e05d65a/512/512/Image/Png/noFilter',
+  'Graben und reinigen': 'https://tr.rbxcdn.com/180DAY-b1dc85405e39f0a1f4ee22477c220d4c/512/512/Image/Png/noFilter',
+  'Gakuran': 'https://tr.rbxcdn.com/180DAY-2d6c6f014b54b95a669a63291b548912/512/512/Image/Png/noFilter',
+  'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-71ab0dbb49e54809aea4bbcb3f3420c7/512/512/Image/Png/noFilter',
+  'Universal': '/assets/Oxide.png'
+};
 
 const state = {
   tab: 'executions',  // 'executions' | 'live'
@@ -169,8 +182,11 @@ function gameRow(rank, name, launches, max, isUnsupported) {
     const img = document.createElement('img');
     img.alt = '';
     img.loading = 'lazy';
-    img.addEventListener('error', () => img.remove());
-    img.src = `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
+    img.addEventListener('error', () => {
+      if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+      else img.remove();
+    });
+    img.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
     iconEl.appendChild(img);
   }
 
@@ -222,7 +238,7 @@ function openGame(name) {
   // иконка ставится сразу — бэкенд отдаёт её с дискового кэша мгновенно
   els.modalIcon.hidden = name === UNSUPPORTED;
   if (name !== UNSUPPORTED) {
-    els.modalIcon.src = `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
+    els.modalIcon.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
   } else {
     els.modalIcon.removeAttribute('src');
   }
@@ -251,8 +267,12 @@ async function loadGame() {
   const controller = new AbortController();
   gameAbort = controller;
   try {
-    const url = `${API_BASE}/game?name=${encodeURIComponent(state.game)}&days=${state.days}`;
-    const res = await fetch(url, { signal: controller.signal });
+    let url = `${API_BASE}/game?name=${encodeURIComponent(state.game)}&days=${state.days}`;
+    let res = await fetch(url, { signal: controller.signal });
+    if (!res.ok) {
+      url = `https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app/game?name=${encodeURIComponent(state.game)}&days=${state.days}`;
+      res = await fetch(url, { signal: controller.signal });
+    }
     if (!res.ok) throw new Error(`API error ${res.status}`);
     renderGame(await res.json());
     els.modalError.hidden = true;
@@ -481,8 +501,11 @@ function liveRow(item, keyField, withIcon) {
       const img = document.createElement('img');
       img.alt = '';
       img.loading = 'lazy';
-      img.addEventListener('error', () => img.remove());
-      img.src = `${API_BASE}/icon/${encodeURIComponent(label)}.png`;
+      img.addEventListener('error', () => {
+        if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+        else img.remove();
+      });
+      img.src = GAME_ICONS[label] || `${API_BASE}/icon/${encodeURIComponent(label)}.png`;
       iconEl.appendChild(img);
     }
     row.appendChild(iconEl);

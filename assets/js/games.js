@@ -4,7 +4,7 @@
  */
 'use strict';
 
-const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://premium-keys.oxide-premium.workers.dev';
+const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const els = {
   grid: document.getElementById('games-grid'),
   count: document.getElementById('games-count'),
@@ -26,6 +26,19 @@ const ALL_SUPPORTED_GAMES = [
 ];
 
 let games = ALL_SUPPORTED_GAMES;
+
+const GAME_BANNERS = {
+  'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-875b2a6dc156ce6dd64eb637e73238ce/768/432/Image/Png/noFilter',
+  'Jump for Pets!': 'https://tr.rbxcdn.com/180DAY-d5f1b59493b60f0bc4ff9b25cac71038/768/432/Image/Png/noFilter',
+  'Dungeon Lootr': 'https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980',
+  'Da Hood': 'https://tr.rbxcdn.com/180DAY-655a8b7fc990b48f595db9bcfd7ea70b/768/432/Image/Png/noFilter',
+  'Murder Mystery 2': 'https://tr.rbxcdn.com/180DAY-fe7335c3ad752e84323cd81ae38de69a/768/432/Image/Png/noFilter',
+  'Grow a Chicken Fighter': 'https://tr.rbxcdn.com/180DAY-8403e52cfc77a0fb4df895e64943deab/768/432/Image/Png/noFilter',
+  'Graben und reinigen': 'https://tr.rbxcdn.com/180DAY-1912ba1aee413f812eeb5cc59ba88416/768/432/Image/Png/noFilter',
+  'Gakuran': 'https://tr.rbxcdn.com/180DAY-f88dff1c6297298d0f8553ac1e61cb98/768/432/Image/Png/noFilter',
+  'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-824636b18a8e11f045109235f8a0335d/768/432/Image/Png/noFilter',
+  'Universal': '/assets/Oxide.png'
+};
 
 const icon = (name) => `<svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-${name}"></use></svg>`;
 
@@ -49,10 +62,14 @@ function card(game) {
   const banner = document.createElement('div');
   banner.className = 'game-card-banner';
   const img = document.createElement('img');
-  img.alt = '';
+  img.alt = game.name;
   img.loading = 'lazy';
-  img.addEventListener('error', () => { img.remove(); });
-  img.src = `${API_BASE}/banner/${encodeURIComponent(game.name)}.webp`;
+  img.src = GAME_BANNERS[game.name] || `${API_BASE}/banner/${encodeURIComponent(game.name)}.webp`;
+  img.addEventListener('error', () => {
+    if (img.src !== '/assets/Oxide.png') {
+      img.src = '/assets/Oxide.png';
+    }
+  });
   banner.appendChild(img);
 
   const footer = document.createElement('div');

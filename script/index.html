@@ -67,7 +67,7 @@
 'use strict';
 const LOADSTRING = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/xulfo/Oxide-Loader/main/Main.lua"))()';
 document.getElementById('loadstring').textContent = LOADSTRING;
-const API = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://premium-keys.oxide-premium.workers.dev';
+const API = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const numFmt = new Intl.NumberFormat('en-US');
 fetch(API + '/stats?period=total').then(r => r.ok ? r.json() : Promise.reject()).then(d => { document.getElementById('stat-total').textContent = numFmt.format(d.total); }).catch(() => {});
 fetch(API + '/health').then(r => r.ok ? r.json() : Promise.reject()).then(d => { document.getElementById('stat-games').textContent = numFmt.format(d.supported_games); }).catch(() => {});
