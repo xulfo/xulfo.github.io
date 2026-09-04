@@ -15,7 +15,7 @@ const els = {
 const ALL_SUPPORTED_GAMES = [
   { name: 'Steal an Egg', place_id: 107778070777162, universe_id: 10563114921 },
   { name: 'Jump for Pets!', place_id: 126870639873289, universe_id: 10690360998 },
-  { name: 'Dungeon Lootr', place_id: 112108865664273, universe_id: 10777807077 },
+  { name: 'Dungeon Lootr', place_id: 106484206883664, universe_id: 9656201728 },
   { name: 'Da Hood', place_id: 2788229376, universe_id: 1008451066 },
   { name: 'Murder Mystery 2', place_id: 142823291, universe_id: 66654135 },
   { name: 'Grow a Chicken Fighter', place_id: 94640181989498, universe_id: 10338952197 },
@@ -30,7 +30,7 @@ let games = ALL_SUPPORTED_GAMES;
 const GAME_BANNERS = {
   'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-875b2a6dc156ce6dd64eb637e73238ce/768/432/Image/Png/noFilter',
   'Jump for Pets!': 'https://tr.rbxcdn.com/180DAY-d5f1b59493b60f0bc4ff9b25cac71038/768/432/Image/Png/noFilter',
-  'Dungeon Lootr': 'https://t6.rbxcdn.com/180DAY-007dc222a830b5992e1a04073454e980',
+  'Dungeon Lootr': 'https://tr.rbxcdn.com/180DAY-74e3238344382f02297e172c0366b7a5/768/432/Image/Png/noFilter',
   'Da Hood': 'https://tr.rbxcdn.com/180DAY-655a8b7fc990b48f595db9bcfd7ea70b/768/432/Image/Png/noFilter',
   'Murder Mystery 2': 'https://tr.rbxcdn.com/180DAY-fe7335c3ad752e84323cd81ae38de69a/768/432/Image/Png/noFilter',
   'Grow a Chicken Fighter': 'https://tr.rbxcdn.com/180DAY-8403e52cfc77a0fb4df895e64943deab/768/432/Image/Png/noFilter',
@@ -104,8 +104,8 @@ fetch(`${API_BASE}/games`)
   .then((data) => {
     const remote = data.games || [];
     const map = new Map();
-    ALL_SUPPORTED_GAMES.forEach(g => map.set(g.name, g));
     remote.forEach(g => map.set(g.name, g));
+    ALL_SUPPORTED_GAMES.forEach(g => map.set(g.name, g));
     games = Array.from(map.values());
     render();
   })
