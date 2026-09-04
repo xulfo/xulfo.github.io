@@ -12,7 +12,20 @@ const els = {
   empty: document.getElementById('empty-state'),
   error: document.getElementById('error-banner'),
 };
-let games = [];
+const ALL_SUPPORTED_GAMES = [
+  { name: 'Steal an Egg', place_id: 107778070777162, universe_id: 10563114921 },
+  { name: 'Jump for Pets!', place_id: 126870639873289, universe_id: 10690360998 },
+  { name: 'Dungeon Lootr', place_id: 112108865664273, universe_id: 10777807077 },
+  { name: 'Da Hood', place_id: 2788229376, universe_id: 1008451066 },
+  { name: 'Murder Mystery 2', place_id: 142823291, universe_id: 66654135 },
+  { name: 'Grow a Chicken Fighter', place_id: 94640181989498, universe_id: 10338952197 },
+  { name: 'Graben und reinigen', place_id: 83038462357724, universe_id: 10475794799 },
+  { name: 'Gakuran', place_id: 128736949265057, universe_id: 9199655655 },
+  { name: 'Leaf Simulator', place_id: 100068273119174, universe_id: 10539411000 },
+  { name: 'Universal', place_id: 0, universe_id: 0 }
+];
+
+let games = ALL_SUPPORTED_GAMES;
 
 const icon = (name) => `<svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-${name}"></use></svg>`;
 
@@ -28,9 +41,9 @@ function renderSkeletons(count = 8) {
 function card(game) {
   const a = document.createElement('a');
   a.className = 'game-card glass';
-  a.href = `https://www.roblox.com/games/${encodeURIComponent(game.place_id)}`;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
+  a.href = game.place_id ? `https://www.roblox.com/games/${encodeURIComponent(game.place_id)}` : '/script/';
+  a.target = game.place_id ? '_blank' : '_self';
+  if (game.place_id) a.rel = 'noopener noreferrer';
   a.setAttribute('aria-label', `Open ${game.name} on Roblox`);
 
   const banner = document.createElement('div');
@@ -49,7 +62,7 @@ function card(game) {
   name.textContent = game.name;
   const open = document.createElement('span');
   open.className = 'game-card-open';
-  open.innerHTML = `Open ${icon('external-link')}`;
+  open.innerHTML = game.place_id ? `Open ${icon('external-link')}` : `Get script ${icon('arrow-right')}`;
   footer.append(name, open);
   a.append(banner, footer);
   return a;
@@ -66,17 +79,20 @@ function render() {
   }
 }
 
-renderSkeletons();
+render();
 els.search.addEventListener('input', render);
 
 fetch(`${API_BASE}/games`)
   .then((response) => { if (!response.ok) throw new Error(`API error ${response.status}`); return response.json(); })
   .then((data) => {
-    games = (data.games || []).slice().reverse();
+    const remote = data.games || [];
+    const map = new Map();
+    ALL_SUPPORTED_GAMES.forEach(g => map.set(g.name, g));
+    remote.forEach(g => map.set(g.name, g));
+    games = Array.from(map.values());
     render();
   })
   .catch(() => {
-    els.grid.replaceChildren();
-    els.error.hidden = false;
-    els.error.textContent = 'The catalog could not be loaded. Try refreshing in a moment.';
+    games = ALL_SUPPORTED_GAMES;
+    render();
   });

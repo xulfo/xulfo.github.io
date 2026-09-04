@@ -101,7 +101,10 @@ async function loadStats() {
   const controller = new AbortController();
   statsAbort = controller;
   try {
-    const res = await fetch(`${API_BASE}/stats?period=${state.period}`, { signal: controller.signal });
+    let res = await fetch(`${API_BASE}/stats?period=${state.period}`, { signal: controller.signal });
+    if (!res.ok) {
+      res = await fetch(`https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app/stats?period=${state.period}`, { signal: controller.signal });
+    }
     if (!res.ok) throw new Error(`API error ${res.status}`);
     renderStats(await res.json());
     showError(null);
@@ -404,12 +407,23 @@ async function refreshLive() {
   const controller = new AbortController();
   liveAbort = controller;
   try {
-    const res = await fetch(`${API_BASE}/online`, { signal: controller.signal });
+    let res = await fetch(`${API_BASE}/online`, { signal: controller.signal });
+    if (!res.ok) {
+      res = await fetch('https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app/online', { signal: controller.signal });
+    }
     if (!res.ok) throw new Error(`API error ${res.status}`);
     renderLive(await res.json());
     els.liveError.hidden = true;
   } catch (err) {
     if (err.name === 'AbortError') return;
+    try {
+      const fallback = await fetch('https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app/online');
+      if (fallback.ok) {
+        renderLive(await fallback.json());
+        els.liveError.hidden = true;
+        return;
+      }
+    } catch (_) {}
     els.liveError.hidden = false;
     els.liveError.textContent = 'Failed to load live data.';
   }
