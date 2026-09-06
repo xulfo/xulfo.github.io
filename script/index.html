@@ -16,7 +16,6 @@
     <a class="brand" href="/" aria-label="Oxide HUB home"><img src="/assets/Oxide.png?v=2" alt=""><span>Oxide HUB</span></a>
     <div class="topnav-links" aria-label="Primary navigation">
       <a href="/script/" class="active" aria-current="page">Script</a>
-      <a href="/shop/">Shop</a>
       <a href="/admin/">Admin</a>
       <a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer" class="discord-link">Discord</a>
     </div>
@@ -61,12 +60,12 @@
     <article class="feature-card glass"><span class="feature-icon"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-chart"></use></svg></span><h3>Track activity</h3><p>Use live stats to see executions and the latest activity snapshot.</p></article>
   </section>
 
-  <footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/">Home</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
+  <footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/">Home</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
 </main>
 
 <script>
 'use strict';
-const LOADSTRING = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/xulfo/Oxide-Loader/main/Main.lua"))()';
+const LOADSTRING = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/xulfo/OxideUiLibary2/main/ScriptLoader.lua"))()';
 document.getElementById('loadstring').textContent = LOADSTRING;
 const API = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const numFmt = new Intl.NumberFormat('en-US');
