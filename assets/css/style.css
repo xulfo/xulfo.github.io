@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════
-   Oxide HUB — Premium dark theme
+   Oxide HUB — dark theme
    Accent: #81a3d6 (Oxide blue)
    ═══════════════════════════════════════════════════ */
 
@@ -410,7 +410,7 @@ body::after {
 }
 .game-pill-icon .ui-icon { width: 15px; height: 15px; }
 
-/* ── Home cards (Script / Shop) ────────────────────────────────── */
+/* ── Home cards ───────────────────────────────────────────────── */
 .home-cards {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -1139,74 +1139,6 @@ a.live-row:hover { background: var(--panel-hover); }
 }
 .table-scroll td:last-child { color: var(--text); }
 
-/* ── Shop ──────────────────────────────────────────────────────── */
-.shop-hero {
-  text-align: center;
-  padding: 80px 0 60px;
-  position: relative;
-}
-.shop-hero-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 60%);
-  opacity: 0.72;
-  z-index: -1;
-}
-.shop-hero h1 {
-  font-size: clamp(44px, 9vw, 76px);
-  font-weight: 850;
-  letter-spacing: -0.04em;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg, #fff 0%, var(--accent-light) 50%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.shop-hero .tagline {
-  color: var(--text-2);
-  font-size: 16px;
-  max-width: 400px;
-  margin: 0 auto 28px;
-}
-.shop-email {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 420px;
-  margin: 0 auto;
-}
-.shop-email input {
-  flex: 1;
-  min-width: 200px;
-  padding: 12px 16px;
-  border-radius: var(--radius-s);
-  background: var(--field);
-  border: 1px solid var(--border);
-  color: var(--text);
-  font: inherit;
-  font-size: 14px;
-  transition: border-color var(--transition);
-}
-.shop-email input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-wash);
-}
-.shop-email input::placeholder { color: var(--muted); }
-.shop-features {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 640px;
-  margin: 48px auto 0;
-}
-
 /* ── Scroll reveal ─────────────────────────────────────────────── */
 .reveal {
   opacity: 0;
@@ -1243,7 +1175,7 @@ a.live-row:hover { background: var(--panel-hover); }
 
 /* ── Responsive ────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .features-grid, .shop-features { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: 1fr; }
   .hero h1 { font-size: 36px; }
   .hero-logo { width: 82px; height: 82px; padding: 0; margin-left: auto; margin-right: auto; }
   .home-cards { grid-template-columns: 1fr; max-width: 360px; }
