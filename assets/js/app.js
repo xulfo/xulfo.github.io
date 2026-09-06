@@ -1,8 +1,7 @@
 /* Oxide HUB — statistics page.
  *
- * The Oxide frontend is static; live data comes from the Oxide backend worker
- * (premium-keys) — the same infra that serves the scripts, so the counters are
- * OUR real usage. Local dev hits /api which server.js proxies to the worker.
+ * The Oxide frontend is static; live data comes from the Oxide presence backend.
+ * Local dev hits /api which server.js proxies to the same backend.
  */
 'use strict';
 
