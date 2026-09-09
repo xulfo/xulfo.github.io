@@ -21,6 +21,7 @@ const ALL_SUPPORTED_GAMES = [
   { name: 'Grow a Chicken Fighter', place_id: 94640181989498, universe_id: 10338952197 },
   { name: 'Graben und reinigen', place_id: 83038462357724, universe_id: 10475794799 },
   { name: 'Gakuran', place_id: 128736949265057, universe_id: 9199655655 },
+  { name: 'Search For The Needle', place_id: 108628039999641, universe_id: 10756011174 },
   { name: 'Leaf Simulator', place_id: 100068273119174, universe_id: 10539411000 },
   { name: 'Universal', place_id: 0, universe_id: 0 }
 ];
