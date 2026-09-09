@@ -23,6 +23,7 @@ const ALL_SUPPORTED_GAMES = [
   { name: 'Gakuran', place_id: 128736949265057, universe_id: 9199655655 },
   { name: 'Search For The Needle', place_id: 108628039999641, universe_id: 10756011174 },
   { name: 'Leaf Simulator', place_id: 100068273119174, universe_id: 10539411000 },
+  { name: 'RIVALS', place_id: 17625359962, universe_id: 6035872082 },
   { name: 'Universal', place_id: 0, universe_id: 0 }
 ];
 
@@ -39,6 +40,7 @@ const GAME_BANNERS = {
   'Gakuran': 'https://tr.rbxcdn.com/180DAY-f88dff1c6297298d0f8553ac1e61cb98/768/432/Image/Png/noFilter',
   'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/768/432/Image/Png/noFilter',
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-824636b18a8e11f045109235f8a0335d/768/432/Image/Png/noFilter',
+  'RIVALS': 'https://tr.rbxcdn.com/180DAY-fb02f48458ff689309df8d52bf516d04/768/432/Image/Png/noFilter',
   'Universal': '/assets/Oxide.png'
 };
 
