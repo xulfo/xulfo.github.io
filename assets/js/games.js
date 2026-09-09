@@ -37,6 +37,7 @@ const GAME_BANNERS = {
   'Grow a Chicken Fighter': 'https://tr.rbxcdn.com/180DAY-8403e52cfc77a0fb4df895e64943deab/768/432/Image/Png/noFilter',
   'Graben und reinigen': 'https://tr.rbxcdn.com/180DAY-1912ba1aee413f812eeb5cc59ba88416/768/432/Image/Png/noFilter',
   'Gakuran': 'https://tr.rbxcdn.com/180DAY-f88dff1c6297298d0f8553ac1e61cb98/768/432/Image/Png/noFilter',
+  'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/768/432/Image/Png/noFilter',
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-824636b18a8e11f045109235f8a0335d/768/432/Image/Png/noFilter',
   'Universal': '/assets/Oxide.png'
 };
