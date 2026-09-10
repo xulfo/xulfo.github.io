@@ -42,6 +42,9 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 .section-title{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:0 0 18px}.section-title:not(:first-child){margin-top:28px}
 .section-title::after{content:"";flex:1;height:1px;background:var(--line)}
 .section-title .st-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(129,163,214,.7);flex:none}
+.st-ico{width:15px;height:15px;color:var(--accent);flex:none;display:grid;place-items:center}.st-ico svg{width:15px;height:15px}
+.view-link{display:inline-block;margin-top:10px;color:var(--accent);font-size:12.5px;font-weight:650;text-decoration:none;transition:color .15s}
+.view-link:hover{color:#a9c3ee;text-decoration:underline}
 .field{margin-bottom:15px}.field label{display:block;color:var(--muted);font-size:12.5px;font-weight:600;margin-bottom:7px}
 .field input,.field textarea,.field select{width:100%;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);border-radius:12px;color:var(--text);padding:11px 13px;font:inherit;outline:none;transition:border .18s,background .18s,box-shadow .18s}
 .field textarea{min-height:86px;resize:vertical;line-height:1.55}
@@ -166,14 +169,15 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 </section>
 
 <div id="creatorWrap" hidden>
-<div class="head"><h1>Create your profile</h1><p>Your short link is <b style="color:var(--text)">get-oxide.com/yourhandle</b> — fill it out, hit generate, done.</p></div>
+<div class="head"><h1 id="headTitle">Create your profile</h1><p id="headSub">Your short link is <b style="color:var(--text)">get-oxide.com/yourhandle</b> — fill it out, hit generate, done.</p><a class="view-link" id="viewLink" href="#" hidden target="_blank" rel="noopener">View profile ↗</a></div>
 
 <div class="grid">
 <section class="panel">
-  <div class="section-title"><span class="st-dot"></span>Basics</div>
+  <div class="section-title"><span class="st-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>Basics</div>
   <div class="field"><label for="name">Display name</label><input id="name" maxlength="32" placeholder="Your name" value="New profile"></div>
   <div class="twocol">
     <div class="field"><label for="handle">Handle</label><input id="handle" maxlength="24" placeholder="yourname" value="yourname" autocomplete="off"></div>
+  <div class="hint" id="urlHint">get-oxide.com/yourhandle</div>
     <div class="field"><label for="status">Status</label><select id="status" class="status-select"><option value="Online">Online</option><option value="Do not disturb">Do not disturb</option><option value="Offline">Offline</option></select></div>
   </div>
   <div class="field"><label for="avatar">Profile picture URL</label><input id="avatar" placeholder="https://.../avatar.jpg"><div class="hint">JPG, PNG, GIF or WebP — a public link works.</div></div>
@@ -181,12 +185,12 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
   <div class="field"><label for="bio">Bio</label><textarea id="bio" maxlength="240" placeholder="Short intro..."></textarea></div>
   <div class="field"><label for="tags">Tags</label><input id="tags" maxlength="100" placeholder="Gamer, Developer"><div class="hint">Separate with commas.</div></div>
 
-  <div class="section-title"><span class="st-dot"></span>Links</div>
+  <div class="section-title"><span class="st-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></span>Links</div>
   <div class="field"><label for="discord">Discord invite</label><input id="discord" placeholder="https://discord.gg/..."></div>
   <div class="field"><label for="roblox">Roblox profile</label><div class="field-row"><input id="roblox" placeholder="https://www.roblox.com/users/..." autocomplete="off"><button class="mini-btn" id="rbxPreview" type="button" hidden>Preview</button></div><div class="hint">Paste your Roblox profile link — a preview pops up so you can confirm it's you.</div></div>
   <div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..."></div>
 
-  <div class="section-title"><span class="st-dot"></span>Sound</div>
+  <div class="section-title"><span class="st-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>Sound</div>
   <div class="field">
     <label>Background music</label>
     <label class="upload" id="uploadBox" for="music">
@@ -242,6 +246,7 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
     if(p.background)el('pBanner').src=p.background;else el('pBanner').removeAttribute('src');
     const tags=el('pTags');tags.replaceChildren();(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).forEach(t=>{const s=document.createElement('span');s.textContent=t;tags.appendChild(s)});
     const links=el('pLinks');links.replaceChildren();p.links.forEach(l=>{const d=document.createElement('div');d.className='pc-link';const label=l[0].toLowerCase();d.innerHTML=(linkIcons[label]||linkIcons.other)+'<span>'+l[0]+'</span><span class="pc-arrow">→</span>';links.appendChild(d)});
+    const uh=el('urlHint');if(uh)uh.textContent='get-oxide.com/'+(p.handle||'yourhandle')+'/';
   }
   ids.forEach(id=>el(id).addEventListener('input',update));
   const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
@@ -254,12 +259,42 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
     const msgs={not_configured:'Discord login is not configured yet — try again in a minute.',invalid_state:'The login session expired — please try again.',discord_token:'Discord didn\'t approve the login — please try again.',discord_user:'Could not load your Discord account — please try again.'};
     gateErr.textContent=msgs[errParam]||'Login failed — please try again.';
   }
+  let editing=false,myHandle='';
+  const headTitle=el('headTitle'),headSub=el('headSub'),viewLink=el('viewLink');
+  function prefill(pm){
+    const p=pm.profile||{};
+    if(p.name)el('name').value=p.name;
+    if(p.handle)el('handle').value=p.handle;
+    if(p.status)el('status').value=p.status;
+    if(p.avatar)el('avatar').value=p.avatar;
+    if(p.background)el('background').value=p.background;
+    if(p.bio)el('bio').value=p.bio;
+    if(p.tags)el('tags').value=p.tags;
+    (p.links||[]).forEach(l=>{
+      const label=(l.label||'').toLowerCase();
+      if(label.indexOf('discord')>-1)el('discord').value=l.url||'';
+      else if(label.indexOf('roblox')>-1)el('roblox').value=l.url||'';
+      else if(!el('other').value)el('other').value=l.url||'';
+    });
+    if(p.music){musicUrl=p.music;setMusicState('Background music set',true,'Plays on your profile — click ✕ to remove.');}
+    editing=true;myHandle=pm.handle;
+    el('handle').readOnly=true;
+    headTitle.textContent='Edit your profile';
+    headSub.innerHTML='Your short link is <b style="color:var(--text)">get-oxide.com/'+pm.handle+'</b> — change anything and save.';
+    viewLink.href='/'+pm.handle+'/';viewLink.hidden=false;
+    el('generate').textContent='Save changes';
+    update();
+  }
   function setLoggedIn(user){
     history.replaceState(null,'',location.pathname);
     wrap.hidden=false;gate.classList.remove('show');
     el('userName').textContent=user.displayName||user.username;
     if(user.avatar)el('userAvatar').src=user.avatar;else el('userAvatar').src='/assets/Oxide.png';
     el('userChip').hidden=false;
+    fetch(API+'/profile/me',{credentials:'include'})
+      .then(r=>r.json().then(j=>({ok:r.ok,j})))
+      .then(({ok,j})=>{if(ok)prefill(j);})
+      .catch(()=>{});
   }
   function showGate(msg){
     wrap.hidden=true;el('userChip').hidden=true;gate.classList.add('show');
@@ -344,6 +379,7 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
           throw new Error(j.error||'Could not save the profile. Try again.');
         }
         errEl.textContent='';localStorage.setItem('oxide_edit_'+handle,j.editToken);const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
+        if(!editing){viewLink.href=url;viewLink.hidden=false;}
       })
       .catch(err=>{
         const json=JSON.stringify(profile());const bytes=new TextEncoder().encode(json);let raw='';bytes.forEach(b=>raw+=String.fromCharCode(b));const token=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
