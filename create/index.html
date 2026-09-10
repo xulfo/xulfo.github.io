@@ -3,64 +3,138 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Create a profile — Oxide HUB</title>
+<title>Create your profile — Oxide</title>
 <link rel="icon" href="/assets/Oxide.png?v=2">
 <style>
 @font-face{font-family:Inter;src:url('/assets/fonts/inter-var.woff2') format('woff2');font-weight:100 900;font-display:swap}
-*{box-sizing:border-box;margin:0;padding:0} :root{--bg:#07080b;--panel:rgba(17,19,24,.78);--line:rgba(255,255,255,.1);--text:#f4f5f7;--muted:#9298a4;--accent:#81a3d6;--good:#70d28a}
-body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,163,214,.16),transparent 52%),var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.shell{width:min(900px,100%);margin:auto;padding:26px 20px 50px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:42px}.brand{display:flex;align-items:center;gap:9px;color:var(--text);text-decoration:none;font-weight:750}.brand img{width:23px;height:23px;border-radius:7px}.back{color:var(--muted);text-decoration:none}.back:hover{color:var(--text)}
-.hero{margin-bottom:26px}.eyebrow{color:var(--accent);font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;margin-bottom:12px}.hero h1{font-size:clamp(30px,5vw,48px);letter-spacing:-.05em;line-height:1.02}.hero p{color:var(--muted);margin-top:13px;max-width:590px;line-height:1.65}
-.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:start}.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 20px 70px rgba(0,0,0,.28);backdrop-filter:blur(20px)}.panel h2{font-size:14px;margin-bottom:20px}.field{margin-bottom:15px}.field label{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px}.field input,.field textarea{width:100%;border:1px solid var(--line);background:rgba(0,0,0,.24);border-radius:10px;color:var(--text);padding:11px 12px;font:inherit;outline:none;transition:border .2s,background .2s}.field textarea{min-height:92px;resize:vertical;line-height:1.5}.field input:focus,.field textarea:focus{border-color:rgba(129,163,214,.7);background:rgba(129,163,214,.05)}.hint{color:#737a87;font-size:11px;margin-top:6px;line-height:1.45}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:11px}.actions{display:flex;gap:10px;margin-top:20px}.button{border:0;border-radius:10px;padding:11px 15px;font:700 13px Inter;cursor:pointer;transition:transform .18s,filter .18s}.button:hover{transform:translateY(-1px);filter:brightness(1.08)}.primary{background:var(--accent);color:#101722}.secondary{background:rgba(255,255,255,.08);color:var(--text);border:1px solid var(--line)}
-.preview{position:sticky;top:20px}.preview-card{border:1px solid var(--line);border-radius:16px;padding:24px 18px;text-align:center;background:rgba(6,7,10,.45)}.preview-avatar{width:74px;height:74px;border-radius:20px;object-fit:cover;border:1px solid rgba(255,255,255,.2);box-shadow:0 9px 25px #0008}.preview-name{font-size:21px;font-weight:800;margin-top:12px}.preview-handle{color:var(--muted);font-size:12px;margin-top:3px}.preview-bio{color:var(--muted);font-size:12px;line-height:1.5;white-space:pre-line;margin:15px auto;max-height:73px;overflow:hidden}.preview-link{height:36px;border:1px solid var(--line);border-radius:9px;margin-top:7px;color:var(--text-2);font-size:12px;display:flex;align-items:center;padding:0 10px;text-align:left}.result{display:none;margin-top:18px;padding:14px;border:1px solid rgba(112,210,138,.35);background:rgba(112,210,138,.07);border-radius:12px}.result.show{display:block}.result strong{color:var(--good);font-size:12px}.url{display:block;color:var(--text);font-size:11px;line-height:1.4;word-break:break-all;margin:8px 0}.notice{color:var(--muted);font-size:11px;line-height:1.5;margin-top:18px}.notice a{color:var(--accent)}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.preview{position:static;order:-1}.top{margin-bottom:30px}.panel{padding:19px}.twocol{grid-template-columns:1fr}}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0a0b0e;--panel:#12141a;--panel-2:#0e1014;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);--text:#f2f3f5;--muted:#9aa0ab;--dim:#6b7280;--accent:#81a3d6;--good:#70d28a;--bad:#e66767}
+body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,163,214,.12),transparent 55%),var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.shell{width:min(920px,100%);margin:auto;padding:22px 20px 60px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{display:flex;align-items:center;gap:9px;color:var(--text);text-decoration:none;font-weight:750;font-size:14.5px}.brand img{width:23px;height:23px;border-radius:7px}.back{color:var(--dim);text-decoration:none;font-size:13px}.back:hover{color:var(--text)}
+.head{margin-bottom:24px}.head h1{font-size:26px;font-weight:800;letter-spacing:-.03em}.head p{color:var(--muted);margin-top:7px;font-size:13.5px}
+.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.section-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 16px}.section-title:not(:first-child){margin-top:24px}
+.field{margin-bottom:13px}.field label{display:block;color:var(--muted);font-size:12.5px;font-weight:600;margin-bottom:6px}
+.field input,.field textarea{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;transition:border .18s,background .18s}.field textarea{min-height:84px;resize:vertical;line-height:1.5}
+.field input:focus,.field textarea:focus{border-color:rgba(129,163,214,.75);background:rgba(129,163,214,.05)}
+.field input::placeholder,.field textarea::placeholder{color:#565d68}
+.hint{color:var(--dim);font-size:11.5px;margin-top:5px;line-height:1.4}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.upload{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line-2);border-radius:11px;padding:12px 14px;cursor:pointer;background:var(--panel-2);transition:border .18s,background .18s;color:var(--muted)}
+.upload:hover{border-color:rgba(129,163,214,.6);background:rgba(129,163,214,.06)}
+.upload svg{width:19px;height:19px;flex:none;color:var(--accent)}
+.upload .up-label{flex:1;font-size:13px;font-weight:600}
+.upload.done{border-style:solid;border-color:rgba(112,210,138,.5);background:rgba(112,210,138,.06)}
+.upload.done svg{color:var(--good)}
+.upload .up-x{color:var(--dim);font-size:15px;padding:0 2px;display:none}.upload.done .up-x{display:block}.upload.done .up-x:hover{color:var(--bad)}
+.actions{display:flex;gap:10px;margin-top:20px}
+.button{border:0;border-radius:10px;padding:11px 16px;font:700 13.5px Inter;cursor:pointer;transition:transform .15s,filter .15s}.button:active{transform:translateY(0)}
+.primary{background:var(--accent);color:#0d1420}.primary:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.secondary{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--line)}.secondary:hover{background:rgba(255,255,255,.1)}
+.result{display:none;margin-top:16px;padding:14px;border:1px solid rgba(112,210,138,.35);background:rgba(112,210,138,.07);border-radius:12px}.result.show{display:block}
+.result .r-title{color:var(--good);font-size:13px;font-weight:700}
+.url{display:block;color:var(--text);font-size:12px;line-height:1.4;word-break:break-all;margin:7px 0 10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.err{color:var(--bad);font-size:12px;line-height:1.4;display:block;margin-bottom:6px}
+.bottom-line{color:var(--dim);font-size:12px;margin-top:16px;line-height:1.55}
+.preview{position:sticky;top:18px}.preview .panel{padding:16px}
+.preview-card{border:1px solid var(--line);border-radius:14px;padding:22px 16px;text-align:center;background:#0d0f13;background-size:cover;background-position:center}
+.preview-avatar{width:72px;height:72px;border-radius:19px;object-fit:cover;border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 22px #0008}
+.preview-name{font-size:20px;font-weight:800;margin-top:11px;letter-spacing:-.02em}
+.preview-handle{color:var(--muted);font-size:12px;margin-top:3px}
+.preview-bio{color:var(--muted);font-size:12px;line-height:1.5;white-space:pre-line;margin:13px auto;max-height:72px;overflow:hidden}
+.preview-link{height:35px;border:1px solid var(--line);border-radius:9px;margin-top:7px;color:var(--muted);font-size:12px;display:flex;align-items:center;padding:0 11px;text-align:left;background:rgba(255,255,255,.03)}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.preview{position:static;order:-1}.top{margin-bottom:26px}.panel{padding:18px}.twocol{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="shell">
 <header class="top"><a class="brand" href="/"><img src="/assets/Oxide.png?v=2" alt="">Oxide HUB</a><a class="back" href="/">Back to hub</a></header>
-<section class="hero"><div class="eyebrow">Oxide profiles</div><h1>Build your corner<br>of the internet.</h1><p>Create a clean personal profile with your own picture, background, bio and links. Generate a shareable URL instantly — no account and no data is uploaded.</p></section>
+
+<div class="head"><h1>Create your profile</h1><p>Your link will be <b style="color:var(--text)">get-oxide.com/yourhandle</b>. Fill it out, generate, done.</p></div>
+
 <div class="grid">
-<section class="panel"><h2>Profile details</h2>
-<div class="field"><label for="name">Display name</label><input id="name" maxlength="32" placeholder="Your name" value="New profile"></div>
-<div class="twocol"><div class="field"><label for="handle">Handle</label><input id="handle" maxlength="24" placeholder="yourname" value="yourname"></div><div class="field"><label for="status">Status</label><input id="status" maxlength="20" placeholder="Available" value="Available"></div></div>
-<div class="field"><label for="avatar">Profile picture URL</label><input id="avatar" placeholder="https://.../avatar.jpg"><div class="hint">Use a public JPG, PNG, GIF or WebP URL.</div></div>
-<div class="field"><label for="background">Background image URL</label><input id="background" placeholder="https://.../background.jpg"><div class="hint">A wide image works best. The background is automatically darkened for readability.</div></div>
-<div class="field"><label for="bio">Bio</label><textarea id="bio" maxlength="240" placeholder="Tell people about yourself..."></textarea></div>
-<div class="field"><label for="tags">Tags</label><input id="tags" maxlength="100" placeholder="Developer, Gamer, Creator"><div class="hint">Separate tags with commas.</div></div>
-<h2 style="margin-top:24px">Links</h2>
-<div class="field"><label for="discord">Discord invite</label><input id="discord" placeholder="https://discord.gg/..."></div>
-<div class="field"><label for="roblox">Roblox profile</label><input id="roblox" placeholder="https://www.roblox.com/users/..."></div>
-<div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..." ></div>
-<div class="field"><label for="music">Background music (MP3)</label><input type="file" id="music" accept="audio/mpeg,.mp3"><div class="hint" id="musicHint">Optional — upload an MP3 and it plays on your profile.</div></div>
-<div class="actions"><button class="button primary" id="generate">Generate profile URL</button><button class="button secondary" id="reset" type="button">Reset</button></div>
-<div class="result" id="result"><strong>Your profile is ready</strong><span class="url" id="err" style="color:#e66767"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy profile link</button></div>
-<p class="notice">Your profile is saved under your handle, so your link stays short: <b>get-oxide.com/yourhandle</b>. Reopen the builder with the same handle to update it. Do not put private information into public links. <a href="/">Return to Oxide</a></p>
+<section class="panel">
+  <div class="section-title">Basics</div>
+  <div class="field"><label for="name">Display name</label><input id="name" maxlength="32" placeholder="Your name" value="New profile"></div>
+  <div class="twocol">
+    <div class="field"><label for="handle">Handle</label><input id="handle" maxlength="24" placeholder="yourname" value="yourname"></div>
+    <div class="field"><label for="status">Status</label><input id="status" maxlength="20" placeholder="Available" value="Available"></div>
+  </div>
+  <div class="field"><label for="avatar">Profile picture URL</label><input id="avatar" placeholder="https://.../avatar.jpg"><div class="hint">JPG, PNG, GIF or WebP — a public link works.</div></div>
+  <div class="field"><label for="background">Background image URL</label><input id="background" placeholder="https://.../background.jpg"><div class="hint">A wide image looks best.</div></div>
+  <div class="field"><label for="bio">Bio</label><textarea id="bio" maxlength="240" placeholder="Short intro..."></textarea></div>
+  <div class="field"><label for="tags">Tags</label><input id="tags" maxlength="100" placeholder="Gamer, Developer"><div class="hint">Separate with commas.</div></div>
+
+  <div class="section-title">Links</div>
+  <div class="field"><label for="discord">Discord invite</label><input id="discord" placeholder="https://discord.gg/..."></div>
+  <div class="field"><label for="roblox">Roblox profile</label><input id="roblox" placeholder="https://www.roblox.com/users/..."></div>
+  <div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..."></div>
+
+  <div class="section-title">Sound</div>
+  <div class="field">
+    <label>Background music</label>
+    <label class="upload" id="uploadBox" for="music">
+      <input type="file" id="music" accept="audio/mpeg,.mp3" hidden>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18.5a3.5 3.5 0 1 1-2-3.16V5.4a1 1 0 0 1 .76-.97l9-2.25A1 1 0 0 1 18 3.15v11.19a3.5 3.5 0 1 1-2-3.16V8.02l-7 1.75v8.73Z"/></svg>
+      <span class="up-label" id="musicLabel">Add an MP3</span>
+      <span class="up-x" id="musicRemove" title="Remove">✕</span>
+    </label>
+    <div class="hint" id="musicHint">Plays in the background on your profile. Max 6MB.</div>
+  </div>
+
+  <div class="actions">
+    <button class="button primary" id="generate">Generate profile</button>
+    <button class="button secondary" id="reset" type="button">Reset</button>
+  </div>
+  <div class="result" id="result"><span class="r-title">Your profile is live</span><span class="err" id="err"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy link</button></div>
+  <p class="bottom-line">Handles are taken once. To edit your profile later, reopen this page in the same browser you created it in.</p>
 </section>
-<aside class="panel preview"><h2>Live preview</h2><div class="preview-card" id="previewCard"><img class="preview-avatar" id="pAvatar" src="/assets/Oxide.png" alt=""><div class="preview-name" id="pName">New profile</div><div class="preview-handle" id="pHandle">@yourname</div><div class="preview-bio" id="pBio">Your bio will appear here.</div><div class="preview-link">Discord</div><div class="preview-link">Roblox</div></div></aside>
-</div></div>
+
+<aside class="preview">
+  <div class="panel">
+    <div class="section-title" style="margin-bottom:14px">Preview</div>
+    <div class="preview-card" id="previewCard">
+      <img class="preview-avatar" id="pAvatar" src="/assets/Oxide.png" alt="">
+      <div class="preview-name" id="pName">New profile</div>
+      <div class="preview-handle" id="pHandle">@yourname</div>
+      <div class="preview-bio" id="pBio">Your bio will appear here.</div>
+      <div class="preview-link">Discord</div>
+      <div class="preview-link">Roblox</div>
+    </div>
+  </div>
+</aside>
+</div>
+</div>
 <script>
 (function(){
   const ids=['name','handle','status','avatar','background','bio','tags','discord','roblox','other'];
   const el=id=>document.getElementById(id); const value=id=>el(id).value.trim();
+  let musicUrl='';
   function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Available',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),music:musicUrl,links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
-  function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(6,7,10,.72),rgba(6,7,10,.72)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
+  function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(8,9,12,.78),rgba(8,9,12,.78)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
   ids.forEach(id=>el(id).addEventListener('input',update));
   const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
   const RESERVED=['lesy','create','profile','script','admin','assets','games','statistics','updates','server','index','loader','api','u','404'];
-  let musicUrl='';
-  function bindCopy(url){el('copy').onclick=()=>navigator.clipboard.writeText(url).then(()=>{el('copy').textContent='Copied';setTimeout(()=>el('copy').textContent='Copy profile link',1200)});}
+  function setMusicState(name,ok,msg){
+    el('uploadBox').classList.toggle('done',ok);
+    el('musicLabel').textContent=name;
+    el('musicHint').textContent=msg;
+  }
   el('music').addEventListener('change',()=>{
     const file=el('music').files[0];
-    if(!file){musicUrl='';el('musicHint').textContent='Optional — upload an MP3 and it plays on your profile.';return}
-    if(!/audio\/mpeg|audio\/mp3|\.mp3$/i.test(file.type+' '+file.name)){el('musicHint').textContent='Only MP3 files are supported.';return}
-    if(file.size>6*1024*1024){el('musicHint').textContent='File too large (max 6MB).';return}
-    el('musicHint').textContent='Uploading...';
+    if(!file){musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');return}
+    if(!/audio\/mpeg|audio\/mp3|\.mp3$/i.test(file.type+' '+file.name)){setMusicState('Add an MP3',false,'Only MP3 files are supported.');return}
+    if(file.size>6*1024*1024){setMusicState('Add an MP3',false,'File too large (max 6MB).');return}
+    setMusicState(file.name,false,'Uploading...');
     fetch(API+'/media',{method:'POST',headers:{'Content-Type':'audio/mpeg'},body:file})
       .then(r=>{if(!r.ok)throw 0;return r.json()})
-      .then(j=>{musicUrl=j.url;el('musicHint').textContent='Uploaded ✓ background music is set.';})
-      .catch(()=>{el('musicHint').textContent='Upload failed — try again or use a shorter file.';});
+      .then(j=>{musicUrl=j.url;setMusicState(file.name,true,'Uploaded — plays on your profile.');})
+      .catch(()=>{setMusicState(file.name,false,'Upload failed — try again.');});
   });
+  el('musicRemove').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');});
+  function bindCopy(url){el('copy').onclick=()=>navigator.clipboard.writeText(url).then(()=>{el('copy').textContent='Copied';setTimeout(()=>el('copy').textContent='Copy link',1200)});}
   el('generate').addEventListener('click',()=>{
     const p=profile();
     const handle=(p.handle||'').toLowerCase();
@@ -79,7 +153,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,16
         el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
       });
   });
-  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Available';else el(id).value=''});el('result').classList.remove('show');update();}); update();
+  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Available';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');update();}); update();
 })();
 </script>
 </body>
