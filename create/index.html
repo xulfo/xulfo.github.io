@@ -32,6 +32,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,16
 <div class="field"><label for="discord">Discord invite</label><input id="discord" placeholder="https://discord.gg/..."></div>
 <div class="field"><label for="roblox">Roblox profile</label><input id="roblox" placeholder="https://www.roblox.com/users/..."></div>
 <div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..." ></div>
+<div class="field"><label for="music">Background music (MP3)</label><input type="file" id="music" accept="audio/mpeg,.mp3"><div class="hint" id="musicHint">Optional — upload an MP3 and it plays on your profile.</div></div>
 <div class="actions"><button class="button primary" id="generate">Generate profile URL</button><button class="button secondary" id="reset" type="button">Reset</button></div>
 <div class="result" id="result"><strong>Your profile is ready</strong><span class="url" id="err" style="color:#e66767"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy profile link</button></div>
 <p class="notice">Your profile is saved under your handle, so your link stays short: <b>get-oxide.com/yourhandle</b>. Reopen the builder with the same handle to update it. Do not put private information into public links. <a href="/">Return to Oxide</a></p>
@@ -42,22 +43,35 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,16
 (function(){
   const ids=['name','handle','status','avatar','background','bio','tags','discord','roblox','other'];
   const el=id=>document.getElementById(id); const value=id=>el(id).value.trim();
-  function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Available',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
+  function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Available',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),music:musicUrl,links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
   function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(6,7,10,.72),rgba(6,7,10,.72)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
   ids.forEach(id=>el(id).addEventListener('input',update));
   const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
   const RESERVED=['lesy','create','profile','script','admin','assets','games','statistics','updates','server','index','loader','api','u','404'];
+  let musicUrl='';
   function bindCopy(url){el('copy').onclick=()=>navigator.clipboard.writeText(url).then(()=>{el('copy').textContent='Copied';setTimeout(()=>el('copy').textContent='Copy profile link',1200)});}
+  el('music').addEventListener('change',()=>{
+    const file=el('music').files[0];
+    if(!file){musicUrl='';el('musicHint').textContent='Optional — upload an MP3 and it plays on your profile.';return}
+    if(!/audio\/mpeg|audio\/mp3|\.mp3$/i.test(file.type+' '+file.name)){el('musicHint').textContent='Only MP3 files are supported.';return}
+    if(file.size>6*1024*1024){el('musicHint').textContent='File too large (max 6MB).';return}
+    el('musicHint').textContent='Uploading...';
+    fetch(API+'/media',{method:'POST',headers:{'Content-Type':'audio/mpeg'},body:file})
+      .then(r=>{if(!r.ok)throw 0;return r.json()})
+      .then(j=>{musicUrl=j.url;el('musicHint').textContent='Uploaded ✓ background music is set.';})
+      .catch(()=>{el('musicHint').textContent='Upload failed — try again or use a shorter file.';});
+  });
   el('generate').addEventListener('click',()=>{
     const p=profile();
     const handle=(p.handle||'').toLowerCase();
     const errEl=el('err');
     if(!/^[a-z0-9_]{2,24}$/.test(handle)){errEl.textContent='Invalid handle — use 2-24 letters, numbers or underscores.';el('url').textContent='';el('result').classList.add('show');return}
     if(RESERVED.includes(handle)){errEl.textContent='This handle is reserved. Try another one.';el('url').textContent='';el('result').classList.add('show');return}
-    const payload={handle:handle,name:p.name,status:p.status,bio:p.bio,avatar:p.avatar,background:p.background,tags:p.tags,links:p.links.map(l=>({label:l[0],url:l[1]}))};
+    const storedToken=localStorage.getItem('oxide_edit_'+handle)||'';
+    const payload={handle:handle,name:p.name,status:p.status,bio:p.bio,avatar:p.avatar,background:p.background,tags:p.tags,links:p.links.map(l=>({label:l[0],url:l[1]})),music:musicUrl,editToken:storedToken};
     fetch(API+'/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-      .then(r=>{if(!r.ok)throw new Error(r.status===409?'This handle is reserved. Try another one.':'Could not save the profile. Try again.');return r.json()})
-      .then(()=>{errEl.textContent='';const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);})
+      .then(r=>{if(!r.ok)throw new Error(r.status===409?'This handle is already taken. If it\u2019s yours, edit it from the same browser you created it in.':'Could not save the profile. Try again.');return r.json()})
+      .then(j=>{errEl.textContent='';localStorage.setItem('oxide_edit_'+handle,j.editToken);const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);})
       .catch(err=>{
         const json=JSON.stringify(profile());const bytes=new TextEncoder().encode(json);let raw='';bytes.forEach(b=>raw+=String.fromCharCode(b));const token=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
         const url=location.origin+'/profile/#'+token;
