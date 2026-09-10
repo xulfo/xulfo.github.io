@@ -81,6 +81,8 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 
 .card {
   width: min(440px, 100%);
+  position: relative;
+  overflow: hidden;
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 22px;
@@ -91,6 +93,17 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   text-align: center;
   animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 14%;
+  right: 14%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(129, 163, 214, 0.8), transparent);
+  box-shadow: 0 0 24px rgba(129, 163, 214, 0.5);
+}
+.card > * { position: relative; z-index: 1; }
 @keyframes rise {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -115,14 +128,15 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 .avatar:hover { transform: scale(1.03); }
 
 .name-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
-.name { font-size: 29px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; }
+.name { font-size: 29px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; text-shadow: 0 2px 18px rgba(255,255,255,0.08); }
 .verified {
   width: 22px; height: 22px; flex: none;
   border-radius: 50%; display: grid; place-items: center;
-  background: linear-gradient(135deg, #81a3d6, #5b7fc0);
-  color: #0c1320;
+  background: #3b82f6;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.13), 0 4px 14px rgba(59, 130, 246, 0.28);
 }
-.verified svg { width: 13px; height: 13px; }
+.verified svg { width: 13px; height: 13px; display: block; }
 
 .handle {
   margin-top: 5px; font-size: 14px; color: var(--muted);
@@ -162,8 +176,10 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   font-size: 12px; font-weight: 600; color: var(--text-2);
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid var(--border);
-  padding: 4px 12px; border-radius: 999px;
+  padding: 5px 12px; border-radius: 999px;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
+.tag:hover { background: rgba(129, 163, 214, 0.10); border-color: rgba(129, 163, 214, 0.28); transform: translateY(-1px); }
 
 /* Bio */
 .bio {
@@ -173,7 +189,23 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 }
 
 /* Links */
-.links { display: flex; flex-direction: column; gap: 9px; margin-top: 28px; }
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+}
+.links::before {
+  content: "Connect with me";
+  display: block;
+  text-align: left;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin: 0 2px 2px;
+}
 .link {
   display: flex; align-items: center; gap: 14px;
   text-decoration: none; color: var(--text);
@@ -205,14 +237,15 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 .link-arrow svg { width: 15px; height: 15px; display: block; }
 .link:hover .link-arrow { transform: translateX(3px); color: var(--text); }
 
-.link[data-icon="discord"]   { --brand: #7983f5; --brand-bg: rgba(88, 101, 242, 0.16); }
+.link[data-icon="discord"]   { --brand: #8b94ff; --brand-bg: rgba(88, 101, 242, 0.18); background: rgba(88, 101, 242, 0.055); }
+.link[data-icon="discord"] .link-label::after { content: "  •  MAIN"; color: #8b94ff; font-size: 9px; letter-spacing: 0.1em; vertical-align: 1px; }
 .link[data-icon="yt"]        { --brand: #ff4d4d; --brand-bg: rgba(255, 0, 0, 0.14); }
 .link[data-icon="tiktok"]    { --brand: #e8e6e1; --brand-bg: rgba(255, 255, 255, 0.10); }
 .link[data-icon="telegram"]  { --brand: #4db8e8; --brand-bg: rgba(0, 136, 204, 0.16); }
 .link[data-icon="x"]         { --brand: #e8e6e1; --brand-bg: rgba(255, 255, 255, 0.10); }
 .link[data-icon="instagram"] { --brand: #ff6b9d; --brand-bg: rgba(225, 48, 108, 0.16); }
 .link[data-icon="github"]    { --brand: #e8e6e1; --brand-bg: rgba(255, 255, 255, 0.10); }
-.link[data-icon="roblox"]    { --brand: #ff7a72; --brand-bg: rgba(226, 35, 26, 0.16); }
+.link[data-icon="roblox"]    { --brand: #f0f0f0; --brand-bg: rgba(255, 255, 255, 0.10); }
 
 /* Music */
 .music-btn {
@@ -276,8 +309,8 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 
     <div class="name-row">
       <h1 class="name" id="name"></h1>
-      <span class="verified" title="Verified">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="m12 1 2.4 2.1 3.2-.4 1 3.1 3 1.3-1.1 3 1.1 3-3 1.3-1 3.1-3.2-.4L12 19l-2.4-2.1-3.2.4-1-3.1-3-1.3 1.1-3-1.1-3 3-1.3 1-3.1 3.2.4L12 1Zm-1.2 12.9 5-5-1.4-1.4-3.6 3.6-1.6-1.6-1.4 1.4 3 3Z"/></svg>
+      <span class="verified" title="Verified Oxide profile" aria-label="Verified Oxide profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 12.5 3.5 3.5 7.5-8"/></svg>
       </span>
     </div>
     <button class="handle" id="handle" title="Copy handle"></button>
@@ -307,12 +340,8 @@ const PROFILE = {
   bgImage: "/assets/profile/background.jpg",
   bgVideo: "",
   links: [
-    { label: "Discord", url: "https://discord.gg/8VxyzMMjfh", note: "@9xvxxxxxx — join the server", icon: "discord" },
-    { label: "Roblox", url: "https://www.roblox.com/de/users/2401825836/profile", note: "Play with me", icon: "roblox" },
-    { label: "YouTube", url: "https://youtube.com/@lesy", note: "Demos & previews", icon: "yt" },
-    { label: "TikTok", url: "https://tiktok.com/@lesy", note: "Clips", icon: "tiktok" },
-    { label: "Telegram", url: "https://t.me/lesy", note: "Fastest updates", icon: "telegram" },
-    { label: "X / Twitter", url: "https://x.com/lesy", note: "Follow for news", icon: "x" },
+    { label: "Discord", url: "https://discord.gg/8VxyzMMjfh", note: "@9xvxxxxxx · join the community", icon: "discord" },
+    { label: "Roblox", url: "https://www.roblox.com/de/users/2401825836/profile", note: "View my Roblox profile", icon: "roblox" },
   ],
 };
 (function () {
@@ -368,7 +397,7 @@ const PROFILE = {
     x: '<path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/>',
     instagram: '<path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>',
     github: '<path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>',
-    roblox: '<path d="M15.94 3.47 12.32.74a2 2 0 0 0-2.42 0L2.5 6.4A2 2 0 0 0 1.6 8v9.2c0 .66.32 1.28.87 1.67l7.4 5.18a2 2 0 0 0 2.42 0l7.4-5.18a2 2 0 0 0 .87-1.67V8a2 2 0 0 0-.9-1.6l-3.62-2.73.9-1.2Zm.66 4.33-2.1 1.3 2.35 3.4h-2.32l-2.43-4.1h.82l1.9 1.18-.9 1.6-2.9-4.88h.8l1.1 1.85 2.42-1.5-.82 1.5-1.42-.88 1.15 1.93h1.3l-1.4-2.05 1.95-1.2ZM5.7 17.6 4.1 16.4v-1.6l1.9-1.1h1.6l1.2 1.1v1.4l-1.6 1.4H5.7Zm6.3 2.3h-2.2l-1-1.6h3.2l-1.8 1.6h-1.2l-1-1.6h2.2l1 1.6h1.2l.9-1.6h1.6l1.2 1.6h1.4l-1.4-2.4-2.6-1.9h-2.1l-1.2-1.2 1.9-1.6h1.9l1.2 1.2v1.2l1.9 1.2v1.2l-2.4 1.2-2.2 1.1Z"/>',
+    roblox: '<path d="M6.25 0 24 6.25 17.75 24 0 17.75 6.25 0Zm2.62 5.24-3.63 10.28 10.28 3.63 3.63-10.28L8.87 5.24Z"/>',
   };
 
   var links = document.getElementById("links");
