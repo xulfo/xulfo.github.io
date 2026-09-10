@@ -67,6 +67,35 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 .url{display:block;color:var(--text);font-size:12px;line-height:1.4;word-break:break-all;margin:10px 0 12px;font-family:ui-monospace,Menlo,Consolas,monospace;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:9px;padding:10px 12px}
 .err{color:var(--bad);font-size:12px;line-height:1.4;display:block;margin-bottom:6px}
 .bottom-line{color:var(--dim);font-size:12px;margin-top:20px;line-height:1.55}
+.field-row{display:flex;gap:8px;align-items:stretch}
+.field-row input{flex:1}
+.mini-btn{border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);border-radius:12px;font:600 12px Inter;padding:0 14px;cursor:pointer;white-space:nowrap;transition:color .15s,border-color .15s,background .15s}
+.mini-btn:hover{color:var(--text);border-color:rgba(129,163,214,.5);background:rgba(255,255,255,.08)}
+/* Roblox avatar preview modal */
+.modal{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:20px}
+.modal[hidden]{display:none}
+.modal-backdrop{position:absolute;inset:0;background:rgba(4,5,8,.74);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.modal-card{position:relative;width:min(400px,100%);background:rgba(17,19,25,.95);border:1px solid rgba(255,255,255,.1);border-radius:26px;box-shadow:0 40px 130px rgba(0,0,0,.65),inset 0 1px 0 rgba(255,255,255,.06);text-align:center;padding:30px 28px 24px;animation:cardIn .35s cubic-bezier(.2,.7,.2,1) both;overflow:hidden}
+.modal-card::before{content:"";position:absolute;top:0;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,rgba(129,163,214,.6),transparent)}
+.modal-x{position:absolute;top:13px;right:13px;width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--muted);font-size:13px;cursor:pointer;line-height:1;z-index:5}
+.modal-x:hover{color:var(--text);background:rgba(255,255,255,.1)}
+.m-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.modal-card h3{font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:7px}
+.modal-sub{color:var(--muted);font-size:12.5px;margin-top:7px;line-height:1.5;min-height:17px}
+.turntable{position:relative;height:320px;margin:16px 0 4px;border-radius:18px;background:radial-gradient(90% 70% at 50% 32%,rgba(129,163,214,.13),transparent 70%);border:1px solid rgba(255,255,255,.06);overflow:hidden}
+.floor{position:absolute;left:50%;bottom:16px;width:240px;height:240px;transform:translateX(-50%);border-radius:50%;z-index:1;pointer-events:none}
+.floor-ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,rgba(129,163,214,.5),rgba(129,163,214,.04) 25%,rgba(129,163,214,.45) 50%,rgba(129,163,214,.05) 75%,rgba(129,163,214,.5));-webkit-mask:radial-gradient(circle,transparent 60%,#000 61%,#000 72%,transparent 73%);mask:radial-gradient(circle,transparent 60%,#000 61%,#000 72%,transparent 73%);opacity:.85;animation:spin 9s linear infinite}
+.floor-disc{position:absolute;inset:11%;border-radius:50%;background:radial-gradient(circle,rgba(129,163,214,.18),rgba(129,163,214,.04) 55%,transparent 78%);border:1px dashed rgba(255,255,255,.14);animation:spin 26s linear infinite reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.av-char{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);z-index:2}
+.av-char img{height:264px;max-width:230px;object-fit:contain;display:block;filter:drop-shadow(0 14px 24px rgba(0,0,0,.55));animation:sway 5.5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+.av-load{position:absolute;inset:0;display:grid;place-items:center;z-index:4}
+.av-load .spinner{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.1);border-top-color:var(--accent);animation:spin .8s linear infinite}
+.turntable:not(.loading) .av-load{display:none}
+.av-msg{color:var(--dim);font-size:11.5px;line-height:1.45;min-height:15px;margin:2px 6px 0}
+.modal-actions{display:flex;gap:10px;margin-top:16px}
+.modal-actions .button{flex:1}
 /* Live preview — mirrors the real profile page */
 .preview{position:sticky;top:20px}
 .preview-card{overflow:hidden;text-align:center;background:rgba(16,18,23,.78);backdrop-filter:blur(22px) saturate(1.25);-webkit-backdrop-filter:blur(22px) saturate(1.25);border:1px solid rgba(255,255,255,.09);border-radius:24px;box-shadow:0 30px 90px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.05);animation:cardIn .5s cubic-bezier(.2,.7,.2,1) both}
@@ -94,6 +123,27 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 </head>
 <body>
 <div class="bg" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+
+<div class="modal" id="avatarModal" hidden>
+  <div class="modal-backdrop"></div>
+  <div class="modal-card">
+    <button class="modal-x" id="modalX" type="button" aria-label="Close">✕</button>
+    <div class="m-eyebrow">Roblox avatar</div>
+    <h3>Is this you?</h3>
+    <p class="modal-sub" id="avSub">Checking…</p>
+    <div class="turntable" id="avStage">
+      <div class="av-load"><div class="spinner"></div></div>
+      <div class="floor"><div class="floor-ring"></div><div class="floor-disc"></div></div>
+      <div class="av-char"><img id="avImg" alt="Roblox avatar preview" hidden></div>
+    </div>
+    <p class="av-msg" id="avState"></p>
+    <div class="modal-actions">
+      <button class="button secondary" id="avatarNo" type="button">Not me — remove</button>
+      <button class="button primary" id="avatarYes" type="button">That's me</button>
+    </div>
+  </div>
+</div>
+
 <div class="shell">
 <header class="top"><a class="brand" href="/"><img src="/assets/Oxide.png?v=2" alt="">Oxide HUB</a><div class="top-right"><span class="user-chip" id="userChip" hidden><img id="userAvatar" alt=""><span id="userName"></span><button id="logoutBtn" type="button">Log out</button></span><a class="back" href="/">Back to hub</a></div></header>
 
@@ -133,7 +183,7 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 
   <div class="section-title"><span class="st-dot"></span>Links</div>
   <div class="field"><label for="discord">Discord invite</label><input id="discord" placeholder="https://discord.gg/..."></div>
-  <div class="field"><label for="roblox">Roblox profile</label><input id="roblox" placeholder="https://www.roblox.com/users/..."></div>
+  <div class="field"><label for="roblox">Roblox profile</label><div class="field-row"><input id="roblox" placeholder="https://www.roblox.com/users/..." autocomplete="off"><button class="mini-btn" id="rbxPreview" type="button" hidden>Preview</button></div><div class="hint">Paste your Roblox profile link — a preview pops up so you can confirm it's you.</div></div>
   <div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..."></div>
 
   <div class="section-title"><span class="st-dot"></span>Sound</div>
@@ -214,6 +264,45 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
     .then(r=>{if(!r.ok)throw 0;return r.json()})
     .then(j=>setLoggedIn(j.user))
     .catch(()=>showGate(''));
+  /* Roblox avatar preview popup (creation page only) */
+  const avatarModal=el('avatarModal'),avStage=el('avStage'),avImg=el('avImg'),avSub=el('avSub'),avState=el('avState');
+  let avatarOpen=false,currentRbx=null;
+  function robloxId(url){const m=(url||'').match(/roblox\.com\/users\/(\d+)/i);return m?m[1]:null}
+  function openAvatar(id){
+    currentRbx=id;avatarOpen=true;avatarModal.hidden=false;
+    avImg.removeAttribute('src');avImg.hidden=true;avState.textContent='';
+    avStage.classList.add('loading');avSub.textContent='Checking user #'+id+'…';
+    fetch(API+'/roblox/user/'+id).then(r=>r.json()).then(j=>{
+      if(j.ok)avSub.textContent='Showing avatar for '+(j.displayName||j.name)+' (@'+j.name+')';
+    }).catch(()=>{});
+    fetch(API+'/roblox/avatar/'+id).then(r=>r.json()).then(j=>{
+      if(!j.ok)throw 0;
+      avImg.onload=()=>{avStage.classList.remove('loading');avImg.hidden=false;avState.textContent=''};
+      avImg.onerror=()=>showAvatarFallback(id);
+      avImg.src=j.imageUrl;
+    }).catch(()=>showAvatarFallback(id));
+  }
+  function showAvatarFallback(id){
+    avStage.classList.remove('loading');
+    avImg.onload=()=>{avImg.hidden=false;avState.textContent='Live preview unavailable — showing a snapshot.'};
+    avImg.onerror=()=>{avState.textContent='Could not load this avatar. Double-check the link.'};
+    avImg.src='https://www.roblox.com/Thumbs/Avatar.ashx?x=420&y=420&userId='+id;
+  }
+  function closeAvatar(){avatarModal.hidden=true;avatarOpen=false;avImg.removeAttribute('src');avImg.hidden=true;avState.textContent='';avSub.textContent='Checking…'}
+  el('modalX').addEventListener('click',closeAvatar);
+  el('avatarYes').addEventListener('click',closeAvatar);
+  el('avatarNo').addEventListener('click',()=>{el('roblox').value='';el('rbxPreview').hidden=true;update();closeAvatar();});
+  avatarModal.addEventListener('click',e=>{if(e.target===avatarModal)closeAvatar()});
+  let rbxTimer=null;
+  el('roblox').addEventListener('input',()=>{
+    clearTimeout(rbxTimer);
+    rbxTimer=setTimeout(()=>{
+      const id=robloxId(value('roblox'));
+      el('rbxPreview').hidden=!id;
+      if(id&&!avatarOpen)openAvatar(id);
+    },800);
+  });
+  el('rbxPreview').addEventListener('click',()=>{const id=robloxId(value('roblox'));if(id)openAvatar(id)});
   function setMusicState(name,ok,msg){
     el('uploadBox').classList.toggle('done',ok);
     el('musicLabel').textContent=name;
@@ -258,7 +347,7 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
       })
       .finally(()=>{btn.classList.remove('loading');btn.textContent='Generate profile';});
   });
-  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Online';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');update();}); update();
+  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Online';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');el('rbxPreview').hidden=true;update();}); update();
 })();
 </script>
 </body>
