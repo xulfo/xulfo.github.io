@@ -20,9 +20,9 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 .card::before{content:"";position:absolute;top:0;left:14%;right:14%;height:1px;background:linear-gradient(90deg,transparent,rgba(129,163,214,.65),transparent)}
 .banner{position:relative;height:134px;background:#0b0d10}.banner img{width:100%;height:100%;object-fit:cover;display:block}
 .banner-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,8,11,.05),rgba(7,8,11,.2) 45%,rgba(14,16,21,.96))}
-.avatar-wrap{position:relative;width:118px;height:118px;margin:-60px auto 0;padding:4px;border-radius:32px;background:conic-gradient(from 215deg,#81a3d6,#c9a86a,#7f9fd4,#e4b96f,#81a3d6);box-shadow:0 16px 44px rgba(0,0,0,.55);z-index:2}
-.avatar{width:100%;height:100%;border-radius:28px;object-fit:cover;display:block;border:3px solid #11141a;background:#1a1e27}
-.av-status{position:absolute;right:-3px;bottom:-3px;width:24px;height:24px;border-radius:50%;background:var(--good);border:4px solid #11141a;box-shadow:0 3px 10px rgba(0,0,0,.5)}
+.avatar-wrap{position:relative;width:112px;height:112px;margin:-56px auto 0;z-index:2}
+.avatar{width:100%;height:100%;border-radius:26px;object-fit:cover;display:block;border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 38px rgba(0,0,0,.5);background:#1a1e27}
+.av-status{position:absolute;right:0;bottom:0;width:22px;height:22px;border-radius:50%;background:var(--good);border:3px solid #0f1116;box-shadow:0 2px 8px rgba(0,0,0,.5)}
 .avatar-wrap.dnd .av-status{background:var(--dnd)}
 .avatar-wrap.offline .av-status{background:var(--off)}
 .body{padding:16px 30px 32px;position:relative;z-index:1}
@@ -47,7 +47,7 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
 .music-btn{position:fixed;z-index:4;top:18px;right:18px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:rgba(12,13,17,.55);backdrop-filter:blur(14px);color:var(--muted);cursor:pointer;display:none;place-items:center;transition:.2s}
 .music-btn:hover{color:var(--text);transform:scale(1.06)}.music-btn.playing{color:var(--accent);border-color:rgba(129,163,214,.55)}
 .music-btn svg{width:20px;height:20px}.music-btn .disc{display:none;animation:spin 2.6s linear infinite}.music-btn .note{display:block}.music-btn.playing .disc{display:block}.music-btn.playing .note{display:none}@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:500px){.card{margin:26px auto}.body{padding:16px 22px 26px}.avatar-wrap{width:108px;height:108px;margin-top:-55px}}
+@media(max-width:500px){.card{margin:26px auto}.body{padding:16px 22px 26px}.avatar-wrap{width:104px;height:104px;margin-top:-52px}}
 </style></head><body>
 <div class="bg"><img id="bgImg" alt=""><div class="bg-veil"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
 <button class="music-btn" id="musicBtn" aria-label="Toggle music"><svg class="note" viewBox="0 0 24 24" fill="currentColor"><path d="M9 18.5a3.5 3.5 0 1 1-2-3.16V5.4a1 1 0 0 1 .76-.97l9-2.25A1 1 0 0 1 18 3.15v11.19a3.5 3.5 0 1 1-2-3.16V8.02l-7 1.75v8.73Z"/></svg><svg class="disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/><path d="M12 3a9 9 0 0 1 9 9" stroke-linecap="round"/></svg></button>
