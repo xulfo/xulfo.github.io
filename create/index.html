@@ -33,8 +33,8 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,16
 <div class="field"><label for="roblox">Roblox profile</label><input id="roblox" placeholder="https://www.roblox.com/users/..."></div>
 <div class="field"><label for="other">Other link</label><input id="other" placeholder="https://..." ></div>
 <div class="actions"><button class="button primary" id="generate">Generate profile URL</button><button class="button secondary" id="reset" type="button">Reset</button></div>
-<div class="result" id="result"><strong>Your profile is ready</strong><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy profile link</button></div>
-<p class="notice">Your profile is encoded in the generated link hash and stays in your browser. Do not put private information into public links. <a href="/">Return to Oxide</a></p>
+<div class="result" id="result"><strong>Your profile is ready</strong><span class="url" id="err" style="color:#e66767"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy profile link</button></div>
+<p class="notice">Your profile is saved under your handle, so your link stays short: <b>get-oxide.com/yourhandle</b>. Reopen the builder with the same handle to update it. Do not put private information into public links. <a href="/">Return to Oxide</a></p>
 </section>
 <aside class="panel preview"><h2>Live preview</h2><div class="preview-card" id="previewCard"><img class="preview-avatar" id="pAvatar" src="/assets/Oxide.png" alt=""><div class="preview-name" id="pName">New profile</div><div class="preview-handle" id="pHandle">@yourname</div><div class="preview-bio" id="pBio">Your bio will appear here.</div><div class="preview-link">Discord</div><div class="preview-link">Roblox</div></div></aside>
 </div></div>
@@ -45,7 +45,26 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -10%,rgba(129,16
   function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Available',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
   function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(6,7,10,.72),rgba(6,7,10,.72)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
   ids.forEach(id=>el(id).addEventListener('input',update));
-  el('generate').addEventListener('click',()=>{const json=JSON.stringify(profile());const bytes=new TextEncoder().encode(json);let raw='';bytes.forEach(b=>raw+=String.fromCharCode(b));const token=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');const url=location.origin+'/profile/#'+token;el('url').textContent=url;el('result').classList.add('show');el('copy').onclick=()=>navigator.clipboard.writeText(url).then(()=>{el('copy').textContent='Copied';setTimeout(()=>el('copy').textContent='Copy profile link',1200)});});
+  const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
+  const RESERVED=['lesy','create','profile','script','admin','assets','games','statistics','updates','server','index','loader','api','u','404'];
+  function bindCopy(url){el('copy').onclick=()=>navigator.clipboard.writeText(url).then(()=>{el('copy').textContent='Copied';setTimeout(()=>el('copy').textContent='Copy profile link',1200)});}
+  el('generate').addEventListener('click',()=>{
+    const p=profile();
+    const handle=(p.handle||'').toLowerCase();
+    const errEl=el('err');
+    if(!/^[a-z0-9_]{2,24}$/.test(handle)){errEl.textContent='Invalid handle — use 2-24 letters, numbers or underscores.';el('url').textContent='';el('result').classList.add('show');return}
+    if(RESERVED.includes(handle)){errEl.textContent='This handle is reserved. Try another one.';el('url').textContent='';el('result').classList.add('show');return}
+    const payload={handle:handle,name:p.name,status:p.status,bio:p.bio,avatar:p.avatar,background:p.background,tags:p.tags,links:p.links.map(l=>({label:l[0],url:l[1]}))};
+    fetch(API+'/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+      .then(r=>{if(!r.ok)throw new Error(r.status===409?'This handle is reserved. Try another one.':'Could not save the profile. Try again.');return r.json()})
+      .then(()=>{errEl.textContent='';const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);})
+      .catch(err=>{
+        const json=JSON.stringify(profile());const bytes=new TextEncoder().encode(json);let raw='';bytes.forEach(b=>raw+=String.fromCharCode(b));const token=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+        const url=location.origin+'/profile/#'+token;
+        errEl.textContent=(err.message||'Backend offline')+' — using fallback link instead.';
+        el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
+      });
+  });
   el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Available';else el(id).value=''});el('result').classList.remove('show');update();}); update();
 })();
 </script>
