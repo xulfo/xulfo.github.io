@@ -18,7 +18,9 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
 .section-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 16px}.section-title:not(:first-child){margin-top:24px}
 .field{margin-bottom:13px}.field label{display:block;color:var(--muted);font-size:12.5px;font-weight:600;margin-bottom:6px}
 .field input,.field textarea{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;transition:border .18s,background .18s}.field textarea{min-height:84px;resize:vertical;line-height:1.5}
-.field input:focus,.field textarea:focus{border-color:rgba(129,163,214,.75);background:rgba(129,163,214,.05)}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(129,163,214,.75);background:rgba(129,163,214,.05)}
+.field select{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;appearance:none}.status-select{background-image:linear-gradient(45deg,transparent 50%,#87909d 50%),linear-gradient(135deg,#87909d 50%,transparent 50%);background-position:calc(100% - 17px) 17px,calc(100% - 12px) 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.preview-status{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;background:rgba(255,255,255,.035)}.preview-status span{width:7px;height:7px;border-radius:50%;background:#70d28a}.preview-status.dnd span{background:#e5b86d}.preview-status.offline span{background:#727987}.preview-status.dnd{color:#e5b86d}.preview-status.offline{color:#8b929e}
 .field input::placeholder,.field textarea::placeholder{color:#565d68}
 .hint{color:var(--dim);font-size:11.5px;margin-top:5px;line-height:1.4}
 .twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -38,6 +40,19 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
 .url{display:block;color:var(--text);font-size:12px;line-height:1.4;word-break:break-all;margin:7px 0 10px;font-family:ui-monospace,Menlo,Consolas,monospace}
 .err{color:var(--bad);font-size:12px;line-height:1.4;display:block;margin-bottom:6px}
 .bottom-line{color:var(--dim);font-size:12px;margin-top:16px;line-height:1.55}
+.gate{display:none;text-align:center;max-width:420px;margin:46px auto 0;padding:42px 32px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:0 24px 80px rgba(0,0,0,.35)}.gate.show{display:block}
+.gate .gate-logo{width:56px;height:56px;border-radius:15px;margin:0 auto 18px;display:block}
+.gate h2{font-size:21px;letter-spacing:-.02em}
+.gate p{color:var(--muted);font-size:13px;line-height:1.6;margin:9px auto 22px;max-width:300px}
+.discord-btn{display:inline-flex;align-items:center;gap:11px;background:#5865f2;color:#fff;border:0;border-radius:11px;padding:13px 22px;font:700 14px Inter;text-decoration:none;transition:filter .15s,transform .15s,box-shadow .15s}
+.discord-btn:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 10px 30px rgba(88,101,242,.35)}
+.discord-btn svg{width:21px;height:21px;fill:#fff}
+.gate-err{color:var(--bad);font-size:12px;margin-top:14px;min-height:16px}
+.user-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:5px 8px 5px 5px;color:var(--text-2);font-size:12.5px}
+.user-chip img{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
+.user-chip button{border:0;background:transparent;color:var(--dim);cursor:pointer;font:inherit;padding:4px 7px;border-radius:6px;transition:color .15s}
+.user-chip button:hover{color:var(--bad)}
+.top-right{display:flex;align-items:center;gap:14px}
 .preview{position:sticky;top:18px}.preview .panel{padding:16px}
 .preview-card{border:1px solid var(--line);border-radius:14px;padding:22px 16px;text-align:center;background:#0d0f13;background-size:cover;background-position:center}
 .preview-avatar{width:72px;height:72px;border-radius:19px;object-fit:cover;border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 22px #0008}
@@ -50,17 +65,28 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
 </head>
 <body>
 <div class="shell">
-<header class="top"><a class="brand" href="/"><img src="/assets/Oxide.png?v=2" alt="">Oxide HUB</a><a class="back" href="/">Back to hub</a></header>
+<header class="top"><a class="brand" href="/"><img src="/assets/Oxide.png?v=2" alt="">Oxide HUB</a><div class="top-right"><span class="user-chip" id="userChip" hidden><img id="userAvatar" alt=""><span id="userName"></span><button id="logoutBtn" type="button">Log out</button></span><a class="back" href="/">Back to hub</a></div></header>
+
+<section class="gate" id="loginGate">
+  <img class="gate-logo" src="/assets/Oxide.png?v=2" alt="">
+  <h2>Log in with Discord</h2>
+  <p>Creating a profile requires a Discord account. One account = one profile, and you keep full control of it.</p>
+  <a class="discord-btn" id="discordBtn" href="">
+    <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.291.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+    Continue with Discord
+  </a>
+  <div class="gate-err" id="gateErr"></div>
+</section>
 
 <div class="head"><h1>Create your profile</h1><p>Your link will be <b style="color:var(--text)">get-oxide.com/yourhandle</b>. Fill it out, generate, done.</p></div>
 
-<div class="grid">
+<div class="grid" id="creatorGrid" hidden>
 <section class="panel">
   <div class="section-title">Basics</div>
   <div class="field"><label for="name">Display name</label><input id="name" maxlength="32" placeholder="Your name" value="New profile"></div>
   <div class="twocol">
-    <div class="field"><label for="handle">Handle</label><input id="handle" maxlength="24" placeholder="yourname" value="yourname"></div>
-    <div class="field"><label for="status">Status</label><input id="status" maxlength="20" placeholder="Available" value="Available"></div>
+    <div class="field"><label for="handle">Handle</label><input id="handle" maxlength="24" placeholder="yourname" value="yourname" autocomplete="off"></div>
+    <div class="field"><label for="status">Status</label><select id="status" class="status-select"><option value="Online">Online</option><option value="Do not disturb">Do not disturb</option><option value="Offline">Offline</option></select></div>
   </div>
   <div class="field"><label for="avatar">Profile picture URL</label><input id="avatar" placeholder="https://.../avatar.jpg"><div class="hint">JPG, PNG, GIF or WebP — a public link works.</div></div>
   <div class="field"><label for="background">Background image URL</label><input id="background" placeholder="https://.../background.jpg"><div class="hint">A wide image looks best.</div></div>
@@ -99,6 +125,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
       <img class="preview-avatar" id="pAvatar" src="/assets/Oxide.png" alt="">
       <div class="preview-name" id="pName">New profile</div>
       <div class="preview-handle" id="pHandle">@yourname</div>
+      <div class="preview-status" id="pStatus"><span></span><b>Online</b></div>
       <div class="preview-bio" id="pBio">Your bio will appear here.</div>
       <div class="preview-link">Discord</div>
       <div class="preview-link">Roblox</div>
@@ -112,11 +139,29 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
   const ids=['name','handle','status','avatar','background','bio','tags','discord','roblox','other'];
   const el=id=>document.getElementById(id); const value=id=>el(id).value.trim();
   let musicUrl='';
-  function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Available',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),music:musicUrl,links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
-  function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(8,9,12,.78),rgba(8,9,12,.78)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
+  function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Online',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),music:musicUrl,links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
+  function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pStatus').className='preview-status '+(p.status==='Do not disturb'?'dnd':p.status==='Offline'?'offline':'');el('pStatus').querySelector('b').textContent=p.status;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(8,9,12,.78),rgba(8,9,12,.78)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
   ids.forEach(id=>el(id).addEventListener('input',update));
   const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
   const RESERVED=['lesy','create','profile','script','admin','assets','games','statistics','updates','server','index','loader','api','u','404'];
+  /* Discord gate */
+  const gate=el('loginGate'),grid=el('creatorGrid'),gateErr=el('gateErr');
+  el('discordBtn').href=API+'/auth/discord/login';
+  function setLoggedIn(user){
+    grid.hidden=false;gate.classList.remove('show');
+    el('userName').textContent=user.displayName||user.username;
+    if(user.avatar)el('userAvatar').src=user.avatar;else el('userAvatar').src='/assets/Oxide.png';
+    el('userChip').hidden=false;
+  }
+  function showGate(msg){
+    grid.hidden=true;el('userChip').hidden=true;gate.classList.add('show');
+    if(msg)gateErr.textContent=msg;
+  }
+  el('logoutBtn').addEventListener('click',()=>{fetch(API+'/auth/logout',{method:'POST',credentials:'include'}).finally(()=>location.reload())});
+  fetch(API+'/auth/me',{credentials:'include'})
+    .then(r=>{if(!r.ok)throw 0;return r.json()})
+    .then(j=>setLoggedIn(j.user))
+    .catch(()=>showGate(''));
   function setMusicState(name,ok,msg){
     el('uploadBox').classList.toggle('done',ok);
     el('musicLabel').textContent=name;
@@ -143,9 +188,15 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
     if(RESERVED.includes(handle)){errEl.textContent='This handle is reserved. Try another one.';el('url').textContent='';el('result').classList.add('show');return}
     const storedToken=localStorage.getItem('oxide_edit_'+handle)||'';
     const payload={handle:handle,name:p.name,status:p.status,bio:p.bio,avatar:p.avatar,background:p.background,tags:p.tags,links:p.links.map(l=>({label:l[0],url:l[1]})),music:musicUrl,editToken:storedToken};
-    fetch(API+'/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-      .then(r=>{if(!r.ok)throw new Error(r.status===409?'This handle is already taken. If it\u2019s yours, edit it from the same browser you created it in.':'Could not save the profile. Try again.');return r.json()})
-      .then(j=>{errEl.textContent='';localStorage.setItem('oxide_edit_'+handle,j.editToken);const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);})
+    fetch(API+'/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),credentials:'include'})
+      .then(r=>r.json().then(j=>({ok:r.ok,status:r.status,j})))
+      .then(({ok,status,j})=>{
+        if(!ok){
+          if(status===401){showGate(j.error||'Your Discord session expired — log in again.');return}
+          throw new Error(j.error||'Could not save the profile. Try again.');
+        }
+        errEl.textContent='';localStorage.setItem('oxide_edit_'+handle,j.editToken);const url=location.origin+'/'+handle+'/';el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
+      })
       .catch(err=>{
         const json=JSON.stringify(profile());const bytes=new TextEncoder().encode(json);let raw='';bytes.forEach(b=>raw+=String.fromCharCode(b));const token=btoa(raw).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
         const url=location.origin+'/profile/#'+token;
@@ -153,7 +204,7 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
         el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
       });
   });
-  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Available';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');update();}); update();
+  el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Online';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');update();}); update();
 })();
 </script>
 </body>
