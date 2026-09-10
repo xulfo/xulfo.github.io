@@ -89,10 +89,17 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   backdrop-filter: blur(26px) saturate(1.15);
   -webkit-backdrop-filter: blur(26px) saturate(1.15);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
-  padding: 42px 34px 30px;
+  padding: 0;
   text-align: center;
   animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
+.banner { position: relative; height: 128px; background: #0b0d10; }
+.banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.banner::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.10), rgba(10, 11, 15, 0.9));
+}
+.body { padding: 12px 34px 30px; position: relative; z-index: 1; }
 .card::before {
   content: "";
   position: absolute;
@@ -114,14 +121,16 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
 }
 
-/* Avatar — rounded square, subtle ring */
+/* Avatar — rounded square, subtle ring, overlaps the banner */
 .avatar {
   width: 104px; height: 104px;
   border-radius: 26px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.5);
-  margin: 0 auto 20px;
+  border: 4px solid #0d0f12;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55);
+  margin: -52px auto 0;
+  position: relative;
+  z-index: 2;
   display: block;
   transition: transform 0.25s ease;
 }
@@ -276,7 +285,7 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 .foot a:hover { color: var(--text-2); }
 
 @media (max-width: 480px) {
-  .card { padding: 36px 24px 26px; }
+  .body { padding: 12px 24px 26px; }
   .name { font-size: 26px; }
 }
 </style>
@@ -306,26 +315,28 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 
 <main>
   <div class="card">
-    <div class="eyebrow">Profile</div>
-
+    <div class="banner"><img id="bannerImg" alt=""></div>
     <img class="avatar" id="avatar" alt="profile picture">
+    <div class="body">
+      <div class="eyebrow">Profile</div>
 
-    <div class="name-row">
-      <h1 class="name" id="name"></h1>
-      <span class="verified" title="Verified Oxide profile" aria-label="Verified Oxide profile">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 12.5 3.5 3.5 7.5-8"/></svg>
-      </span>
+      <div class="name-row">
+        <h1 class="name" id="name"></h1>
+        <span class="verified" title="Verified Oxide profile" aria-label="Verified Oxide profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6.5 12.5 3.5 3.5 7.5-8"/></svg>
+        </span>
+      </div>
+      <button class="handle" id="handle" title="Copy handle"></button>
+
+      <div class="status"><span class="status-dot"></span><span id="status"></span></div>
+
+      <div class="tags" id="tags"></div>
+      <p class="bio" id="bio"></p>
+
+      <div class="links" id="links"></div>
+
+      <div class="foot">Powered by <a href="/">Oxide HUB</a></div>
     </div>
-    <button class="handle" id="handle" title="Copy handle"></button>
-
-    <div class="status"><span class="status-dot"></span><span id="status"></span></div>
-
-    <div class="tags" id="tags"></div>
-    <p class="bio" id="bio"></p>
-
-    <div class="links" id="links"></div>
-
-    <div class="foot">Powered by <a href="/">Oxide HUB</a></div>
   </div>
 </main>
 
@@ -431,6 +442,8 @@ const PROFILE = {
     var img = document.getElementById("bgImage");
     img.src = PROFILE.bgImage;
     img.onload = function () { img.classList.add("show"); };
+    var banner = document.getElementById("bannerImg");
+    banner.src = PROFILE.bgImage;
   }
   if (PROFILE.bgVideo) {
     var vid = document.getElementById("bgVideo");
