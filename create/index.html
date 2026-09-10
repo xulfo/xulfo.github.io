@@ -249,7 +249,13 @@ body{min-height:100vh;background:#07080b;color:var(--text);font:14px Inter,syste
   /* Discord gate — only the login card shows until authenticated */
   const gate=el('loginGate'),wrap=el('creatorWrap'),gateErr=el('gateErr');
   el('discordBtn').href=API+'/auth/discord/login';
+  const errParam=new URLSearchParams(location.search).get('error');
+  if(errParam){
+    const msgs={not_configured:'Discord login is not configured yet — try again in a minute.',invalid_state:'The login session expired — please try again.',discord_token:'Discord didn\'t approve the login — please try again.',discord_user:'Could not load your Discord account — please try again.'};
+    gateErr.textContent=msgs[errParam]||'Login failed — please try again.';
+  }
   function setLoggedIn(user){
+    history.replaceState(null,'',location.pathname);
     wrap.hidden=false;gate.classList.remove('show');
     el('userName').textContent=user.displayName||user.username;
     if(user.avatar)el('userAvatar').src=user.avatar;else el('userAvatar').src='/assets/Oxide.png';
