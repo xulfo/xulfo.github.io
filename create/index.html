@@ -10,20 +10,34 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#0a0b0e;--panel:#12141a;--panel-2:#0e1014;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);--text:#f2f3f5;--muted:#9aa0ab;--dim:#6b7280;--accent:#81a3d6;--good:#70d28a;--bad:#e66767}
 body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,163,214,.12),transparent 55%),var(--bg);color:var(--text);font:14px Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
-.shell{width:min(920px,100%);margin:auto;padding:22px 20px 60px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:34px}.brand{display:flex;align-items:center;gap:9px;color:var(--text);text-decoration:none;font-weight:750;font-size:14.5px}.brand img{width:23px;height:23px;border-radius:7px}.back{color:var(--dim);text-decoration:none;font-size:13px}.back:hover{color:var(--text)}
-.head{margin-bottom:24px}.head h1{font-size:26px;font-weight:800;letter-spacing:-.03em}.head p{color:var(--muted);margin-top:7px;font-size:13.5px}
-.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 22px 24px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
-.section-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--dim);margin:0 0 16px}.section-title:not(:first-child){margin-top:24px}
-.field{margin-bottom:13px}.field label{display:block;color:var(--muted);font-size:12.5px;font-weight:600;margin-bottom:6px}
-.field input,.field textarea{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;transition:border .18s,background .18s}.field textarea{min-height:84px;resize:vertical;line-height:1.5}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(129,163,214,.75);background:rgba(129,163,214,.05)}
-.field select{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;appearance:none}.status-select{background-image:linear-gradient(45deg,transparent 50%,#87909d 50%),linear-gradient(135deg,#87909d 50%,transparent 50%);background-position:calc(100% - 17px) 17px,calc(100% - 12px) 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
-.preview-status{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:4px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;background:rgba(255,255,255,.035)}.preview-status span{width:7px;height:7px;border-radius:50%;background:#70d28a}.preview-status.dnd span{background:#e5b86d}.preview-status.offline span{background:#727987}.preview-status.dnd{color:#e5b86d}.preview-status.offline{color:#8b929e}
+.shell{width:min(980px,100%);margin:auto;padding:22px 20px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px}.brand{display:flex;align-items:center;gap:9px;color:var(--text);text-decoration:none;font-weight:750;font-size:14.5px}.brand img{width:23px;height:23px;border-radius:7px}.back{color:var(--dim);text-decoration:none;font-size:13px}.back:hover{color:var(--text)}
+.top-right{display:flex;align-items:center;gap:14px}
+.user-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:5px 8px 5px 5px;color:var(--text-2);font-size:12.5px}.user-chip img{width:27px;height:27px;border-radius:50%;object-fit:cover;display:block}.user-chip span{max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.user-chip button{border:0;background:transparent;color:var(--dim);cursor:pointer;font:inherit;padding:4px 7px;border-radius:6px;transition:color .15s}.user-chip button:hover{color:var(--bad)}
+/* Login gate */
+.gate{display:none;text-align:center;max-width:430px;margin:60px auto 0;padding:46px 36px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(129,163,214,.05),transparent 55%),var(--panel);box-shadow:0 28px 90px rgba(0,0,0,.4)}.gate.show{display:block;animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.gate .gate-logo{width:60px;height:60px;border-radius:16px;margin:0 auto 20px;display:block;box-shadow:0 12px 34px rgba(129,163,214,.25)}
+.gate h2{font-size:22px;letter-spacing:-.02em}
+.gate p{color:var(--muted);font-size:13px;line-height:1.65;margin:10px auto 26px;max-width:310px}
+.gate .point{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin:0 7px 20px}.gate .point svg{width:15px;height:15px;color:var(--good);flex:none}
+.discord-btn{display:inline-flex;align-items:center;gap:11px;background:#5865f2;color:#fff;border:0;border-radius:12px;padding:14px 26px;font:700 14.5px Inter;text-decoration:none;transition:filter .15s,transform .15s,box-shadow .15s}
+.discord-btn:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 12px 34px rgba(88,101,242,.4)}
+.discord-btn svg{width:22px;height:22px;fill:#fff}
+.gate-err{color:var(--bad);font-size:12px;margin-top:14px;min-height:16px}
+/* Heading + layout */
+.head{margin-bottom:26px}.head h1{font-size:28px;font-weight:800;letter-spacing:-.03em}.head p{color:var(--muted);margin-top:8px;font-size:13.5px}
+.grid{display:grid;grid-template-columns:1.12fr .88fr;gap:18px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.section-title{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin:0 0 16px}.section-title:not(:first-child){margin-top:26px}
+.section-title::after{content:"";flex:1;height:1px;background:var(--line)}
+.field{margin-bottom:14px}.field label{display:block;color:var(--muted);font-size:12.5px;font-weight:600;margin-bottom:6px}
+.field input,.field textarea,.field select{width:100%;border:1px solid var(--line);background:var(--panel-2);border-radius:10px;color:var(--text);padding:10px 12px;font:inherit;outline:none;transition:border .18s,background .18s,box-shadow .18s}.field textarea{min-height:84px;resize:vertical;line-height:1.5}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:rgba(129,163,214,.75);background:rgba(129,163,214,.05);box-shadow:0 0 0 3px rgba(129,163,214,.09)}
+.field select{appearance:none;cursor:pointer}.status-select{background-image:linear-gradient(45deg,transparent 50%,#87909d 50%),linear-gradient(135deg,#87909d 50%,transparent 50%);background-position:calc(100% - 17px) 17px,calc(100% - 12px) 17px;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
 .field input::placeholder,.field textarea::placeholder{color:#565d68}
 .hint{color:var(--dim);font-size:11.5px;margin-top:5px;line-height:1.4}
-.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .upload{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line-2);border-radius:11px;padding:12px 14px;cursor:pointer;background:var(--panel-2);transition:border .18s,background .18s;color:var(--muted)}
 .upload:hover{border-color:rgba(129,163,214,.6);background:rgba(129,163,214,.06)}
 .upload svg{width:19px;height:19px;flex:none;color:var(--accent)}
@@ -31,36 +45,30 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
 .upload.done{border-style:solid;border-color:rgba(112,210,138,.5);background:rgba(112,210,138,.06)}
 .upload.done svg{color:var(--good)}
 .upload .up-x{color:var(--dim);font-size:15px;padding:0 2px;display:none}.upload.done .up-x{display:block}.upload.done .up-x:hover{color:var(--bad)}
-.actions{display:flex;gap:10px;margin-top:20px}
-.button{border:0;border-radius:10px;padding:11px 16px;font:700 13.5px Inter;cursor:pointer;transition:transform .15s,filter .15s}.button:active{transform:translateY(0)}
+.actions{display:flex;gap:10px;margin-top:22px}
+.button{border:0;border-radius:11px;padding:12px 18px;font:700 13.5px Inter;cursor:pointer;transition:transform .15s,filter .15s,opacity .2s}.button:active{transform:translateY(0)}
 .primary{background:var(--accent);color:#0d1420}.primary:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.primary.loading{opacity:.7;pointer-events:none}
 .secondary{background:rgba(255,255,255,.06);color:var(--text);border:1px solid var(--line)}.secondary:hover{background:rgba(255,255,255,.1)}
-.result{display:none;margin-top:16px;padding:14px;border:1px solid rgba(112,210,138,.35);background:rgba(112,210,138,.07);border-radius:12px}.result.show{display:block}
-.result .r-title{color:var(--good);font-size:13px;font-weight:700}
-.url{display:block;color:var(--text);font-size:12px;line-height:1.4;word-break:break-all;margin:7px 0 10px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.result{display:none;margin-top:16px;padding:15px;border:1px solid rgba(112,210,138,.35);background:rgba(112,210,138,.07);border-radius:12px}.result.show{display:block;animation:rise .35s ease both}
+.result .r-title{color:var(--good);font-size:13px;font-weight:750;display:flex;align-items:center;gap:8px}.result .r-title svg{width:16px;height:16px;flex:none}
+.url{display:block;color:var(--text);font-size:12px;line-height:1.4;word-break:break-all;margin:9px 0 11px;font-family:ui-monospace,Menlo,Consolas,monospace;background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
 .err{color:var(--bad);font-size:12px;line-height:1.4;display:block;margin-bottom:6px}
-.bottom-line{color:var(--dim);font-size:12px;margin-top:16px;line-height:1.55}
-.gate{display:none;text-align:center;max-width:420px;margin:46px auto 0;padding:42px 32px;border:1px solid var(--line);border-radius:20px;background:var(--panel);box-shadow:0 24px 80px rgba(0,0,0,.35)}.gate.show{display:block}
-.gate .gate-logo{width:56px;height:56px;border-radius:15px;margin:0 auto 18px;display:block}
-.gate h2{font-size:21px;letter-spacing:-.02em}
-.gate p{color:var(--muted);font-size:13px;line-height:1.6;margin:9px auto 22px;max-width:300px}
-.discord-btn{display:inline-flex;align-items:center;gap:11px;background:#5865f2;color:#fff;border:0;border-radius:11px;padding:13px 22px;font:700 14px Inter;text-decoration:none;transition:filter .15s,transform .15s,box-shadow .15s}
-.discord-btn:hover{filter:brightness(1.12);transform:translateY(-1px);box-shadow:0 10px 30px rgba(88,101,242,.35)}
-.discord-btn svg{width:21px;height:21px;fill:#fff}
-.gate-err{color:var(--bad);font-size:12px;margin-top:14px;min-height:16px}
-.user-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:99px;padding:5px 8px 5px 5px;color:var(--text-2);font-size:12.5px}
-.user-chip img{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
-.user-chip button{border:0;background:transparent;color:var(--dim);cursor:pointer;font:inherit;padding:4px 7px;border-radius:6px;transition:color .15s}
-.user-chip button:hover{color:var(--bad)}
-.top-right{display:flex;align-items:center;gap:14px}
-.preview{position:sticky;top:18px}.preview .panel{padding:16px}
-.preview-card{border:1px solid var(--line);border-radius:14px;padding:22px 16px;text-align:center;background:#0d0f13;background-size:cover;background-position:center}
-.preview-avatar{width:72px;height:72px;border-radius:19px;object-fit:cover;border:1px solid rgba(255,255,255,.2);box-shadow:0 8px 22px #0008}
-.preview-name{font-size:20px;font-weight:800;margin-top:11px;letter-spacing:-.02em}
-.preview-handle{color:var(--muted);font-size:12px;margin-top:3px}
-.preview-bio{color:var(--muted);font-size:12px;line-height:1.5;white-space:pre-line;margin:13px auto;max-height:72px;overflow:hidden}
-.preview-link{height:35px;border:1px solid var(--line);border-radius:9px;margin-top:7px;color:var(--muted);font-size:12px;display:flex;align-items:center;padding:0 11px;text-align:left;background:rgba(255,255,255,.03)}
-@media(max-width:700px){.grid{grid-template-columns:1fr}.preview{position:static;order:-1}.top{margin-bottom:26px}.panel{padding:18px}.twocol{grid-template-columns:1fr}}
+.bottom-line{color:var(--dim);font-size:12px;margin-top:18px;line-height:1.55}
+/* Live preview */
+.preview{position:sticky;top:20px}.preview .panel{padding:18px}
+.preview-card{border:1px solid var(--line);border-radius:16px;overflow:hidden;text-align:center;background:#0d0f13}
+.pc-banner{position:relative;height:104px;background:linear-gradient(135deg,#151a24,#0d0f13)}.pc-banner img{width:100%;height:100%;object-fit:cover;display:block}.pc-banner:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(10,11,15,.9))}
+.pc-avatar{width:82px;height:82px;border-radius:21px;object-fit:cover;border:4px solid var(--panel);box-shadow:0 10px 28px #000a;margin-top:-42px;position:relative;z-index:2;display:block;margin-left:auto;margin-right:auto;background:#191d26}
+.pc-name{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:9px}
+.pc-handle{color:var(--muted);font-size:12px;margin-top:3px}
+.pc-status{display:inline-flex;align-items:center;gap:7px;margin-top:11px;padding:4px 11px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;background:rgba(255,255,255,.03)}
+.pc-status span{width:7px;height:7px;border-radius:50%;background:#70d28a}.pc-status.dnd span{background:#e5b86d}.pc-status.dnd{color:#e5b86d}.pc-status.offline span{background:#727987}.pc-status.offline{color:#8b929e}
+.pc-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin-top:13px}.pc-tags span{border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);font-size:10.5px;background:rgba(255,255,255,.03)}
+.pc-bio{color:var(--muted);font-size:12px;line-height:1.55;white-space:pre-line;margin:13px auto 0;max-width:280px;min-height:36px}
+.pc-links{margin-top:15px}.pc-link{height:34px;border:1px solid var(--line);border-radius:9px;margin-top:7px;color:var(--muted);font-size:11.5px;display:flex;align-items:center;padding:0 11px;text-align:left;background:rgba(255,255,255,.03);gap:9px}
+.pc-link svg,.pc-link img{width:15px;height:15px;flex:none}.pc-link img{border-radius:3px;object-fit:contain}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.preview{position:static;order:-1}.top{margin-bottom:26px}.panel{padding:18px}.twocol{grid-template-columns:1fr}.top-right .user-chip span{max-width:90px}}
 </style>
 </head>
 <body>
@@ -70,7 +78,9 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
 <section class="gate" id="loginGate">
   <img class="gate-logo" src="/assets/Oxide.png?v=2" alt="">
   <h2>Log in with Discord</h2>
-  <p>Creating a profile requires a Discord account. One account = one profile, and you keep full control of it.</p>
+  <p>A Discord account is required to create and manage your profile.</p>
+  <div class="point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>One account — one profile</div>
+  <div class="point"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Free short link: get-oxide.com/you</div>
   <a class="discord-btn" id="discordBtn" href="">
     <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.291.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
     Continue with Discord
@@ -78,9 +88,10 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
   <div class="gate-err" id="gateErr"></div>
 </section>
 
-<div class="head"><h1>Create your profile</h1><p>Your link will be <b style="color:var(--text)">get-oxide.com/yourhandle</b>. Fill it out, generate, done.</p></div>
+<div id="creatorWrap" hidden>
+<div class="head"><h1>Create your profile</h1><p>Your short link is <b style="color:var(--text)">get-oxide.com/yourhandle</b> — fill it out, hit generate, done.</p></div>
 
-<div class="grid" id="creatorGrid" hidden>
+<div class="grid">
 <section class="panel">
   <div class="section-title">Basics</div>
   <div class="field"><label for="name">Display name</label><input id="name" maxlength="32" placeholder="Your name" value="New profile"></div>
@@ -114,24 +125,26 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
     <button class="button primary" id="generate">Generate profile</button>
     <button class="button secondary" id="reset" type="button">Reset</button>
   </div>
-  <div class="result" id="result"><span class="r-title">Your profile is live</span><span class="err" id="err"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy link</button></div>
-  <p class="bottom-line">Handles are taken once. To edit your profile later, reopen this page in the same browser you created it in.</p>
+  <div class="result" id="result"><span class="r-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>Your profile is live</span><span class="err" id="err"></span><span class="url" id="url"></span><button class="button secondary" id="copy" type="button">Copy link</button></div>
+  <p class="bottom-line">Handles are taken once. Reopen this page while logged in to edit your profile.</p>
 </section>
 
 <aside class="preview">
   <div class="panel">
-    <div class="section-title" style="margin-bottom:14px">Preview</div>
-    <div class="preview-card" id="previewCard">
-      <img class="preview-avatar" id="pAvatar" src="/assets/Oxide.png" alt="">
-      <div class="preview-name" id="pName">New profile</div>
-      <div class="preview-handle" id="pHandle">@yourname</div>
-      <div class="preview-status" id="pStatus"><span></span><b>Online</b></div>
-      <div class="preview-bio" id="pBio">Your bio will appear here.</div>
-      <div class="preview-link">Discord</div>
-      <div class="preview-link">Roblox</div>
+    <div class="section-title">Live preview</div>
+    <div class="preview-card">
+      <div class="pc-banner"><img id="pBanner" alt=""></div>
+      <img class="pc-avatar" id="pAvatar" src="/assets/Oxide.png" alt="">
+      <div class="pc-name" id="pName">New profile</div>
+      <div class="pc-handle" id="pHandle">@yourname</div>
+      <div class="pc-status" id="pStatus"><span></span><b>Online</b></div>
+      <div class="pc-tags" id="pTags"></div>
+      <div class="pc-bio" id="pBio">Your bio will appear here.</div>
+      <div class="pc-links" id="pLinks"></div>
     </div>
   </div>
 </aside>
+</div>
 </div>
 </div>
 <script>
@@ -140,21 +153,33 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
   const el=id=>document.getElementById(id); const value=id=>el(id).value.trim();
   let musicUrl='';
   function profile(){return {name:value('name')||'New profile',handle:value('handle').replace(/^@/,'')||'profile',status:value('status')||'Online',avatar:value('avatar'),background:value('background'),bio:value('bio'),tags:value('tags'),music:musicUrl,links:[['Discord',value('discord')],['Roblox',value('roblox')],['Other',value('other')]].filter(x=>x[1])};}
-  function update(){const p=profile();el('pName').textContent=p.name;el('pHandle').textContent='@'+p.handle;el('pStatus').className='preview-status '+(p.status==='Do not disturb'?'dnd':p.status==='Offline'?'offline':'');el('pStatus').querySelector('b').textContent=p.status;el('pBio').textContent=p.bio||'Your bio will appear here.';if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';if(p.background)el('previewCard').style.backgroundImage='linear-gradient(rgba(8,9,12,.78),rgba(8,9,12,.78)),url("'+p.background.replace(/"/g,'%22')+'")';else el('previewCard').style.backgroundImage='';}
+  const linkIcons={discord:'<svg viewBox="0 0 24 24" fill="#8b94ff"><path d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.291.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',roblox:'<img src="/assets/profile/roblox.png" alt="">',other:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.6 13.4a1 1 0 0 0 1.4 0l4.2-4.2a2 2 0 0 0-2.8-2.8l-1.5 1.4a1 1 0 0 1-1.4-1.4l1.5-1.4a4 4 0 0 1 5.7 5.6l-4.2 4.2a4 4 0 0 1-5.7 0 4 4 0 0 1 0-5.7l1.4-1.4a1 1 0 0 1 1.4 1.4l-1.4 1.4a2 2 0 0 0 0 2.8 2 2 0 0 0 2.8 0Z"/></svg>'};
+  function update(){
+    const p=profile();
+    el('pName').textContent=p.name;
+    el('pHandle').textContent='@'+p.handle;
+    el('pStatus').className='pc-status '+(p.status==='Do not disturb'?'dnd':p.status==='Offline'?'offline':'');
+    el('pStatus').querySelector('b').textContent=p.status;
+    el('pBio').textContent=p.bio||'Your bio will appear here.';
+    if(p.avatar)el('pAvatar').src=p.avatar;else el('pAvatar').src='/assets/Oxide.png';
+    if(p.background)el('pBanner').src=p.background;else el('pBanner').removeAttribute('src');
+    const tags=el('pTags');tags.replaceChildren();(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).forEach(t=>{const s=document.createElement('span');s.textContent=t;tags.appendChild(s)});
+    const links=el('pLinks');links.replaceChildren();p.links.forEach(l=>{const d=document.createElement('div');d.className='pc-link';const label=l[0].toLowerCase();d.innerHTML=(linkIcons[label]||linkIcons.other)+'<span>'+l[0]+'</span>';links.appendChild(d)});
+  }
   ids.forEach(id=>el(id).addEventListener('input',update));
   const API='https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
   const RESERVED=['lesy','create','profile','script','admin','assets','games','statistics','updates','server','index','loader','api','u','404'];
-  /* Discord gate */
-  const gate=el('loginGate'),grid=el('creatorGrid'),gateErr=el('gateErr');
+  /* Discord gate — only the login card shows until authenticated */
+  const gate=el('loginGate'),wrap=el('creatorWrap'),gateErr=el('gateErr');
   el('discordBtn').href=API+'/auth/discord/login';
   function setLoggedIn(user){
-    grid.hidden=false;gate.classList.remove('show');
+    wrap.hidden=false;gate.classList.remove('show');
     el('userName').textContent=user.displayName||user.username;
     if(user.avatar)el('userAvatar').src=user.avatar;else el('userAvatar').src='/assets/Oxide.png';
     el('userChip').hidden=false;
   }
   function showGate(msg){
-    grid.hidden=true;el('userChip').hidden=true;gate.classList.add('show');
+    wrap.hidden=true;el('userChip').hidden=true;gate.classList.add('show');
     if(msg)gateErr.textContent=msg;
   }
   el('logoutBtn').addEventListener('click',()=>{fetch(API+'/auth/logout',{method:'POST',credentials:'include'}).finally(()=>location.reload())});
@@ -183,11 +208,12 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
   el('generate').addEventListener('click',()=>{
     const p=profile();
     const handle=(p.handle||'').toLowerCase();
-    const errEl=el('err');
+    const errEl=el('err');const btn=el('generate');
     if(!/^[a-z0-9_]{2,24}$/.test(handle)){errEl.textContent='Invalid handle — use 2-24 letters, numbers or underscores.';el('url').textContent='';el('result').classList.add('show');return}
     if(RESERVED.includes(handle)){errEl.textContent='This handle is reserved. Try another one.';el('url').textContent='';el('result').classList.add('show');return}
     const storedToken=localStorage.getItem('oxide_edit_'+handle)||'';
     const payload={handle:handle,name:p.name,status:p.status,bio:p.bio,avatar:p.avatar,background:p.background,tags:p.tags,links:p.links.map(l=>({label:l[0],url:l[1]})),music:musicUrl,editToken:storedToken};
+    btn.classList.add('loading');btn.textContent='Saving…';
     fetch(API+'/profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),credentials:'include'})
       .then(r=>r.json().then(j=>({ok:r.ok,status:r.status,j})))
       .then(({ok,status,j})=>{
@@ -202,7 +228,8 @@ body{min-height:100vh;background:radial-gradient(ellipse at 50% -12%,rgba(129,16
         const url=location.origin+'/profile/#'+token;
         errEl.textContent=(err.message||'Backend offline')+' — using fallback link instead.';
         el('url').textContent=url;el('result').classList.add('show');bindCopy(url);
-      });
+      })
+      .finally(()=>{btn.classList.remove('loading');btn.textContent='Generate profile';});
   });
   el('reset').addEventListener('click',()=>{ids.forEach(id=>{if(id==='name')el(id).value='New profile';else if(id==='handle')el(id).value='yourname';else if(id==='status')el(id).value='Online';else el(id).value=''});el('music').value='';musicUrl='';setMusicState('Add an MP3',false,'Plays in the background on your profile. Max 6MB.');el('result').classList.remove('show');update();}); update();
 })();
