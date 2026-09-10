@@ -99,20 +99,35 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   text-transform: uppercase; color: var(--muted); margin-bottom: 18px;
 }
 
-/* Avatar — rounded square, subtle ring, overlaps the banner */
-.avatar {
-  width: 104px; height: 104px;
-  border-radius: 26px;
-  object-fit: cover;
-  border: 4px solid #0d0f12;
-  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.55);
-  margin: -52px auto 0;
+/* Avatar — conic ring + status dot, overlaps the banner */
+.avatar-wrap {
   position: relative;
+  width: 118px; height: 118px;
+  margin: -60px auto 0;
+  padding: 4px;
+  border-radius: 32px;
+  background: conic-gradient(from 215deg, #81a3d6, #c9a86a, #7f9fd4, #e4b96f, #81a3d6);
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
   z-index: 2;
+}
+.avatar {
+  width: 100%; height: 100%;
+  border-radius: 28px;
+  object-fit: cover;
+  border: 3px solid #11141a;
   display: block;
   transition: transform 0.25s ease;
 }
 .avatar:hover { transform: scale(1.03); }
+.av-status {
+  position: absolute; right: -3px; bottom: -3px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: #6bcb77;
+  border: 4px solid #11141a;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+}
+.avatar-wrap.dnd .av-status { background: #e5b86d; }
+.avatar-wrap.offline .av-status { background: #737b89; }
 
 .name-row { display: flex; align-items: center; justify-content: center; gap: 10px; }
 .name { font-size: 29px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; text-shadow: 0 2px 18px rgba(255,255,255,0.08); }
@@ -282,7 +297,7 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 <main>
   <div class="card">
     <div class="banner"><img id="bannerImg" alt=""></div>
-    <img class="avatar" id="avatar" alt="profile picture">
+    <div class="avatar-wrap" id="avatarWrap"><img class="avatar" id="avatar" alt="profile picture"><span class="av-status"></span></div>
     <div class="body">
       <div class="eyebrow">Profile</div>
 
@@ -329,8 +344,8 @@ const PROFILE = {
   document.getElementById("avatar").onerror = function () { this.src = "/assets/Oxide.png"; };
   document.getElementById("name").textContent = PROFILE.name;
   document.getElementById("status").textContent = PROFILE.status || "Online";
-  if (PROFILE.status === "Do not disturb") document.querySelector(".status").classList.add("dnd");
-  if (PROFILE.status === "Offline") document.querySelector(".status").classList.add("offline");
+  if (PROFILE.status === "Do not disturb") { document.querySelector(".status").classList.add("dnd"); document.getElementById("avatarWrap").classList.add("dnd"); }
+  if (PROFILE.status === "Offline") { document.querySelector(".status").classList.add("offline"); document.getElementById("avatarWrap").classList.add("offline"); }
 
   var handle = document.getElementById("handle");
   function renderHandle() {
