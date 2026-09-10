@@ -20,6 +20,8 @@ const GAME_ICONS = {
   'Graben und reinigen': 'https://tr.rbxcdn.com/180DAY-b1dc85405e39f0a1f4ee22477c220d4c/512/512/Image/Png/noFilter',
   'Gakuran': 'https://tr.rbxcdn.com/180DAY-2d6c6f014b54b95a669a63291b548912/512/512/Image/Png/noFilter',
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-71ab0dbb49e54809aea4bbcb3f3420c7/512/512/Image/Png/noFilter',
+  'RIVALS': 'https://tr.rbxcdn.com/180DAY-fb02f48458ff689309df8d52bf516d04/512/512/Image/Png/noFilter',
+  'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/512/512/Image/Png/noFilter',
   'Universal': '/assets/Oxide.png'
 };
 
