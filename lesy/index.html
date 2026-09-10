@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>lesy — Oxide HUB</title>
-<meta name="description" content="lesy's profile — Oxide HUB. One loader. Every game.">
+<title>lesy</title>
+<meta name="description" content="lesy's profile.">
 <link rel="icon" type="image/png" href="/assets/Oxide.png?v=2">
-<meta property="og:title" content="lesy — Oxide HUB">
+<meta property="og:title" content="lesy">
 <meta property="og:description" content="One loader. Every game. Join the community.">
 <meta property="og:image" content="/assets/profile/pfp.jpg">
 <meta property="og:type" content="profile">
@@ -55,27 +55,6 @@ body {
     linear-gradient(180deg, rgba(6,7,10,0.35) 0%, rgba(6,7,10,0.55) 100%);
 }
 
-/* ── Top bar ──────────────────────────────────────────────── */
-.topbar {
-  position: relative; z-index: 2;
-  width: 100%; max-width: 720px; margin: 0 auto;
-  padding: 22px 20px 0;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.brand {
-  display: inline-flex; align-items: center; gap: 9px;
-  text-decoration: none; color: var(--text); font-weight: 700; font-size: 15px;
-}
-.brand img { width: 22px; height: 22px; border-radius: 6px; }
-.brand span { opacity: 0.9; }
-.back {
-  color: var(--muted); text-decoration: none; font-size: 13.5px;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: color 0.2s;
-}
-.back:hover { color: var(--text); }
-.back svg { width: 14px; height: 14px; }
-
 /* ── Card ─────────────────────────────────────────────────── */
 main { position: relative; z-index: 1; flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 16px 24px; }
 
@@ -107,8 +86,7 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   left: 14%;
   right: 14%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(129, 163, 214, 0.8), transparent);
-  box-shadow: 0 0 24px rgba(129, 163, 214, 0.5);
+  background: linear-gradient(90deg, transparent, rgba(129, 163, 214, 0.45), transparent);
 }
 .card > * { position: relative; z-index: 1; }
 @keyframes rise {
@@ -169,6 +147,10 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   width: 7px; height: 7px; border-radius: 50%;
   background: #6bcb77; position: relative;
 }
+.status.dnd { color: #e5b86d; }
+.status.dnd .status-dot { background: #e5b86d; }
+.status.offline { color: #8b929e; }
+.status.offline .status-dot { background: #737b89; }
 .status-dot::after {
   content: ""; position: absolute; inset: -4px; border-radius: 50%;
   border: 1px solid rgba(107, 203, 119, 0.5);
@@ -292,17 +274,6 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
   <video class="bg-video" id="bgVideo" muted loop playsinline></video>
 </div>
 
-<header class="topbar">
-  <a class="brand" href="/">
-    <img src="/assets/Oxide.png?v=2" alt="">
-    <span>Oxide HUB</span>
-  </a>
-  <a class="back" href="/">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    Back to hub
-  </a>
-</header>
-
 <button class="music-btn" id="musicBtn" aria-label="Toggle background music" title="Background music">
   <svg class="note" viewBox="0 0 24 24" fill="currentColor"><path d="M9 18.5a3.5 3.5 0 1 1-2-3.16V5.4a1 1 0 0 1 .76-.97l9-2.25A1 1 0 0 1 18 3.15v11.19a3.5 3.5 0 1 1-2-3.16V8.02l-7 1.75v8.73Z"/></svg>
   <svg class="disc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5" fill="currentColor" stroke="none"/><path d="M12 3a9 9 0 0 1 9 9" stroke-linecap="round"/></svg>
@@ -340,7 +311,7 @@ const PROFILE = {
   avatar: "/assets/profile/pfp.jpg",
   name: "lesy",
   handle: "lesy",
-  status: "Available",
+  status: "Online",
   tags: ["Script Hub Owner", "Developer", "12 Games"],
   bio: "I run Oxide HUB — one loader, every game.\n\nDiscord updates, new scripts and game support\ndrop constantly. Copy the loader and join in.",
   music: "/assets/bgmusic.mp3",
@@ -357,7 +328,9 @@ const PROFILE = {
   document.getElementById("avatar").src = PROFILE.avatar;
   document.getElementById("avatar").onerror = function () { this.src = "/assets/Oxide.png"; };
   document.getElementById("name").textContent = PROFILE.name;
-  document.getElementById("status").textContent = PROFILE.status || "Available";
+  document.getElementById("status").textContent = PROFILE.status || "Online";
+  if (PROFILE.status === "Do not disturb") document.querySelector(".status").classList.add("dnd");
+  if (PROFILE.status === "Offline") document.querySelector(".status").classList.add("offline");
 
   var handle = document.getElementById("handle");
   function renderHandle() {
