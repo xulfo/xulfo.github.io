@@ -12,29 +12,6 @@
 <meta property="og:type" content="profile">
 <script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
 <style>
-/* ════════════════ PROFILE CONFIG — edit here ════════════════ */
-const PROFILE = {
-  avatar: "/assets/profile/pfp.jpg",
-  name: "lesy",
-  handle: "lesy",
-  status: "Available",
-  tags: ["Script Hub Owner", "Developer", "12 Games"],
-  bio: "I run Oxide HUB — one loader, every game.\n\nDiscord updates, new scripts and game support\ndrop constantly. Copy the loader and join in.",
-  music: "/assets/bgmusic.mp3",
-  bgImage: "/assets/profile/background.jpg",
-  bgVideo: "",
-  /* icons: discord · yt · tiktok · telegram · x · instagram · github · roblox */
-  links: [
-    { label: "Discord", url: "https://discord.gg/8VxyzMMjfh", note: "@9xvxxxxxx — join the server", icon: "discord" },
-    { label: "Roblox", url: "https://www.roblox.com/de/users/2401825836/profile", note: "Play with me", icon: "roblox" },
-    { label: "YouTube", url: "https://youtube.com/@lesy", note: "Demos & previews", icon: "yt" },
-    { label: "TikTok", url: "https://tiktok.com/@lesy", note: "Clips", icon: "tiktok" },
-    { label: "Telegram", url: "https://t.me/lesy", note: "Fastest updates", icon: "telegram" },
-    { label: "X / Twitter", url: "https://x.com/lesy", note: "Follow for news", icon: "x" },
-  ],
-};
-/* ═══════════════════════════════════════════════════════════ */
-
 @font-face {
   font-family: "Inter";
   src: url("/assets/fonts/inter-var.woff2") format("woff2");
@@ -319,6 +296,25 @@ main { position: relative; z-index: 1; flex: 1; display: flex; align-items: cent
 <audio id="audio" loop preload="none"></audio>
 
 <script>
+const PROFILE = {
+  avatar: "/assets/profile/pfp.jpg",
+  name: "lesy",
+  handle: "lesy",
+  status: "Available",
+  tags: ["Script Hub Owner", "Developer", "12 Games"],
+  bio: "I run Oxide HUB — one loader, every game.\n\nDiscord updates, new scripts and game support\ndrop constantly. Copy the loader and join in.",
+  music: "/assets/bgmusic.mp3",
+  bgImage: "/assets/profile/background.jpg",
+  bgVideo: "",
+  links: [
+    { label: "Discord", url: "https://discord.gg/8VxyzMMjfh", note: "@9xvxxxxxx — join the server", icon: "discord" },
+    { label: "Roblox", url: "https://www.roblox.com/de/users/2401825836/profile", note: "Play with me", icon: "roblox" },
+    { label: "YouTube", url: "https://youtube.com/@lesy", note: "Demos & previews", icon: "yt" },
+    { label: "TikTok", url: "https://tiktok.com/@lesy", note: "Clips", icon: "tiktok" },
+    { label: "Telegram", url: "https://t.me/lesy", note: "Fastest updates", icon: "telegram" },
+    { label: "X / Twitter", url: "https://x.com/lesy", note: "Follow for news", icon: "x" },
+  ],
+};
 (function () {
   "use strict";
 
