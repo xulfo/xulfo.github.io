@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shop — Oxide Admin</title><link rel="icon" href="/assets/Oxide.png?v=2"><link rel="stylesheet" href="/assets/css/style.css">
+<style>
+:root{--panel:#101216;--panel2:#0c0e12;--line:rgba(255,255,255,.09);--text:#f3f5f8;--muted:#9da5b3;--blue:#8eafe2;--green:#70d28a;--red:#ef8585;--gold:#e4b96f}
+*{box-sizing:border-box}body{min-height:100vh;background:radial-gradient(ellipse at 50% -20%,rgba(129,163,214,.12),transparent 55%),#08090c;color:var(--text);font:14px Inter,system-ui,sans-serif}
+.shell{width:min(1320px,100%);margin:auto;padding:28px 22px 70px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;gap:14px;flex-wrap:wrap}
+.brand{color:var(--text);text-decoration:none;font-weight:750;display:flex;align-items:center;gap:9px}.brand img{width:24px;height:24px;border-radius:7px}
+.navlinks{display:flex;gap:16px;align-items:center}.back{color:var(--muted);text-decoration:none}.back:hover{color:var(--text)}
+.heading{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:22px;flex-wrap:wrap}
+.eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);font-weight:750;margin-bottom:10px}
+.heading h1{font-size:38px;letter-spacing:-.05em;line-height:1}.heading p{color:var(--muted);margin-top:10px;max-width:60ch}
+.tools{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.input,.select{height:40px;border:1px solid var(--line);border-radius:10px;background:var(--panel2);color:var(--text);padding:0 12px;font:inherit;outline:none}
+.input{width:230px}.select{min-width:150px}.input:focus,.select:focus{border-color:var(--blue)}
+.button{border:1px solid var(--line);border-radius:9px;height:38px;padding:0 13px;color:var(--text);background:rgba(255,255,255,.06);font:700 12px Inter;cursor:pointer;white-space:nowrap}
+.button.primary{background:var(--blue);border-color:var(--blue);color:#101722}.button.ghost{background:transparent}
+.button.danger{border-color:rgba(239,133,133,.35);color:#ff9d9d}.button.danger:hover{background:rgba(239,133,133,.12);border-color:rgba(239,133,133,.6)}
+.button.ok{border-color:rgba(112,210,138,.4);color:#9fe6b3}.button.ok:hover{background:rgba(112,210,138,.12)}
+.button:hover{filter:brightness(1.12)}.button[disabled]{opacity:.5;cursor:default;filter:none}
+.stats{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:11px;margin-bottom:22px}
+.stat{border:1px solid var(--line);border-radius:13px;background:rgba(16,18,22,.8);padding:15px 16px}
+.stat .k{color:var(--muted);font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700}
+.stat .v{font-size:23px;font-weight:770;letter-spacing:-.03em;margin-top:9px;font-variant-numeric:tabular-nums}
+.stat.attn .v{color:var(--gold)}
+.surface{border:1px solid var(--line);border-radius:16px;background:rgba(16,18,22,.88);overflow:hidden;box-shadow:0 20px 70px #0005;margin-bottom:22px}
+.surface-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.surface-head h2{font-size:16px;letter-spacing:-.02em}.surface-head .sub{color:var(--muted);font-size:12px;margin-top:4px}
+.table-wrap{overflow-x:auto}
+.table{width:100%;border-collapse:collapse;min-width:1080px}
+.table th,.table td{text-align:left;border-bottom:1px solid var(--line);padding:13px 16px;vertical-align:middle}
+.table th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,.025)}
+.table tr:last-child td{border-bottom:0}.table tbody tr:hover{background:rgba(255,255,255,.02)}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:5px 10px;font-size:11px;border:1px solid var(--line);color:var(--muted);background:rgba(255,255,255,.03);white-space:nowrap}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--muted)}
+.badge.wait .badge-dot{background:var(--blue)}.badge.ok .badge-dot{background:var(--green)}.badge.bad .badge-dot{background:var(--red)}
+.badge.ok{color:#a8e8bb;border-color:rgba(112,210,138,.35)}.badge.bad{color:#ffb0b0;border-color:rgba(239,133,133,.35)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.sub{color:var(--muted);font-size:11.5px;margin-top:3px}
+.row-actions{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.empty{padding:55px;text-align:center;color:var(--muted)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.label{color:var(--muted);font-size:12px;font-weight:650;display:grid;gap:6px}
+.label input,.label textarea{width:100%;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);padding:0 11px;font:inherit;outline:0;height:42px}
+.label textarea{height:70px;padding:10px 11px;resize:vertical}
+.label input:focus,.label textarea:focus{border-color:var(--blue)}
+.label input.warn{border-color:rgba(239,133,133,.6)}
+.subtitle{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:750;margin:22px 0 12px}
+.savebar{display:flex;justify-content:flex-end;gap:10px;align-items:center;padding:16px 18px;border-top:1px solid var(--line);background:rgba(0,0,0,.2)}
+.notice{font-size:12px;margin-right:auto;color:var(--muted)}.notice.bad{color:var(--red)}.notice.good{color:var(--green)}
+.switch{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)}
+.switch input{appearance:none;width:42px;height:23px;border-radius:99px;background:rgba(255,255,255,.12);position:relative;cursor:pointer;transition:.2s;border:1px solid var(--line)}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:17px;height:17px;border-radius:50%;background:#9da5b3;transition:.2s}
+.switch input:checked{background:rgba(112,210,138,.35);border-color:rgba(112,210,138,.5)}
+.switch input:checked::after{left:21px;background:var(--green)}
+.chain{display:grid;gap:10px}
+.chain-row{display:grid;grid-template-columns:96px minmax(0,1fr) 74px;gap:10px;align-items:center}
+.chain-row .n{font-size:12px;font-weight:700;color:var(--text-2)}
+.chain-row input{height:40px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);padding:0 11px;font:12px ui-monospace,Menlo,monospace;outline:none;width:100%}
+.chain-row input:focus{border-color:var(--blue)}
+.chain-row .st{font-size:11px;color:var(--muted);text-align:right}
+.chain-row .st.on{color:var(--green)}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2,.grid3{grid-template-columns:1fr}.heading{align-items:flex-start;flex-direction:column}.tools{width:100%}.input{flex:1;width:auto}.chain-row{grid-template-columns:72px minmax(0,1fr)}.chain-row .st{display:none}}
+</style></head>
+<body><div class="shell">
+<header class="top">
+  <a class="brand" href="/"><img src="/assets/Oxide.png?v=2" alt="">Oxide HUB</a>
+  <nav class="navlinks">
+    <a class="back" href="/admin/">← Control room</a>
+    <a class="back" href="/admin/profiles/">Profiles</a>
+    <a class="back" href="/shop/" target="_blank" rel="noopener">Open shop ↗</a>
+  </nav>
+</header>
+
+<section class="heading">
+  <div><div class="eyebrow">Robux shop</div><h1>Orders</h1><p>Every crypto payment is detected on-chain and matched to a unique amount. Mark orders delivered once the Robux are handed over.</p></div>
+  <div class="tools">
+    <input class="input" id="search" type="search" placeholder="Search ref, roblox user, txid">
+    <select class="select" id="statusFilter">
+      <option value="">All statuses</option>
+      <option value="awaiting_payment">Awaiting payment</option>
+      <option value="detected">Detected (unconfirmed)</option>
+      <option value="paid">Paid — deliver</option>
+      <option value="delivered">Delivered</option>
+      <option value="underpaid">Underpaid</option>
+      <option value="expired">Expired</option>
+      <option value="cancelled">Cancelled</option>
+    </select>
+    <button class="button" id="refresh">Refresh</button>
+    <button class="button primary" id="openConfig">Payment settings</button>
+  </div>
+</section>
+
+<section class="stats">
+  <div class="stat"><div class="k">Awaiting payment</div><div class="v" id="s-await">—</div></div>
+  <div class="stat attn"><div class="k">Detected</div><div class="v" id="s-detected">—</div></div>
+  <div class="stat attn"><div class="k">Paid — deliver</div><div class="v" id="s-paid">—</div></div>
+  <div class="stat"><div class="k">Delivered</div><div class="v" id="s-delivered">—</div></div>
+  <div class="stat"><div class="k">Revenue (delivered)</div><div class="v" id="s-revenue">—</div></div>
+  <div class="stat"><div class="k">Robux delivered</div><div class="v" id="s-robux">—</div></div>
+</section>
+
+<section class="surface">
+  <div class="surface-head">
+    <div><h2>All orders</h2><div class="sub" id="count">Loading…</div></div>
+    <div class="sub" id="synced"></div>
+  </div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead><tr><th>Order</th><th>Status</th><th>Robux / price</th><th>Payment</th><th>Buyer</th><th>Created</th><th>Transaction</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div class="empty" id="empty" hidden>No orders yet.</div>
+  </div>
+</section>
+
+<section class="surface">
+  <div class="surface-head">
+    <div><h2>Payment settings</h2><div class="sub">Deposit addresses, pack stock and shop availability — saved instantly and kept across restarts.</div></div>
+    <div class="notice" id="cfgNotice"></div>
+  </div>
+  <div class="grid2" style="grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)">
+    <div>
+      <div class="subtitle" style="margin-top:0">Deposit addresses</div>
+      <div class="chain" id="chains"></div>
+      <div class="sub" style="margin-top:10px">Leave an address empty to hide that coin from the shop. Payments are matched by the unique amount, not by a memo — so the address can never be confused with a pending order.</div>
+    </div>
+    <div>
+      <div class="subtitle" style="margin-top:0">Stock &amp; availability</div>
+      <div class="grid3" id="limits"></div>
+      <div class="subtitle">Storefront</div>
+      <label class="switch" style="margin-bottom:12px"><input type="checkbox" id="cfgEnabled"><span>Shop open for new orders</span></label>
+      <label class="label">Announcement banner (optional)<textarea id="cfgAnnouncement" maxlength="240" placeholder="e.g. restock tonight at 8pm"></textarea></label>
+    </div>
+  </div>
+  <div class="savebar">
+    <span class="notice" id="cfgStatus"></span>
+    <button class="button primary" id="saveConfig">Save settings</button>
+  </div>
+</section>
+</div>
+
+<div class="drawer" id="drawer" style="position:fixed;inset:0;background:#0009;backdrop-filter:blur(7px);display:none;align-items:center;justify-content:center;padding:18px;z-index:5">
+  <div class="dialog" style="width:min(620px,100%);background:#12151b;border:1px solid var(--line);border-radius:18px;padding:24px;max-height:92vh;overflow:auto">
+    <h2 id="dTitle" style="font-size:20px;letter-spacing:-.03em">Order</h2>
+    <p id="dSub" class="sub" style="margin:6px 0 16px">Change the status or attach a note.</p>
+    <div id="dBody"></div>
+    <div class="savebar" style="border:0;background:none;padding:14px 0 0">
+      <span class="notice" id="dNotice"></span>
+      <button class="button" id="dClose">Close</button>
+      <button class="button primary" id="dSave">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+const API = ['localhost','127.0.0.1','[::1]'].includes(location.hostname) ? '' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nf = n => Number(n || 0).toLocaleString('en-US');
+const money = c => '$' + (c / 100).toFixed(2);
+let pass = sessionStorage.getItem('oxide_admin_pass') || '';
+let orders = [], config = null, packs = [], coins = [];
+let loading = false;
+
+function api(path, opt) {
+  opt = opt || {};
+  const headers = { 'Content-Type': 'application/json', 'X-Admin-Password': pass, 'X-Admin-Key': pass, ...(opt.headers || {}) };
+  return fetch(API + path, { credentials: 'include', ...opt, headers }).then(async r => {
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(j.error || 'Request failed');
+    return j;
+  });
+}
+
+const STATUS = {
+  awaiting_payment: ['wait', 'Awaiting payment'],
+  detected: ['wait', 'Detected'],
+  paid: ['ok', 'Paid — deliver'],
+  delivered: ['ok', 'Delivered'],
+  underpaid: ['bad', 'Underpaid'],
+  expired: ['bad', 'Expired'],
+  cancelled: ['bad', 'Cancelled']
+};
+
+function render() {
+  const q = $('search').value.toLowerCase().trim();
+  const sf = $('statusFilter').value;
+  const list = orders.filter(o => {
+    if (sf && o.status !== sf) return false;
+    if (!q) return true;
+    return (o.ref + ' ' + o.robloxUsername + ' ' + (o.discord || '') + ' ' + (o.txid || '') + ' ' + o.id).toLowerCase().includes(q);
+  });
+  const rows = $('rows');
+  rows.replaceChildren();
+  $('empty').hidden = list.length > 0;
+  $('count').textContent = list.length + ' order' + (list.length === 1 ? '' : 's') + (list.length !== orders.length ? ' of ' + orders.length : '');
+
+  for (const o of list) {
+    const [cls, label] = STATUS[o.status] || ['wait', o.status];
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><div class="mono" style="font-weight:700">${esc(o.ref)}</div><div class="sub">${esc(o.id)}${o.packId ? ' · ' + esc(o.packId) : ' · custom'}</div></td>
+      <td><span class="badge ${cls}"><span class="badge-dot"></span>${esc(label)}</span>${o.confirmations ? `<div class="sub">${o.confirmations} conf${o.requiredConfirmations ? '/' + o.requiredConfirmations : ''}</div>` : ''}</td>
+      <td><div style="font-weight:650">${nf(o.robux)} R$</div><div class="sub">${money(Math.round(o.usd * 100))}</div></td>
+      <td><div class="mono">${esc(o.amount)} ${esc(o.symbol)}</div><div class="sub">${esc(o.coinName)}</div></td>
+      <td><div style="font-weight:640">${esc(o.robloxUsername)}</div><div class="sub">${esc(o.discord || 'no discord')}</div></td>
+      <td class="sub">${new Date(o.createdAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</td>
+      <td>${o.txid ? `<a class="mono" href="${esc(o.explorer || '#')}" target="_blank" rel="noopener noreferrer" style="color:var(--blue)">${esc(String(o.txid).slice(0, 12))}…</a>${o.received ? `<div class="sub">received ${esc(o.received)}</div>` : ''}` : '<span class="sub">—</span>'}</td>
+      <td></td>`;
+
+    const actions = tr.lastElementChild;
+    const wrap = document.createElement('div');
+    wrap.className = 'row-actions';
+    const mk = (text, cls, fn) => { const b = document.createElement('button'); b.className = 'button ' + cls; b.textContent = text; b.onclick = fn; return b; };
+    if (['awaiting_payment', 'detected', 'underpaid', 'expired'].includes(o.status)) {
+      wrap.append(mk('Recheck', '', async e => { e.target.disabled = true; try { await api('/admin/api/shop/orders/' + encodeURIComponent(o.id) + '/check', { method: 'POST' }); await load(); } catch (err) { alert(err.message); e.target.disabled = false; } }));
+    }
+    if (o.status === 'paid') wrap.append(mk('Delivered', 'ok', () => setStatus(o, 'delivered')));
+    if (!['delivered', 'cancelled'].includes(o.status)) wrap.append(mk('Deliver', 'ghost', () => setStatus(o, 'delivered')));
+    if (!['cancelled', 'delivered'].includes(o.status)) wrap.append(mk('Cancel', 'danger', () => setStatus(o, 'cancelled')));
+    actions.appendChild(wrap);
+    rows.appendChild(tr);
+  }
+}
+
+async function setStatus(o, status) {
+  try {
+    await api('/admin/api/shop/orders/' + encodeURIComponent(o.id), { method: 'PATCH', body: { status } });
+    await load();
+  } catch (e) { alert(e.message); }
+}
+
+function renderStats() {
+  const by = s => orders.filter(o => o.status === s).length;
+  $('s-await').textContent = by('awaiting_payment');
+  $('s-detected').textContent = by('detected');
+  $('s-paid').textContent = by('paid');
+  const delivered = orders.filter(o => o.status === 'delivered');
+  $('s-delivered').textContent = delivered.length;
+  $('s-revenue').textContent = money(Math.round(delivered.reduce((a, o) => a + Math.round(o.usd * 100), 0)));
+  $('s-robux').textContent = nf(delivered.reduce((a, o) => a + o.robux, 0));
+}
+
+const CHAIN_LABEL = { btc: 'Bitcoin', ltc: 'Litecoin', eth: 'Ethereum', sol: 'Solana', usdt: 'USDT TRC-20' };
+const CHAIN_HINT = { btc: 'bc1… or 1… / 3…', ltc: 'ltc1… or L…', eth: '0x + 40 hex chars', sol: 'base58, 32–44 chars', usdt: 'TRC-20 address starting with T' };
+
+function renderConfig() {
+  const host = $('chains');
+  host.replaceChildren();
+  for (const key of Object.keys(CHAIN_LABEL)) {
+    const value = (config.addresses && config.addresses[key]) || '';
+    const row = document.createElement('div');
+    row.className = 'chain-row';
+    row.innerHTML = `<span class="n">${CHAIN_LABEL[key]}</span>
+      <input data-coin="${key}" value="${esc(value)}" placeholder="${CHAIN_HINT[key]}" spellcheck="false" autocomplete="off">
+      <span class="st ${value ? 'on' : ''}">${value ? 'live' : 'hidden'}</span>`;
+    const input = row.querySelector('input');
+    input.oninput = () => {
+      const st = row.querySelector('.st');
+      st.textContent = input.value.trim() ? 'live' : 'hidden';
+      st.className = 'st' + (input.value.trim() ? ' on' : '');
+    };
+    host.appendChild(row);
+  }
+  const lhost = $('limits');
+  lhost.replaceChildren();
+  for (const p of packs) {
+    const wrap = document.createElement('label');
+    wrap.className = 'label';
+    wrap.innerHTML = `${esc(p.label)} limit<input type="number" min="0" max="100000" data-limit="${esc(p.id)}" value="${p.limit}">`;
+    lhost.appendChild(wrap);
+  }
+  $('cfgEnabled').checked = !!config.enabled;
+  $('cfgAnnouncement').value = config.announcement || '';
+}
+
+async function load() {
+  if (loading) return;
+  loading = true;
+  try {
+    const j = await api('/admin/api/shop');
+    orders = j.orders || [];
+    config = j.config || { addresses: {}, limits: {} };
+    packs = j.packs || [];
+    coins = j.coins || [];
+    renderStats();
+    render();
+    renderConfig();
+    $('synced').textContent = 'Synced ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  } catch (e) {
+    if (/Authentication/i.test(e.message)) { sessionStorage.removeItem('oxide_admin_pass'); location.href = '/admin/'; return; }
+    $('count').textContent = e.message;
+  } finally {
+    loading = false;
+  }
+}
+
+$('saveConfig').onclick = async () => {
+  const btn = $('saveConfig');
+  btn.disabled = true;
+  $('cfgStatus').textContent = 'Saving…';
+  $('cfgStatus').className = 'notice';
+  const addresses = {};
+  document.querySelectorAll('#chains input[data-coin]').forEach(i => addresses[i.dataset.coin] = i.value.trim());
+  const limits = {};
+  document.querySelectorAll('#limits input[data-limit]').forEach(i => limits[i.dataset.limit] = Number(i.value || 0));
+  try {
+    const r = await api('/admin/api/shop/config', {
+      method: 'PATCH',
+      body: { addresses, limits, enabled: $('cfgEnabled').checked, announcement: $('cfgAnnouncement').value }
+    });
+    if ((r.errors || []).length) {
+      $('cfgStatus').textContent = r.errors.join(' · ');
+      $('cfgStatus').className = 'notice bad';
+    } else {
+      $('cfgStatus').textContent = 'Saved — the shop is updated.';
+      $('cfgStatus').className = 'notice good';
+      setTimeout(() => { $('cfgStatus').textContent = ''; $('cfgStatus').className = 'notice'; }, 3500);
+    }
+    config = r.config;
+    await load();
+  } catch (e) {
+    $('cfgStatus').textContent = e.message;
+    $('cfgStatus').className = 'notice bad';
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+$('refresh').onclick = load;
+$('search').oninput = render;
+$('statusFilter').onchange = render;
+setInterval(() => { if (!document.hidden) load(); }, 20000);
+load();
+})();
+</script>
+</body>
+</html>
