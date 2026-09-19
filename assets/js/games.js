@@ -11,6 +11,9 @@ const els = {
   search: document.getElementById('game-search'),
   empty: document.getElementById('empty-state'),
   error: document.getElementById('error-banner'),
+  alsoSection: document.getElementById('also-section'),
+  alsoGrid: document.getElementById('also-grid'),
+  alsoTitle: document.getElementById('also-title'),
 };
 const ALL_SUPPORTED_GAMES = [
   { name: 'Steal an Egg', place_id: 107778070777162, universe_id: 10563114921 },
@@ -27,7 +30,9 @@ const ALL_SUPPORTED_GAMES = [
   { name: 'Universal', place_id: 0, universe_id: 0 }
 ];
 
-let games = ALL_SUPPORTED_GAMES;
+// The hub ships a script for every curated game. Anything else here was discovered at
+// runtime: the hub ran in that place, so it is listed — but in its own quieter section.
+let games = ALL_SUPPORTED_GAMES.map((g) => ({ ...g, curated: true }));
 
 const GAME_BANNERS = {
   'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-875b2a6dc156ce6dd64eb637e73238ce/768/432/Image/Png/noFilter',
@@ -89,14 +94,39 @@ function card(game) {
   return a;
 }
 
+function compactCard(game) {
+  const a = document.createElement('a');
+  a.className = 'also-card';
+  a.href = game.place_id ? `https://www.roblox.com/games/${encodeURIComponent(game.place_id)}` : '/script/';
+  a.target = game.place_id ? '_blank' : '_self';
+  if (game.place_id) a.rel = 'noopener noreferrer';
+  a.title = game.name;
+  a.insertAdjacentHTML('beforeend', '<i class="dot"></i>');
+  const label = document.createElement('span');
+  label.textContent = game.name;
+  a.append(label);
+  a.insertAdjacentHTML('beforeend', icon('arrow-right'));
+  return a;
+}
+
 function render() {
   const query = els.search.value.trim().toLowerCase();
-  const list = query ? games.filter((game) => game.name.toLowerCase().includes(query)) : games;
-  els.grid.replaceChildren(...list.map(card));
-  els.empty.hidden = list.length > 0;
+  const hit = (game) => !query || game.name.toLowerCase().includes(query);
+  const curated = games.filter((game) => game.curated !== false && hit(game));
+  const discovered = games.filter((game) => game.curated === false && hit(game));
+
+  els.grid.replaceChildren(...curated.map(card));
+  if (els.alsoGrid) els.alsoGrid.replaceChildren(...discovered.map(compactCard));
+  if (els.alsoSection) els.alsoSection.hidden = discovered.length === 0;
+  if (els.alsoTitle) els.alsoTitle.textContent = query ? 'Also matching' : 'Also works in';
+  els.empty.hidden = curated.length + discovered.length > 0;
+
   if (els.count) {
     const label = els.count.querySelector('span');
-    if (label) label.textContent = query ? `${list.length} matches` : `${games.length} supported games`;
+    if (label) {
+      if (query) label.textContent = `${curated.length + discovered.length} matches`;
+      else label.textContent = `${curated.length} supported games` + (discovered.length ? ` · ${discovered.length} more` : '');
+    }
   }
 }
 
@@ -108,12 +138,14 @@ fetch(`${API_BASE}/games`)
   .then((data) => {
     const remote = data.games || [];
     const map = new Map();
-    remote.forEach(g => map.set(g.name, g));
-    ALL_SUPPORTED_GAMES.forEach(g => map.set(g.name, g));
+    remote.forEach(g => map.set(g.name, { ...g, curated: g.curated === true }));
+    // Built-in entries carry the artwork/universe ids, so they win on a name collision.
+    // A game the hub ships a script for is always curated, whatever the backend says.
+    ALL_SUPPORTED_GAMES.forEach(g => map.set(g.name, { ...(map.get(g.name) || {}), ...g, curated: true }));
     games = Array.from(map.values());
     render();
   })
   .catch(() => {
-    games = ALL_SUPPORTED_GAMES;
+    games = ALL_SUPPORTED_GAMES.map((g) => ({ ...g, curated: true }));
     render();
   });
