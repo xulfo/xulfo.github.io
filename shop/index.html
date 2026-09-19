@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robux Shop — Oxide HUB</title>
+<meta name="description" content="Buy Robux with crypto. Limited packs, instant on-chain payment detection, delivered to your Roblox account.">
+<link rel="icon" type="image/png" href="/assets/Oxide.png?v=2">
+<link rel="apple-touch-icon" href="/assets/Oxide.png?v=2">
+<link rel="stylesheet" href="/assets/css/style.css">
+<script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
+<style>
+/* ── Shop ──────────────────────────────────────────────────────── */
+.shop-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:34px;align-items:center;padding:34px 0 10px}
+.shop-hero h1{font-size:clamp(34px,5.2vw,56px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:14px 0 0}
+.shop-hero p.lede{color:var(--text-2);font-size:16.5px;max-width:56ch;margin-top:16px}
+.trust-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+.trust-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--panel);font-size:12.5px;color:var(--text-2)}
+.trust-chip b{color:var(--text);font-weight:640}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(107,203,119,.16)}
+.hero-stats{display:grid;gap:12px}
+.hero-stat{border:1px solid var(--border);border-radius:14px;background:var(--panel);padding:16px 18px;backdrop-filter:blur(var(--blur))}
+.hero-stat .k{color:var(--muted);font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700}
+.hero-stat .v{font-size:24px;font-weight:760;letter-spacing:-.03em;margin-top:6px;font-variant-numeric:tabular-nums}
+.hero-stat .s{color:var(--muted);font-size:12px;margin-top:3px}
+
+.shop-notice{display:none;margin:18px 0 0;padding:13px 16px;border-radius:12px;border:1px solid rgba(230,103,103,.35);background:rgba(230,103,103,.09);color:#f3c9c9;font-size:13.5px}
+.shop-notice.show{display:block}
+.announce{margin:18px 0 0;padding:12px 16px;border-radius:12px;border:1px solid var(--border-strong);background:var(--accent-wash);color:var(--accent-light);font-size:13.5px}
+
+.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
+.pack{position:relative;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px 22px;transition:transform var(--transition),border-color var(--transition)}
+.pack:hover{transform:translateY(-3px);border-color:var(--border-strong)}
+.pack.best{border-color:rgba(129,163,214,.45);box-shadow:0 20px 60px rgba(129,163,214,.12)}
+.pack-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pack-name{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
+.pack-badge{font-size:10.5px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text-2)}
+.pack-badge.hot{color:var(--accent-text-on);background:var(--accent);border-color:transparent}
+.pack-amount{margin-top:18px;font-size:38px;font-weight:800;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
+.pack-amount span{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0;margin-left:6px}
+.pack-price{margin-top:10px;font-size:17px;font-weight:680;color:var(--accent-light)}
+.pack-price small{color:var(--muted);font-weight:500;font-size:12.5px;margin-left:6px}
+.pack-list{list-style:none;margin:18px 0 0;display:grid;gap:9px}
+.pack-list li{display:flex;gap:9px;align-items:flex-start;color:var(--text-2);font-size:13.5px;line-height:1.45}
+.pack-list svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--accent)}
+.pack-stock{margin-top:20px}
+.pack-stock .bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.pack-stock .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px}
+.pack-stock .lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:7px;font-variant-numeric:tabular-nums}
+.pack .btn{margin-top:18px;width:100%;justify-content:center}
+.pack.soldout{opacity:.62}
+.pack.soldout .btn{pointer-events:none;opacity:.6}
+
+.custom-card{margin-top:20px;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px}
+.custom-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px;align-items:end}
+.field{display:grid;gap:8px}
+.field label{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.amount-input{display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:13px;background:var(--field);padding:14px 16px}
+.amount-input input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--text);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font)}
+.amount-input .suffix{color:var(--muted);font-size:13px;font-weight:600}
+.quick-picks{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.quick{padding:7px 12px;border:1px solid var(--border);border-radius:99px;background:rgba(255,255,255,.02);color:var(--text-2);font-size:12.5px;cursor:pointer;transition:var(--transition)}
+.quick:hover{border-color:var(--border-strong);color:var(--text)}
+.quick.on{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-light)}
+.custom-price{border:1px solid var(--border);border-radius:14px;background:rgba(0,0,0,.3);padding:16px 18px;display:grid;gap:4px}
+.custom-price .p{font-size:30px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.custom-price .r{font-size:12px;color:var(--muted)}
+.hint-line{font-size:12.5px;color:var(--muted);margin-top:9px}
+.hint-line.warn{color:#e0b06a}
+
+.steps{margin-top:44px}
+.step-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:20px}
+.step{border:1px solid var(--border);border-radius:14px;background:var(--panel);padding:20px 18px}
+.step .n{font-size:11px;font-weight:750;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
+.step h4{margin:12px 0 7px;font-size:15px}
+.step p{color:var(--text-2);font-size:13px;line-height:1.55}
+
+.faq{margin-top:44px;display:grid;gap:10px}
+.faq details{border:1px solid var(--border);border-radius:13px;background:var(--panel);overflow:hidden}
+.faq summary{padding:15px 18px;cursor:pointer;font-weight:620;font-size:14.5px;list-style:none;display:flex;justify-content:space-between;gap:12px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--muted);font-weight:600}
+.faq details[open] summary::after{content:"–"}
+.faq .a{padding:0 18px 16px;color:var(--text-2);font-size:13.5px;line-height:1.6}
+.fine{margin:34px 0 0;padding:16px 18px;border:1px solid var(--border);border-radius:13px;background:rgba(0,0,0,.25);color:var(--muted);font-size:12.5px;line-height:1.6}
+
+/* checkout drawer */
+.sheet-bg{position:fixed;inset:0;background:rgba(3,4,6,.72);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:80}
+.sheet-bg.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;top:0;right:0;height:100%;width:min(560px,100%);background:var(--page-alt);border-left:1px solid var(--border-strong);box-shadow:-30px 0 80px rgba(0,0,0,.5);transform:translateX(102%);transition:transform .26s cubic-bezier(.32,.72,.28,1);z-index:81;display:flex;flex-direction:column}
+.sheet.open{transform:none}
+.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;border-bottom:1px solid var(--border)}
+.sheet-head .t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.sheet-head h3{font-size:19px;letter-spacing:-.02em;margin-top:3px}
+.sheet-close{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text-2);cursor:pointer;font-size:17px;line-height:1}
+.sheet-close:hover{color:var(--text);border-color:var(--border-strong)}
+.sheet-body{padding:22px;overflow-y:auto;flex:1}
+.sheet-foot{padding:18px 22px;border-top:1px solid var(--border);background:rgba(0,0,0,.24);display:grid;gap:10px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--border)}
+.row:last-of-type{border-bottom:0}
+.row .lbl{color:var(--muted);font-size:13px}
+.row .val{font-weight:680;font-size:14.5px;text-align:right;font-variant-numeric:tabular-nums}
+.big-amount{text-align:center;padding:22px 16px;border:1px dashed var(--border-strong);border-radius:14px;background:rgba(0,0,0,.3);margin-top:6px}
+.big-amount .k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.big-amount .v{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:8px;word-break:break-all;font-variant-numeric:tabular-nums}
+.big-amount .u{color:var(--accent-light);font-size:13px;font-weight:650;margin-top:4px}
+.addr{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:12px;background:var(--field);padding:12px 14px;margin-top:10px}
+.addr code{flex:1;min-width:0;font-size:12.5px;word-break:break-all;color:var(--text-2);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.copy{border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-2);border-radius:9px;padding:7px 11px;font-size:12px;cursor:pointer;white-space:nowrap}
+.copy:hover{color:var(--text);border-color:var(--border-strong)}
+.copy.done{color:var(--success);border-color:rgba(107,203,119,.4)}
+.qr{display:grid;place-items:center;margin:16px auto 4px;padding:10px;background:#fff;border-radius:14px;width:176px;height:176px}
+.qr img{width:156px;height:156px;display:block}
+.coin-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.coin{display:flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.02);cursor:pointer;transition:var(--transition);font-size:13.5px}
+.coin:hover{border-color:var(--border-strong)}
+.coin.on{border-color:var(--accent);background:var(--accent-wash)}
+.coin.off{opacity:.4;pointer-events:none;text-decoration:line-through}
+.coin .g{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);font-size:12px;font-weight:700;color:var(--accent-light)}
+.cd{color:var(--muted);font-size:12.5px;margin-top:12px;font-variant-numeric:tabular-nums}
+.status-card{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:rgba(0,0,0,.28)}
+.status-card.wait{border-color:rgba(129,163,214,.3)}
+.status-card.ok{border-color:rgba(107,203,119,.4);background:rgba(107,203,119,.07)}
+.status-card.bad{border-color:rgba(230,103,103,.4);background:rgba(230,103,103,.07)}
+.status-card .h{display:flex;align-items:center;gap:9px;font-weight:680;font-size:14.5px}
+.status-card .d{color:var(--text-2);font-size:13px;margin-top:7px;line-height:1.55}
+.spin{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.2);border-top-color:var(--accent);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.tiny{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.55}
+.err{display:none;margin-top:12px;padding:11px 13px;border-radius:10px;border:1px solid rgba(230,103,103,.4);background:rgba(230,103,103,.1);color:#f0c6c6;font-size:13px}
+.err.show{display:block}
+.track{margin-top:26px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.track input{flex:1;min-width:200px;border:1px solid var(--border);background:var(--field);border-radius:11px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;font-family:var(--font)}
+.track input:focus{border-color:var(--border-strong)}
+@media (max-width:1000px){.packs{grid-template-columns:1fr}.shop-hero{grid-template-columns:1fr}.step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.custom-grid{grid-template-columns:1fr}}
+@media (max-width:620px){.step-grid{grid-template-columns:1fr}.sheet{width:100%}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a class="brand" href="/" aria-label="Oxide HUB home"><img src="/assets/Oxide.png?v=2" alt=""><span>Oxide HUB</span></a>
+    <div class="topnav-links" aria-label="Primary navigation">
+      <a href="/">Home</a>
+      <a href="/script/">Script</a>
+      <a href="/shop/" class="active" aria-current="page">Shop</a>
+      <a href="/admin/">Admin</a>
+      <a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer" class="discord-link">Discord</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section class="shop-hero">
+    <div>
+      <div class="page-kicker"><span class="status-dot"></span> Oxide Shop</div>
+      <h1>Robux, delivered<br>without the wait.</h1>
+      <p class="lede">Pick a limited pack or set your own amount. Pay in crypto, and our watcher reads the blockchain directly — the moment your transfer lands, your order flips to paid and we hand the Robux to your account.</p>
+      <div class="trust-row">
+        <span class="trust-chip"><span class="dot-live"></span> <b>Live</b>&nbsp;on-chain tracking</span>
+        <span class="trust-chip">Locked price for <b>30 min</b></span>
+        <span class="trust-chip">Minimum <b>10,000</b> Robux</span>
+        <span class="trust-chip">Support on <b>Discord</b></span>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="k">Orders delivered</div><div class="v" id="stat-delivered">—</div><div class="s">completed and handed over</div></div>
+      <div class="hero-stat"><div class="k">Robux delivered</div><div class="v" id="stat-robux">—</div><div class="s">across all packs</div></div>
+      <div class="hero-stat"><div class="k">Pack stock</div><div class="v" id="stat-stock">—</div><div class="s">limited packs remaining</div></div>
+    </div>
+  </section>
+
+  <div class="announce" id="announce" hidden></div>
+  <div class="shop-notice" id="shop-notice"></div>
+
+  <section class="steps" aria-labelledby="packs-title">
+    <div class="section-heading compact"><div><div class="eyebrow">Limited packs</div><h2 id="packs-title">Three ways in.</h2></div><p>Fixed stock, fixed price. When a pack is gone, it is gone.</p></div>
+    <div class="packs" id="packs"></div>
+  </section>
+
+  <section class="steps" aria-labelledby="custom-title">
+    <div class="section-heading compact"><div><div class="eyebrow">Custom amount</div><h2 id="custom-title">Or pick your own.</h2></div><p>Anything from 10,000 Robux upwards — the bigger the order, the better the rate.</p></div>
+    <div class="custom-card">
+      <div class="custom-grid">
+        <div>
+          <div class="field">
+            <label for="robuxInput">Robux amount</label>
+            <div class="amount-input">
+              <input id="robuxInput" type="text" inputmode="numeric" autocomplete="off" placeholder="10,000" value="50000">
+              <span class="suffix">R$</span>
+            </div>
+          </div>
+          <div class="quick-picks" id="quickPicks"></div>
+          <div class="hint-line" id="customHint">Minimum order is 10,000 Robux.</div>
+        </div>
+        <div>
+          <div class="custom-price">
+            <div class="lbl" style="color:var(--muted);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700">You pay</div>
+            <div class="p" id="customPrice">—</div>
+            <div class="r" id="customRate">per 1,000 Robux: —</div>
+          </div>
+          <button class="btn accent big" id="customBuy" style="width:100%;justify-content:center;margin-top:14px">
+            <svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-bolt"></use></svg>Buy custom amount
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="track">
+      <input id="trackInput" placeholder="Already ordered? Paste your order ID or reference" autocomplete="off">
+      <button class="btn ghost" id="trackBtn"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-radio"></use></svg>Track order</button>
+    </div>
+  </section>
+
+  <section class="steps" aria-labelledby="how-title">
+    <div class="section-heading compact"><div><div class="eyebrow">How it works</div><h2 id="how-title">Four steps, no account.</h2></div></div>
+    <div class="step-grid">
+      <div class="step"><div class="n">Step 01</div><h4>Choose your amount</h4><p>Take one of the limited packs or enter any custom amount from 10,000 Robux.</p></div>
+      <div class="step"><div class="n">Step 02</div><h4>Pick your coin</h4><p>Bitcoin, Litecoin, Ethereum, Solana or USDT. The exact amount is reserved for you alone.</p></div>
+      <div class="step"><div class="n">Step 03</div><h4>Send the exact amount</h4><p>Scan the QR or copy the address. We watch the chain and detect your transfer automatically.</p></div>
+      <div class="step"><div class="n">Step 04</div><h4>Get your Robux</h4><p>Once confirmed, we deliver to the Roblox account you entered. You get an order reference to track it.</p></div>
+    </div>
+  </section>
+
+  <section class="steps" aria-labelledby="faq-title">
+    <div class="section-heading compact"><div><div class="eyebrow">Questions</div><h2 id="faq-title">Good to know.</h2></div></div>
+    <div class="faq">
+      <details><summary>How fast is delivery?</summary><div class="a">Payments are detected automatically as soon as they are broadcast, but we only hand over Robux after the transfer has enough confirmations (1 for Bitcoin, Litecoin, Solana and USDT, 2 for Ethereum). After that, delivery is handled manually by our team and normally takes minutes — you can follow the status live on your order.</div></details>
+      <details><summary>Why is the amount slightly odd?</summary><div class="a">Every order gets a unique amount, down to the last decimal. That is how several pending payments stay distinguishable on the same address, and how your transfer is matched to your order without you telling us a transaction ID. Send the exact amount shown — not more, not less.</div></details>
+      <details><summary>What if I send the wrong amount?</summary><div class="a">We detect underpayments too (anything above 90% of the expected amount) and flag them for manual review. If that happens, open a Discord ticket with your order reference and we will sort it out. Never send a different amount on purpose to "top up" an order.</div></details>
+      <details><summary>Do I need an account?</summary><div class="a">No. You only enter the Roblox username that should receive the Robux, plus your Discord in case we need to reach you. Keep your order reference — it is the only way to reopen the tracking page.</div></details>
+      <details><summary>What happens if the price moves?</summary><div class="a">Your price and exact crypto amount are locked when you create the order and stay valid for 30 minutes. If the timer runs out, just create a new order — the rate is refreshed with the current market price.</div></details>
+      <details><summary>Which coins can I use?</summary><div class="a">Bitcoin, Litecoin, Ethereum, Solana and USDT on TRC-20. Pick the one with the lowest fee for your amount — for small orders USDT, Litecoin and Solana are usually cheapest to send.</div></details>
+    </div>
+  </section>
+
+  <p class="fine">Oxide HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending.</p>
+</main>
+
+<footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<aside class="sheet" id="sheet" aria-hidden="true" aria-labelledby="sheetTitle">
+  <div class="sheet-head">
+    <div><div class="t" id="sheetKicker">Checkout</div><h3 id="sheetTitle">Your order</h3></div>
+    <button class="sheet-close" id="sheetClose" aria-label="Close">✕</button>
+  </div>
+  <div class="sheet-body" id="sheetBody"></div>
+  <div class="sheet-foot" id="sheetFoot"></div>
+</aside>
+
+<script>
+'use strict';
+const API = ['localhost','127.0.0.1','[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
+const $ = id => document.getElementById(id);
+const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = c => '$' + (c / 100).toFixed(2);
+const nf = n => Number(n || 0).toLocaleString('en-US');
+const num = n => n >= 1e6 ? (n/1e6).toFixed(n % 1e6 ? 1 : 0) + 'M' : nf(n);
+
+let CATALOG = null;
+let custom = 50000;
+let customQuote = null;
+let selectedCoin = '';
+let currentOrder = null;
+let pollTimer = null;
+
+async function api(path, opts) {
+  const res = await fetch(API + path, {
+    method: (opts && opts.method) || 'GET',
+    headers: { 'Content-Type': 'application/json' },
+    body: opts && opts.body ? JSON.stringify(opts.body) : undefined
+  });
+  let json = {};
+  try { json = await res.json(); } catch (_) {}
+  if (!res.ok) throw new Error(json.error || ('Request failed (' + res.status + ')'));
+  return json;
+}
+
+/* ── storefront ─────────────────────────────────────────────────── */
+const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+
+function renderPacks() {
+  const host = $('packs');
+  host.innerHTML = '';
+  const bestValue = CATALOG.packs.reduce((a, b) => (a.usdCents / a.robux < b.usdCents / b.robux ? a : b));
+  for (const p of CATALOG.packs) {
+    const soldOut = p.remaining <= 0;
+    const pct = p.limit ? Math.min(100, Math.round((p.sold / p.limit) * 100)) : 0;
+    const rate = (p.usdCents / 100) / (p.robux / 1000);
+    const card = el('article', 'pack' + (p.id === bestValue.id ? ' best' : '') + (soldOut ? ' soldout' : ''));
+    card.innerHTML = `
+      <div class="pack-top">
+        <span class="pack-name">${esc(p.label)}</span>
+        <span class="pack-badge${p.id === bestValue.id ? ' hot' : ''}">${soldOut ? 'Sold out' : 'Limited · ' + pct + '% gone'}</span>
+      </div>
+      <div class="pack-amount">${nf(p.robux)}<span>R$</span></div>
+      <div class="pack-price">${money(p.usdCents)}<small>$${rate.toFixed(2)} per 1,000</small></div>
+      <ul class="pack-list">
+        <li>${CHECK}<span>${nf(p.robux)} Robux to your Roblox account</span></li>
+        <li>${CHECK}<span>${p.id === bestValue.id ? 'Best value per Robux' : 'Locked price for 30 minutes'}</span></li>
+        <li>${CHECK}<span>Pay with BTC, LTC, ETH, SOL or USDT</span></li>
+        <li>${CHECK}<span>Automatic on-chain payment detection</span></li>
+      </ul>
+      <div class="pack-stock">
+        <div class="lbl"><span>${soldOut ? 'No stock left' : p.remaining + ' left of ' + p.limit}</span><span>${p.sold} sold</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+      </div>
+      <button class="btn accent" data-pack="${esc(p.id)}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'Sold out' : 'Buy ' + esc(p.label)}</button>`;
+    card.querySelector('button').onclick = () => openCheckout({ kind: 'pack', pack: p.id, robux: p.robux, usdCents: p.usdCents, label: p.label });
+    host.appendChild(card);
+  }
+}
+
+function renderQuickPicks() {
+  const host = $('quickPicks');
+  const values = [10000, 25000, 50000, 100000, 150000, 300000];
+  host.innerHTML = '';
+  for (const v of values) {
+    const b = el('button', 'quick' + (v === custom ? ' on' : ''), nf(v));
+    b.onclick = () => { $('robuxInput').value = nf(v); custom = v; refreshQuote(); renderQuickPicks(); };
+    host.appendChild(b);
+  }
+}
+
+let quoteTimer = null;
+function refreshQuote() {
+  const raw = $('robuxInput').value.replace(/[^0-9]/g, '');
+  custom = Math.max(0, parseInt(raw || '0', 10));
+  clearTimeout(quoteTimer);
+  quoteTimer = setTimeout(async () => {
+    if (custom < CATALOG.minRobux) {
+      customQuote = null;
+      $('customPrice').textContent = '—';
+      $('customRate').textContent = 'minimum ' + nf(CATALOG.minRobux) + ' Robux';
+      $('customHint').textContent = 'Minimum order is ' + nf(CATALOG.minRobux) + ' Robux — smaller amounts are not accepted.';
+      $('customHint').className = 'hint-line warn';
+      $('customBuy').disabled = true;
+      return;
+    }
+    $('customBuy').disabled = true;
+    try {
+      const q = await api('/shop/quote', { method: 'POST', body: { robux: custom } });
+      customQuote = q;
+      $('customPrice').textContent = '$' + q.usd;
+      $('customRate').textContent = '$' + Number(q.usdPer1k).toFixed(2) + ' per 1,000 Robux';
+      $('customHint').textContent = 'You get ' + nf(q.robux) + ' Robux for $' + q.usd + '.';
+      $('customHint').className = 'hint-line';
+      $('customBuy').disabled = false;
+    } catch (e) {
+      customQuote = null;
+      $('customHint').textContent = e.message;
+      $('customHint').className = 'hint-line warn';
+    }
+  }, 220);
+}
+
+/* ── checkout sheet ─────────────────────────────────────────────── */
+function sheetOpen(title, kicker) {
+  $('sheetTitle').textContent = title;
+  $('sheetKicker').textContent = kicker || 'Checkout';
+  $('sheet').classList.add('open');
+  $('sheetBg').classList.add('open');
+  $('sheet').setAttribute('aria-hidden', 'false');
+}
+function sheetShut() {
+  $('sheet').classList.remove('open');
+  $('sheetBg').classList.remove('open');
+  $('sheet').setAttribute('aria-hidden', 'true');
+  clearInterval(pollTimer);
+}
+$('sheetClose').onclick = sheetShut;
+$('sheetBg').onclick = sheetShut;
+document.addEventListener('keydown', e => { if (e.key === 'Escape') sheetShut(); });
+
+const COIN_GLYPH = { btc: '₿', ltc: 'Ł', eth: 'Ξ', sol: '◎', usdt: '₮' };
+let draft = null;
+
+function openCheckout(item) {
+  draft = { ...item, coin: '', robloxUsername: '', discord: '' };
+  selectedCoin = '';
+  renderCheckoutStep();
+  sheetOpen('Checkout', item.kind === 'pack' ? 'Limited pack' : 'Custom order');
+}
+
+function renderCheckoutStep() {
+  const avail = CATALOG.coins.filter(c => c.available);
+  const body = $('sheetBody');
+  body.innerHTML = `
+    <div class="row"><span class="lbl">Amount</span><span class="val">${nf(draft.robux)} Robux</span></div>
+    <div class="row"><span class="lbl">Price</span><span class="val">${money(draft.usdCents)}</span></div>
+    <div class="row"><span class="lbl">Rate</span><span class="val">$${((draft.usdCents / 100) / (draft.robux / 1000)).toFixed(2)} / 1,000</span></div>
+    <div class="field" style="margin-top:20px">
+      <label for="robloxUser">Roblox username receiving the Robux</label>
+      <div class="amount-input" style="padding:12px 14px"><input id="robloxUser" autocomplete="off" placeholder="e.g. OxideBuyer" style="font-size:15px;font-weight:600" value="${esc(draft.robloxUsername)}"></div>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="discordUser">Discord (optional — for support)</label>
+      <div class="amount-input" style="padding:12px 14px"><input id="discordUser" autocomplete="off" placeholder="yourname" style="font-size:15px;font-weight:600" value="${esc(draft.discord)}"></div>
+    </div>
+    <div class="field" style="margin-top:20px">
+      <label>Pay with</label>
+      <div class="coin-row" id="coinRow"></div>
+    </div>
+    <div class="err" id="checkoutErr"></div>
+    <p class="tiny">Your exact crypto amount is reserved the moment you continue. Each order gets a unique amount, so payments never get mixed up. The rate is locked for 30 minutes.</p>`;
+
+  const row = $('coinRow');
+  if (!avail.length) {
+    row.innerHTML = '<span class="tiny">No coin is configured yet. Please open a Discord ticket.</span>';
+  }
+  for (const c of CATALOG.coins) {
+    const b = el('button', 'coin' + (c.available ? '' : ' off') + (draft.coin === c.key ? ' on' : ''));
+    b.innerHTML = `<span class="g">${COIN_GLYPH[c.key] || c.symbol[0]}</span><span>${esc(c.symbol)}<br><span style="color:var(--muted);font-size:11.5px">${esc(c.name)}</span></span>`;
+    b.onclick = () => { draft.coin = c.key; renderCheckoutStep(); };
+    row.appendChild(b);
+  }
+
+  const foot = $('sheetFoot');
+  foot.innerHTML = '';
+  const back = el('button', 'btn ghost', 'Cancel');
+  back.onclick = sheetShut;
+  const go = el('button', 'btn accent big', 'Continue to payment');
+  go.style.justifyContent = 'center';
+  go.onclick = submitOrder;
+  foot.appendChild(go);
+  foot.appendChild(back);
+}
+
+async function submitOrder() {
+  draft.robloxUsername = ($('robloxUser') || {}).value ? $('robloxUser').value.trim() : draft.robloxUsername;
+  draft.discord = ($('discordUser') || {}).value ? $('discordUser').value.trim() : draft.discord;
+  const err = $('checkoutErr');
+  err.classList.remove('show');
+  if (!draft.coin) { err.textContent = 'Pick a coin to pay with.'; err.classList.add('show'); return; }
+  if (!/^[A-Za-z0-9_]{3,20}$/.test(draft.robloxUsername)) { err.textContent = 'Enter the Roblox username that should receive the Robux (3–20 letters, numbers or _).'; err.classList.add('show'); return; }
+  const btn = $('sheetFoot').querySelector('.btn.accent');
+  if (btn) { btn.disabled = true; btn.textContent = 'Reserving your amount…'; }
+  try {
+    const payload = { coin: draft.coin, robloxUsername: draft.robloxUsername, discord: draft.discord };
+    if (draft.kind === 'pack') payload.pack = draft.pack; else payload.robux = draft.robux;
+    const res = await api('/shop/order', { method: 'POST', body: payload });
+    currentOrder = res.order;
+    try { localStorage.setItem('oxide_shop_order', currentOrder.id); } catch (_) {}
+    showPaymentStep();
+  } catch (e) {
+    err.textContent = e.message;
+    err.classList.add('show');
+    if (btn) { btn.disabled = false; btn.textContent = 'Continue to payment'; }
+  }
+}
+
+function qrUrl(order) {
+  const data = order.paymentUri || order.address;
+  return 'https://api.qrserver.com/v1/create-qr-code/?size=312x312&margin=0&data=' + encodeURIComponent(data);
+}
+
+const STATUS_META = {
+  awaiting_payment: { cls: 'wait', h: 'Waiting for your payment', d: 'Send the exact amount below from your wallet. This page updates on its own — no need to tell us anything.' },
+  detected: { cls: 'wait', h: 'Payment detected on-chain', d: 'We can see your transfer. Waiting for confirmations before delivery.' },
+  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Thanks! Your Robux are queued for delivery to your account — this normally takes minutes.' },
+  delivered: { cls: 'ok', h: 'Delivered', d: 'The Robux have been handed over. Check your Roblox account.' },
+  underpaid: { cls: 'bad', h: 'We received less than the exact amount', d: 'Open a Discord ticket with your order reference and we will fix it manually.' },
+  expired: { cls: 'bad', h: 'This order expired', d: 'The locked rate ran out. Create a new order to get a current price.' },
+  cancelled: { cls: 'bad', h: 'Order cancelled', d: 'This order was cancelled. Create a new one whenever you like.' }
+};
+
+function statusCard(order) {
+  const meta = STATUS_META[order.status] || STATUS_META.awaiting_payment;
+  const confs = order.confirmations ? `<div class="tiny">Confirmations: ${order.confirmations}${order.status === 'detected' ? ' of ' + order.requiredConfirmations + ' needed' : ''}</div>` : '';
+  return `<div class="status-card ${meta.cls}">
+    <div class="h">${meta.cls === 'wait' && order.status !== 'paid' && order.status !== 'delivered' ? '<span class="spin"></span>' : ''}${esc(meta.h)}</div>
+    <div class="d">${esc(meta.d)}</div>${confs}
+    ${order.txid ? `<div class="tiny">Transaction: <code style="word-break:break-all">${esc(order.txid)}</code>${order.explorer ? ` · <a href="${esc(order.explorer)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light)">view on explorer</a>` : ''}</div>` : ''}
+  </div>`;
+}
+
+function showPaymentStep() {
+  const o = currentOrder;
+  const paying = o.status === 'awaiting_payment' || o.status === 'detected';
+  const body = $('sheetBody');
+  body.innerHTML = `
+    <div class="row"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row"><span class="lbl">Amount</span><span class="val">${nf(o.robux)} Robux</span></div>
+    <div class="row"><span class="lbl">Price</span><span class="val">$${esc(o.usd)}</span></div>
+    <div class="row"><span class="lbl">Receiving account</span><span class="val">${esc(o.robloxUsername)}</span></div>
+    ${paying ? `
+    <div class="big-amount">
+      <div class="k">Send exactly</div>
+      <div class="v">${esc(o.amount)}</div>
+      <div class="u">${esc(o.symbol)} · ${esc(o.coinName)}</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:14px"><button class="copy" id="copyAmount">Copy amount</button></div>
+    <div class="qr"><img src="${qrUrl(o)}" alt="Payment QR code" loading="lazy" referrerpolicy="no-referrer"></div>
+    <p class="tiny" style="text-align:center;margin-top:4px">Scan with your wallet app, or copy the address below.</p>
+    <div class="addr"><code>${esc(o.address)}</code><button class="copy" id="copyAddr">Copy</button></div>
+    <div class="cd" id="countdown"></div>` : ''}
+    <div id="statusHost">${statusCard(o)}</div>
+    ${paying ? `<div class="err" id="payErr"></div>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn ghost" id="ivePaid" style="flex:1;justify-content:center">I already sent it — check now</button>
+      </div>
+      <p class="tiny">Keep this reference: <b>${esc(o.ref)}</b>. You can reopen this page any time with it, or with the order ID in the field on the shop page.</p>` : ''}`;
+
+  const foot = $('sheetFoot');
+  foot.innerHTML = '';
+  const done = el('button', 'btn accent big', o.status === 'delivered' ? 'Done' : 'Close');
+  done.style.justifyContent = 'center';
+  done.onclick = sheetShut;
+  foot.appendChild(done);
+
+  if (paying) {
+    const copy = (text, btn) => navigator.clipboard.writeText(text).then(() => { btn.textContent = 'Copied'; btn.classList.add('done'); setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1600); })
+      .catch(() => { btn.textContent = 'Copy manually'; });
+    const ca = $('copyAmount'), ad = $('copyAddr');
+    if (ca) ca.onclick = () => copy(o.amount, ca);
+    if (ad) ad.onclick = () => copy(o.address, ad);
+    const ip = $('ivePaid');
+    if (ip) ip.onclick = async () => {
+      ip.disabled = true; ip.textContent = 'Checking the blockchain…';
+      try { const r = await api('/shop/order/' + encodeURIComponent(o.id) + '/check', { method: 'POST' }); currentOrder = r.order; } catch (e) { const pe = $('payErr'); if (pe) { pe.textContent = e.message; pe.classList.add('show'); } }
+      ip.disabled = false; ip.textContent = 'I already sent it — check now';
+      updatePaymentView();
+    };
+    startPolling();
+    tickCountdown();
+  }
+}
+
+function tickCountdown() {
+  const box = $('countdown');
+  if (!box || !currentOrder) return;
+  const left = Math.max(0, Math.round((currentOrder.expiresAt - Date.now()) / 1000));
+  const m = Math.floor(left / 60), s = left % 60;
+  box.innerHTML = left > 0
+    ? `Amount and rate locked for <b style="color:var(--text)">${m}:${String(s).padStart(2, '0')}</b>`
+    : 'The locked rate has expired — create a new order for a current price. Late payments are still detected, but contact support on Discord.';
+}
+setInterval(tickCountdown, 1000);
+
+function updatePaymentView() {
+  if (!currentOrder) return;
+  const host = $('statusHost');
+  if (host) host.innerHTML = statusCard(currentOrder);
+  if (currentOrder.status !== 'awaiting_payment' && currentOrder.status !== 'detected') {
+    clearInterval(pollTimer);
+    if (currentOrder.status === 'paid' || currentOrder.status === 'delivered') {
+      $('sheetKicker').textContent = 'Complete';
+      $('sheetTitle').textContent = currentOrder.status === 'delivered' ? 'Delivered' : 'Payment received';
+      renderDeliveredStep();
+    }
+  }
+}
+
+function renderDeliveredStep() {
+  const o = currentOrder;
+  $('sheetBody').innerHTML = `
+    <div class="big-amount" style="border-style:solid;border-color:rgba(107,203,119,.35);background:rgba(107,203,119,.06)">
+      <div class="k">${o.status === 'delivered' ? 'Delivered' : 'Payment confirmed'}</div>
+      <div class="v">${nf(o.robux)}<span style="font-size:15px;font-weight:600;color:var(--muted)"> R$</span></div>
+      <div class="u">to ${esc(o.robloxUsername)}</div>
+    </div>
+    ${statusCard(o)}
+    <div class="row" style="margin-top:8px"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row"><span class="lbl">Paid</span><span class="val">$${esc(o.usd)} in ${esc(o.symbol)}</span></div>
+    ${o.txid ? `<div class="row"><span class="lbl">Transaction</span><span class="val" style="font-size:12px;word-break:break-all">${esc(o.txid)}</span></div>` : ''}
+    <p class="tiny">Save your order reference (${esc(o.ref)}) — it is the fastest way to get help on Discord if anything looks off.</p>`;
+  const foot = $('sheetFoot');
+  foot.innerHTML = '';
+  const b = el('button', 'btn accent big', 'Done');
+  b.style.justifyContent = 'center';
+  b.onclick = sheetShut;
+  foot.appendChild(b);
+}
+
+function startPolling() {
+  clearInterval(pollTimer);
+  pollTimer = setInterval(async () => {
+    if (!currentOrder || !$('sheet').classList.contains('open')) return;
+    try {
+      const r = await api('/shop/order/' + encodeURIComponent(currentOrder.id));
+      currentOrder = r.order;
+      updatePaymentView();
+    } catch (_) {}
+  }, 12000);
+}
+
+/* ── tracking ───────────────────────────────────────────────────── */
+async function trackOrder() {
+  const key = $('trackInput').value.trim();
+  if (!key) return;
+  try {
+    const r = await api('/shop/order/' + encodeURIComponent(key));
+    currentOrder = r.order;
+    showPaymentStep();
+    if (currentOrder.status === 'paid' || currentOrder.status === 'delivered') renderDeliveredStep();
+    sheetOpen('Order ' + currentOrder.ref, 'Tracking');
+  } catch (e) {
+    alert('Could not find that order: ' + e.message);
+  }
+}
+$('trackBtn').onclick = trackOrder;
+$('trackInput').addEventListener('keydown', e => { if (e.key === 'Enter') trackOrder(); });
+$('robuxInput').addEventListener('input', e => {
+  const digits = e.target.value.replace(/[^0-9]/g, '');
+  e.target.value = digits ? nf(digits) : '';
+  refreshQuote();
+});
+$('customBuy').onclick = () => {
+  if (!customQuote) return;
+  openCheckout({ kind: 'custom', robux: customQuote.robux, usdCents: customQuote.usdCents, label: 'Custom' });
+};
+
+/* ── boot ───────────────────────────────────────────────────────── */
+(async function boot() {
+  renderQuickPicks();
+  try {
+    CATALOG = await api('/shop/packs');
+  } catch (e) {
+    const n = $('shop-notice');
+    n.textContent = 'The shop could not load: ' + e.message;
+    n.classList.add('show');
+    return;
+  }
+  $('stat-delivered').textContent = nf(CATALOG.stats.delivered);
+  $('stat-robux').textContent = num(CATALOG.stats.robuxDelivered);
+  $('stat-stock').textContent = nf(CATALOG.packs.reduce((a, p) => a + p.remaining, 0));
+  if (CATALOG.announcement) { $('announce').textContent = CATALOG.announcement; $('announce').hidden = false; }
+  if (!CATALOG.enabled) { const n = $('shop-notice'); n.textContent = 'The shop is paused right now — orders are temporarily disabled. Follow the Discord for updates.'; n.classList.add('show'); }
+  if (!CATALOG.coins.some(c => c.available)) { const n = $('shop-notice'); n.textContent = 'No payment coin is configured yet. Please open a Discord ticket and we will get you sorted.'; n.classList.add('show'); }
+  renderPacks();
+  refreshQuote();
+
+  let saved = '';
+  try { saved = localStorage.getItem('oxide_shop_order') || ''; } catch (_) {}
+  if (saved) {
+    try {
+      const r = await api('/shop/order/' + encodeURIComponent(saved));
+      const st = r.order.status;
+      if (st === 'awaiting_payment' || st === 'detected') {
+        currentOrder = r.order;
+        showPaymentStep();
+        sheetOpen('Order ' + r.order.ref, 'Still open');
+      }
+    } catch (_) {}
+  }
+})();
+</script>
+</body>
+</html>
