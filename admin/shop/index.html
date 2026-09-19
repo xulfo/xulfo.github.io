@@ -138,6 +138,15 @@
       <label class="label">Announcement banner (optional)<textarea id="cfgAnnouncement" maxlength="240" placeholder="e.g. restock tonight at 8pm"></textarea></label>
     </div>
   </div>
+  <div style="padding:0 18px 18px">
+    <div class="subtitle" style="margin-top:8px">Discord alerts</div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <input id="cfgWebhook" placeholder="https://discord.com/api/webhooks/…" spellcheck="false" autocomplete="off"
+        style="flex:1;min-width:280px;height:42px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);padding:0 12px;font:12px ui-monospace,Menlo,monospace;outline:none">
+      <button class="button" id="testAlert" type="button">Send test alert</button>
+    </div>
+    <div class="sub" id="webhookState" style="margin-top:10px">Paste a Discord webhook URL and every confirmed order pings you with the pack, the Robux amount, the buyer's Roblox account and a link to the transaction — so you never have to sit on this page.</div>
+  </div>
   <div class="savebar">
     <span class="notice" id="cfgStatus"></span>
     <button class="button primary" id="saveConfig">Save settings</button>
@@ -255,6 +264,9 @@ const CHAIN_LABEL = { btc: 'Bitcoin', ltc: 'Litecoin', eth: 'Ethereum' };
 const CHAIN_HINT = { btc: 'bc1… or 1… / 3…', ltc: 'ltc1… or L…', eth: '0x + 40 hex chars' };
 
 function renderConfig() {
+  // Never wipe what someone is typing when the 20s auto-refresh fires.
+  const focused = document.activeElement;
+  if (focused && focused.closest && focused.closest('#chains, #limits')) return;
   const host = $('chains');
   host.replaceChildren();
   for (const key of Object.keys(CHAIN_LABEL)) {
@@ -282,6 +294,11 @@ function renderConfig() {
   }
   $('cfgEnabled').checked = !!config.enabled;
   $('cfgAnnouncement').value = config.announcement || '';
+  if (document.activeElement !== $('cfgWebhook')) $('cfgWebhook').value = config.discordWebhook || '';
+  const hook = (config.discordWebhook || '').trim();
+  $('webhookState').textContent = hook
+    ? 'Alerts are on. Every confirmed order posts to that webhook with the pack, Robux amount, buyer and transaction link.'
+    : 'Paste a Discord webhook URL and every confirmed order pings you with the pack, the Robux amount, the buyer\u0027s Roblox account and a link to the transaction \u2014 so you never have to sit on this page.';
 }
 
 async function load() {
@@ -317,7 +334,7 @@ $('saveConfig').onclick = async () => {
   try {
     const r = await api('/admin/api/shop/config', {
       method: 'PATCH',
-      body: { addresses, limits, enabled: $('cfgEnabled').checked, announcement: $('cfgAnnouncement').value }
+      body: { addresses, limits, enabled: $('cfgEnabled').checked, announcement: $('cfgAnnouncement').value, discordWebhook: $('cfgWebhook').value.trim() }
     });
     if ((r.errors || []).length) {
       $('cfgStatus').textContent = r.errors.join(' · ');
@@ -332,6 +349,20 @@ $('saveConfig').onclick = async () => {
   } catch (e) {
     $('cfgStatus').textContent = e.message;
     $('cfgStatus').className = 'notice bad';
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+$('testAlert').onclick = async () => {
+  const btn = $('testAlert');
+  btn.disabled = true;
+  $('webhookState').textContent = 'Sending a test alert…';
+  try {
+    await api('/admin/api/shop/test-alert', { method: 'POST' });
+    $('webhookState').textContent = 'Test alert sent — check your Discord channel.';
+  } catch (e) {
+    $('webhookState').textContent = 'Test failed: ' + e.message;
   } finally {
     btn.disabled = false;
   }
