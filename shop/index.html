@@ -28,10 +28,24 @@
 .shop-notice.show{display:block}
 .announce{margin:18px 0 0;padding:12px 16px;border-radius:12px;border:1px solid var(--border-strong);background:var(--accent-wash);color:var(--accent-light);font-size:13.5px}
 
-.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:26px}
-.pack{position:relative;display:flex;flex-direction:column;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px 22px;transition:transform var(--transition),border-color var(--transition)}
+.pack-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:-4px}
+.pack-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--text-2);font-size:12px;font-weight:600}
+.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
+.pack{position:relative;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px 22px;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition)}
+.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(130% 80% at 50% -30%,rgba(129,163,214,.16),transparent 62%);opacity:0;transition:opacity var(--transition)}
+.pack:hover::after{opacity:1}
+.pack>*{position:relative;z-index:1}
 .pack:hover{transform:translateY(-3px);border-color:var(--border-strong)}
 .pack.best{border-color:rgba(129,163,214,.45);box-shadow:0 20px 60px rgba(129,163,214,.12)}
+/* the entry pack: the card that has to feel like the easy first step */
+.pack.starter{border-color:rgba(129,163,214,.38);background:linear-gradient(180deg,rgba(129,163,214,.13),rgba(18,19,22,.55) 48%),var(--panel);box-shadow:0 20px 64px rgba(129,163,214,.13),inset 0 1px 0 rgba(255,255,255,.06)}
+.pack.starter:hover{border-color:rgba(129,163,214,.6);box-shadow:0 30px 78px rgba(129,163,214,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+.pack.starter::before{content:"";position:absolute;left:14%;right:14%;top:0;height:2px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,transparent,var(--accent-light),transparent);opacity:.85}
+.pack.starter .pack-amount{font-size:44px}
+.pack.starter .pack-name{color:var(--text)}
+.pack.starter .pack-price{font-size:19px}
+.pack.starter .btn{box-shadow:0 12px 30px var(--accent-glow)}
+.pack.starter .btn:hover{box-shadow:0 16px 38px rgba(129,163,214,.36)}
 .pack-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .pack-name{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
 .pack-badge{font-size:10.5px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text-2)}
@@ -75,13 +89,6 @@
 .step h4{margin:12px 0 7px;font-size:15px}
 .step p{color:var(--text-2);font-size:13px;line-height:1.55}
 
-.faq{margin-top:44px;display:grid;gap:10px}
-.faq details{border:1px solid var(--border);border-radius:13px;background:var(--panel);overflow:hidden}
-.faq summary{padding:15px 18px;cursor:pointer;font-weight:620;font-size:14.5px;list-style:none;display:flex;justify-content:space-between;gap:12px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+";color:var(--muted);font-weight:600}
-.faq details[open] summary::after{content:"–"}
-.faq .a{padding:0 18px 16px;color:var(--text-2);font-size:13.5px;line-height:1.6}
 .fine{margin:34px 0 0;padding:16px 18px;border:1px solid var(--border);border-radius:13px;background:rgba(0,0,0,.25);color:var(--muted);font-size:12.5px;line-height:1.6}
 
 /* checkout drawer */
@@ -175,12 +182,17 @@
   <div class="shop-notice" id="shop-notice"></div>
 
   <section class="steps" aria-labelledby="packs-title">
-    <div class="section-heading compact"><div><div class="eyebrow">Limited packs</div><h2 id="packs-title">Three ways in.</h2></div><p>Fixed stock, fixed price. When a pack is gone, it is gone.</p></div>
+    <div class="section-heading compact"><div><div class="eyebrow">Limited packs</div><h2 id="packs-title">Three ways in.</h2></div></div>
+    <div class="pack-chips">
+      <span class="pack-chip"><i class="dot-live"></i>Live stock</span>
+      <span class="pack-chip">Price locked for 30 minutes</span>
+      <span class="pack-chip">BTC · LTC · ETH</span>
+    </div>
     <div class="packs" id="packs"></div>
   </section>
 
   <section class="steps" aria-labelledby="custom-title">
-    <div class="section-heading compact"><div><div class="eyebrow">Custom amount</div><h2 id="custom-title">Or pick your own.</h2></div><p>A flat $1 per 1,000 Robux — 10,000 Robux for $10, 12,000 for $12. Minimum order is 10,000 Robux.</p></div>
+    <div class="section-heading compact"><div><div class="eyebrow">Custom amount</div><h2 id="custom-title">Or pick your own.</h2></div></div>
     <div class="custom-card">
       <div class="custom-grid">
         <div>
@@ -192,7 +204,7 @@
             </div>
           </div>
           <div class="quick-picks" id="quickPicks"></div>
-          <div class="hint-line" id="customHint">Minimum order is 10,000 Robux.</div>
+          <div class="hint-line" id="customHint"></div>
         </div>
         <div>
           <div class="custom-price">
@@ -220,18 +232,6 @@
       <div class="step"><div class="n">Step 02</div><h4>Pick your coin</h4>      <p>Bitcoin, Litecoin or Ethereum. The exact amount is reserved for you alone.</p></div>
       <div class="step"><div class="n">Step 03</div><h4>Send the exact amount</h4><p>Scan the QR or copy the address. We watch the chain and detect your transfer automatically.</p></div>
       <div class="step"><div class="n">Step 04</div><h4>Get your Robux</h4><p>Once confirmed, we deliver to the Roblox account you entered. You get an order reference to track it.</p></div>
-    </div>
-  </section>
-
-  <section class="steps" aria-labelledby="faq-title">
-    <div class="section-heading compact"><div><div class="eyebrow">Questions</div><h2 id="faq-title">Good to know.</h2></div></div>
-    <div class="faq">
-      <details><summary>How fast is delivery?</summary><div class="a">Payments are detected automatically as soon as they are broadcast, but we only hand over Robux after the transfer has enough confirmations (1 for Bitcoin and Litecoin, 2 for Ethereum). After that, delivery is handled by our team and normally takes minutes — you can follow the status live on your order.</div></details>
-      <details><summary>Why is the amount slightly odd?</summary><div class="a">Every order gets a unique amount, down to the last decimal. That is how several pending payments stay distinguishable on the same address, and how your transfer is matched to your order without you telling us a transaction ID. Send the exact amount shown — not more, not less.</div></details>
-      <details><summary>What if I send the wrong amount?</summary><div class="a">We detect underpayments too (anything above 90% of the expected amount) and flag them for manual review. If that happens, open a Discord ticket with your order reference and we will sort it out. Never send a different amount on purpose to "top up" an order.</div></details>
-      <details><summary>Do I need an account?</summary><div class="a">No. You only enter the Roblox username that should receive the Robux, plus your Discord in case we need to reach you. Keep your order reference — it is the only way to reopen the tracking page.</div></details>
-      <details><summary>What happens if the price moves?</summary><div class="a">Your price and exact crypto amount are locked when you create the order and stay valid for 30 minutes. If the timer runs out, just create a new order — the rate is refreshed with the current market price.</div></details>
-      <details><summary>Which coins can I use?</summary><div class="a">Bitcoin, Litecoin or Ethereum. For smaller orders Litecoin and Ethereum usually cost less in network fees than Bitcoin, so pick whichever is cheapest to send for your amount — the price you pay is the same in every coin.</div></details>
     </div>
   </section>
 
@@ -290,22 +290,24 @@ function renderPacks() {
     const soldOut = p.remaining <= 0;
     const pct = p.limit ? Math.min(100, Math.round((p.sold / p.limit) * 100)) : 0;
     const rate = (p.usdCents / 100) / (p.robux / 1000);
-    const card = el('article', 'pack' + (p.id === bestValue.id ? ' best' : '') + (soldOut ? ' soldout' : ''));
+    const isStarter = p.id === 'starter';
+    const isBest = p.id === bestValue.id;
+    const card = el('article', 'pack' + (isStarter ? ' starter' : '') + (isBest ? ' best' : '') + (soldOut ? ' soldout' : ''));
     card.innerHTML = `
       <div class="pack-top">
         <span class="pack-name">${esc(p.label)}</span>
-        <span class="pack-badge${p.id === bestValue.id ? ' hot' : ''}">${soldOut ? 'Sold out' : 'Limited · ' + pct + '% gone'}</span>
+        <span class="pack-badge${isStarter || isBest ? ' hot' : ''}">${soldOut ? 'Sold out' : (isStarter ? 'Start here' : 'Limited · ' + pct + '% gone')}</span>
       </div>
       <div class="pack-amount">${nf(p.robux)}<span>R$</span></div>
       <div class="pack-price">${money(p.usdCents)}<small>$${rate.toFixed(2)} per 1,000</small></div>
       <ul class="pack-list">
         <li>${CHECK}<span>${nf(p.robux)} Robux to your Roblox account</span></li>
-        <li>${CHECK}<span>${p.id === bestValue.id ? 'Best value per Robux' : 'Locked price for 30 minutes'}</span></li>
+        <li>${CHECK}<span>${isBest ? 'Best value per Robux' : (isStarter ? 'Smallest way in — lowest price' : 'Locked price for 30 minutes')}</span></li>
         <li>${CHECK}<span>Pay with BTC, LTC or ETH</span></li>
         <li>${CHECK}<span>Automatic on-chain payment detection</span></li>
       </ul>
       <div class="pack-stock">
-        <div class="lbl"><span>${soldOut ? 'No stock left' : p.remaining + ' left of ' + p.limit}</span><span>${p.sold} sold</span></div>
+        <div class="lbl"><span>${soldOut ? 'No stock left' : p.remaining + ' left of ' + p.limit}</span><span>${pct}% gone</span></div>
         <div class="bar"><i style="width:${pct}%"></i></div>
       </div>
       <button class="btn accent" data-pack="${esc(p.id)}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'Sold out' : 'Buy ' + esc(p.label)}</button>`;
