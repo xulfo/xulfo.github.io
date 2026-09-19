@@ -173,7 +173,9 @@ let loading = false;
 function api(path, opt) {
   opt = opt || {};
   const headers = { 'Content-Type': 'application/json', 'X-Admin-Password': pass, 'X-Admin-Key': pass, ...(opt.headers || {}) };
-  return fetch(API + path, { credentials: 'include', ...opt, headers }).then(async r => {
+  // Callers pass plain objects; fetch would serialise those as "[object Object]".
+  const body = opt.body && typeof opt.body === 'object' ? JSON.stringify(opt.body) : opt.body;
+  return fetch(API + path, { credentials: 'include', ...opt, headers, body }).then(async r => {
     const j = await r.json().catch(() => ({}));
     if (!r.ok) throw new Error(j.error || 'Request failed');
     return j;
