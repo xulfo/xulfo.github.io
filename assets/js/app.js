@@ -8,7 +8,6 @@
 const API_BASE = ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) ? '/api' : 'https://adorable-sallyanne-fgdfgdfgd-b2d051be.koyeb.app';
 const EXEC_REFRESH_MS = 30_000;  // Executions — раз в 30с
 const LIVE_REFRESH_MS = 5_000;   // Live — раз в 5с (когда появится эндпоинт)
-const UNSUPPORTED = 'Unsupported';
 
 const GAME_ICONS = {
   'Steal an Egg': 'https://tr.rbxcdn.com/180DAY-b66a86d442d9311de8df77c49893aa04/512/512/Image/Png/noFilter',
@@ -91,7 +90,6 @@ const token = (name) => css.getPropertyValue(name).trim();
 const COLORS = {
   bar: token('--accent-data'),
   barHover: token('--accent'),
-  unsupported: token('--muted'),
   grid: token('--grid'),
   baseline: token('--baseline'),
   muted: token('--muted'),
@@ -149,10 +147,9 @@ function renderStats(data) {
   els.tileTotal.textContent = numFmt.format(data.total);
   els.tileGames.textContent = numFmt.format(data.games.length);
 
-  const max = Math.max(1, data.unsupported, ...data.games.map((g) => g.launches));
+  const max = Math.max(1, ...data.games.map((g) => g.launches));
   els.gameList.replaceChildren(
-    ...data.games.map((g, i) => gameRow(i + 1, g.name, g.launches, max, false)),
-    ...(data.unsupported > 0 ? [gameRow(null, UNSUPPORTED, data.unsupported, max, true)] : []),
+    ...data.games.map((g, i) => gameRow(i + 1, g.name, g.launches, max)),
   );
   els.gamesCount.textContent = data.games.length
     ? `${data.games.length} games · click a game for daily breakdown`
@@ -164,11 +161,11 @@ function renderStats(data) {
 
 /* Строки списка собираются через DOM API + textContent:
    имена игр приходят из внешнего JSON и не должны попадать в innerHTML. */
-function gameRow(rank, name, launches, max, isUnsupported) {
+function gameRow(rank, name, launches, max) {
   const li = document.createElement('li');
   const btn = document.createElement('button');
   btn.type = 'button';
-  btn.className = 'game-row' + (isUnsupported ? ' unsupported' : '');
+  btn.className = 'game-row';
   btn.addEventListener('click', () => openGame(name));
 
   const rankEl = document.createElement('span');
@@ -178,18 +175,16 @@ function gameRow(rank, name, launches, max, isUnsupported) {
   // иконка: буква-плейсхолдер, поверх — картинка из дискового кэша бэкенда
   const iconEl = document.createElement('span');
   iconEl.className = 'row-icon';
-  iconEl.textContent = isUnsupported ? '?' : (Array.from(name)[0] || '?').toUpperCase();
-  if (!isUnsupported) {
-    const img = document.createElement('img');
-    img.alt = '';
-    img.loading = 'lazy';
-    img.addEventListener('error', () => {
-      if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
-      else img.remove();
-    });
-    img.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
-    iconEl.appendChild(img);
-  }
+  iconEl.textContent = (Array.from(name)[0] || '?').toUpperCase();
+  const img = document.createElement('img');
+  img.alt = '';
+  img.loading = 'lazy';
+  img.addEventListener('error', () => {
+    if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+    else img.remove();
+  });
+  img.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
+  iconEl.appendChild(img);
 
   const main = document.createElement('span');
   main.className = 'game-main';
@@ -237,12 +232,8 @@ function openGame(name) {
   els.modalTotal.textContent = '';
   els.modalPlay.hidden = true;
   // иконка ставится сразу — бэкенд отдаёт её с дискового кэша мгновенно
-  els.modalIcon.hidden = name === UNSUPPORTED;
-  if (name !== UNSUPPORTED) {
-    els.modalIcon.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
-  } else {
-    els.modalIcon.removeAttribute('src');
-  }
+  els.modalIcon.hidden = false;
+  els.modalIcon.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
   els.modalClose.focus();
   syncHash();
   loadGame();
@@ -308,8 +299,8 @@ function renderGame(data) {
 
   const labels = data.series.map((p) => dayFmt.format(utcDate(p.date)));
   const values = data.series.map((p) => p.launches);
-  const color = data.name === UNSUPPORTED ? COLORS.unsupported : COLORS.bar;
-  const hover = data.name === UNSUPPORTED ? COLORS.text2 : COLORS.barHover;
+  const color = COLORS.bar;
+  const hover = COLORS.barHover;
 
   if (chart) { chart.destroy(); chart = null; }
   chart = new Chart(els.chartCanvas, {
@@ -498,17 +489,15 @@ function liveRow(item, keyField, withIcon) {
     const iconEl = document.createElement('span');
     iconEl.className = 'row-icon';
     iconEl.textContent = (Array.from(label)[0] || '?').toUpperCase();
-    if (label !== UNSUPPORTED) {
-      const img = document.createElement('img');
-      img.alt = '';
-      img.loading = 'lazy';
-      img.addEventListener('error', () => {
-        if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
-        else img.remove();
-      });
-      img.src = GAME_ICONS[label] || `${API_BASE}/icon/${encodeURIComponent(label)}.png`;
-      iconEl.appendChild(img);
-    }
+    const img = document.createElement('img');
+    img.alt = '';
+    img.loading = 'lazy';
+    img.addEventListener('error', () => {
+      if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+      else img.remove();
+    });
+    img.src = GAME_ICONS[label] || `${API_BASE}/icon/${encodeURIComponent(label)}.png`;
+    iconEl.appendChild(img);
     row.appendChild(iconEl);
   }
   const nameEl = document.createElement('span');
