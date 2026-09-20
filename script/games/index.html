@@ -11,18 +11,6 @@
 <script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
 <style>
 /* Games the hub only discovered at runtime: present, but visually secondary. */
-.also{margin-top:44px;border-top:1px solid var(--border);padding-top:26px}
-.also-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.also-head h2{font-size:19px;letter-spacing:-.02em}
-.also-head p{color:var(--muted);font-size:13px;max-width:52ch}
-.also-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-top:18px}
-.also-card{display:flex;align-items:center;gap:11px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.015);color:var(--text-2);text-decoration:none;font-size:13.5px;transition:var(--transition)}
-.also-card:hover{border-color:var(--border-strong);background:rgba(255,255,255,.04);color:var(--text)}
-.also-card .dot{width:5px;height:5px;border-radius:50%;background:var(--muted);flex:none}
-.also-card span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.also-card svg{width:13px;height:13px;flex:none;color:var(--muted);opacity:0;transition:var(--transition)}
-.also-card:hover svg{opacity:1}
-@media (max-width:560px){.also-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -45,16 +33,8 @@
   <div class="games-grid" id="games-grid" aria-live="polite"></div>
   <div class="empty" id="empty-state" hidden>No games match that search.</div>
 
-  <section class="also" id="also-section" hidden aria-labelledby="also-title">
-    <div class="also-head">
-      <h2 id="also-title">Also works in</h2>
-      <p>Indexed automatically whenever the hub is run here. No dedicated script yet.</p>
-    </div>
-    <div class="also-grid" id="also-grid"></div>
-  </section>
-
   <footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/">Home</a><a href="/script/">Loader</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
 </main>
-<script src="/assets/js/games.js?v=7"></script>
+<script src="/assets/js/games.js?v=8"></script>
 </body>
 </html>
