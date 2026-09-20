@@ -1000,8 +1000,6 @@ a.live-row:hover { background: var(--panel-hover); }
   min-width: 2px;
   transition: width 0.3s ease;
 }
-.game-row.unsupported .bar-fill { background: var(--muted); }
-.game-row.unsupported .game-name { color: var(--text-2); }
 .game-value {
   font-weight: 640;
   font-variant-numeric: tabular-nums;
