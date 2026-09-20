@@ -141,7 +141,7 @@
   <div style="padding:0 18px 18px">
     <div class="subtitle" style="margin-top:8px">Discord alerts</div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-      <input id="cfgWebhook" placeholder="https://discord.com/api/webhooks/…" spellcheck="false" autocomplete="off"
+      <input id="cfgWebhook" placeholder="Leave empty to keep the current one · paste a new URL to replace it" spellcheck="false" autocomplete="off"
         style="flex:1;min-width:280px;height:42px;border:1px solid var(--line);border-radius:9px;background:var(--panel2);color:var(--text);padding:0 12px;font:12px ui-monospace,Menlo,monospace;outline:none">
       <button class="button" id="testAlert" type="button">Send test alert</button>
     </div>
@@ -294,10 +294,10 @@ function renderConfig() {
   }
   $('cfgEnabled').checked = !!config.enabled;
   $('cfgAnnouncement').value = config.announcement || '';
-  if (document.activeElement !== $('cfgWebhook')) $('cfgWebhook').value = config.discordWebhook || '';
-  const hook = (config.discordWebhook || '').trim();
-  $('webhookState').textContent = hook
-    ? 'Alerts are on. Every confirmed order posts to that webhook with the pack, Robux amount, buyer and transaction link.'
+  if (document.activeElement !== $('cfgWebhook')) $('cfgWebhook').value = '';
+  const hook = config.webhook || {};
+  $('webhookState').textContent = hook.set
+    ? 'Alerts are on ' + (hook.source === 'env' ? '(from the server environment)' : '(saved in the panel)') + ' \u00b7 ends with ' + hook.fingerprint + '. The URL is stored encrypted and never shown here \u2014 type a new one to replace it.'
     : 'Paste a Discord webhook URL and every confirmed order pings you with the pack, the Robux amount, the buyer\u0027s Roblox account and a link to the transaction \u2014 so you never have to sit on this page.';
 }
 
@@ -331,11 +331,12 @@ $('saveConfig').onclick = async () => {
   document.querySelectorAll('#chains input[data-coin]').forEach(i => addresses[i.dataset.coin] = i.value.trim());
   const limits = {};
   document.querySelectorAll('#limits input[data-limit]').forEach(i => limits[i.dataset.limit] = Number(i.value || 0));
+  // Only send a webhook when a new one was typed: an empty box means "leave it".
+  const newHook = $('cfgWebhook').value.trim();
+  const body = { addresses, limits, enabled: $('cfgEnabled').checked, announcement: $('cfgAnnouncement').value };
+  if (newHook) body.discordWebhook = newHook;
   try {
-    const r = await api('/admin/api/shop/config', {
-      method: 'PATCH',
-      body: { addresses, limits, enabled: $('cfgEnabled').checked, announcement: $('cfgAnnouncement').value, discordWebhook: $('cfgWebhook').value.trim() }
-    });
+    const r = await api('/admin/api/shop/config', { method: 'PATCH', body });
     if ((r.errors || []).length) {
       $('cfgStatus').textContent = r.errors.join(' · ');
       $('cfgStatus').className = 'notice bad';
