@@ -1,5 +1,5 @@
-/* Oxide HUB — Supported Games.
- * The catalog comes from the Oxide backend worker. Banners are served from its
+/* Arc HUB — Supported Games.
+ * The catalog comes from the Arc backend worker. Banners are served from its
  * asset endpoint, and each card opens the matching Roblox experience.
  */
 'use strict';
@@ -42,7 +42,7 @@ const GAME_BANNERS = {
   'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/768/432/Image/Png/noFilter',
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-824636b18a8e11f045109235f8a0335d/768/432/Image/Png/noFilter',
   'RIVALS': 'https://tr.rbxcdn.com/180DAY-fb02f48458ff689309df8d52bf516d04/768/432/Image/Png/noFilter',
-  'Universal': '/assets/Oxide.png'
+  'Universal': '/assets/Arc.png'
 };
 
 const icon = (name) => `<svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-${name}"></use></svg>`;
@@ -71,8 +71,8 @@ function card(game) {
   img.loading = 'lazy';
   img.src = GAME_BANNERS[game.name] || `${API_BASE}/banner/${encodeURIComponent(game.name)}.webp`;
   img.addEventListener('error', () => {
-    if (img.src !== '/assets/Oxide.png') {
-      img.src = '/assets/Oxide.png';
+    if (img.src !== '/assets/Arc.png') {
+      img.src = '/assets/Arc.png';
     }
   });
   banner.appendChild(img);

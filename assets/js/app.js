@@ -1,6 +1,6 @@
-/* Oxide HUB — statistics page.
+/* Arc HUB — statistics page.
  *
- * The Oxide frontend is static; live data comes from the Oxide presence backend.
+ * The Arc frontend is static; live data comes from the Arc presence backend.
  * Local dev hits /api which server.js proxies to the same backend.
  */
 'use strict';
@@ -21,7 +21,7 @@ const GAME_ICONS = {
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-71ab0dbb49e54809aea4bbcb3f3420c7/512/512/Image/Png/noFilter',
   'RIVALS': 'https://tr.rbxcdn.com/180DAY-fb02f48458ff689309df8d52bf516d04/512/512/Image/Png/noFilter',
   'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/512/512/Image/Png/noFilter',
-  'Universal': '/assets/Oxide.png'
+  'Universal': '/assets/Arc.png'
 };
 
 const state = {
@@ -180,7 +180,7 @@ function gameRow(rank, name, launches, max) {
   img.alt = '';
   img.loading = 'lazy';
   img.addEventListener('error', () => {
-    if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+    if (img.src !== '/assets/Arc.png') img.src = '/assets/Arc.png';
     else img.remove();
   });
   img.src = GAME_ICONS[name] || `${API_BASE}/icon/${encodeURIComponent(name)}.png`;
@@ -493,7 +493,7 @@ function liveRow(item, keyField, withIcon) {
     img.alt = '';
     img.loading = 'lazy';
     img.addEventListener('error', () => {
-      if (img.src !== '/assets/Oxide.png') img.src = '/assets/Oxide.png';
+      if (img.src !== '/assets/Arc.png') img.src = '/assets/Arc.png';
       else img.remove();
     });
     img.src = GAME_ICONS[label] || `${API_BASE}/icon/${encodeURIComponent(label)}.png`;

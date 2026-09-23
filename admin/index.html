@@ -3,24 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin — Oxide HUB</title>
-<link rel="icon" type="image/png" href="/assets/Oxide.png?v=2">
+<title>Admin — Arc HUB</title>
+<link rel="icon" type="image/png" href="/assets/Arc.png?v=2">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
 <style>
 :root{
   --admin-panel:rgba(15,17,21,.82);
-  --admin-panel-solid:#101216;
+  --admin-panel-solid:#121212;
   --admin-line:rgba(255,255,255,.075);
   --admin-line-strong:rgba(255,255,255,.14);
-  --admin-blue:#8eafe2;
+  --admin-blue:#ededed;
   --admin-green:#72d59a;
   --admin-red:#f07d7d;
 }
 .admin-shell{width:min(1180px,100%);margin:0 auto;padding:34px 24px 72px}
 .admin-login-shell{min-height:calc(100vh - 72px);display:grid;place-items:center;padding-top:14px}
 .admin-login-layout{width:min(900px,100%);display:grid;grid-template-columns:1.08fr .92fr;overflow:hidden;border:1px solid var(--admin-line);border-radius:18px;background:var(--admin-panel);box-shadow:0 24px 80px rgba(0,0,0,.42);backdrop-filter:blur(28px)}
-.admin-login-brand{padding:52px 48px;display:flex;flex-direction:column;justify-content:space-between;min-height:460px;border-right:1px solid var(--admin-line);background:linear-gradient(145deg,rgba(129,163,214,.10),transparent 55%)}
+.admin-login-brand{padding:52px 48px;display:flex;flex-direction:column;justify-content:space-between;min-height:460px;border-right:1px solid var(--admin-line);background:linear-gradient(145deg,rgba(255,255,255,.10),transparent 55%)}
 .admin-login-brand img{width:76px;height:76px;object-fit:contain;margin-bottom:36px}
 .admin-login-brand h1{font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-.055em;margin:0;max-width:390px}
 .admin-login-brand h1 span{color:var(--admin-blue)}
@@ -111,7 +111,7 @@
 <body>
 <nav class="topnav">
   <div class="topnav-inner">
-    <a class="brand" href="/" aria-label="Oxide HUB home"><img src="/assets/Oxide.png?v=2" alt=""><span>Oxide HUB</span></a>
+    <a class="brand" href="/" aria-label="Arc HUB home"><img src="/assets/Arc.png?v=2" alt=""><span>Arc HUB</span></a>
     <div class="topnav-links"><a href="/">Home</a><a href="/shop/">Shop</a><a href="/script/statistics/">Stats</a></div>
   </div>
 </nav>
@@ -120,7 +120,7 @@
   <section class="admin-login-layout">
     <div class="admin-login-brand">
       <div>
-        <img src="/assets/Oxide.png?v=2" alt="Oxide HUB">
+        <img src="/assets/Arc.png?v=2" alt="Arc HUB">
         <div class="admin-eyebrow"><span class="status-dot"></span> Private control room</div>
         <h1>Operate the<br><span>live hub.</span></h1>
         <p>Monitor active sessions, inspect executor coverage, and manage connected clients from one quiet workspace.</p>
@@ -150,11 +150,10 @@
     <div>
       <div class="admin-eyebrow"><span class="status-dot"></span> Live management</div>
       <h1>Control room</h1>
-      <p>Every active Oxide session, in one place.</p>
+      <p>Every active Arc session, in one place.</p>
     </div>
     <div class="admin-header-actions">
       <div class="admin-live-state"><span class="status-dot"></span><span>Live connection</span></div>
-      <a href="/admin/profiles/" class="btn ghost admin-profile-link"><svg class="admin-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20M9.5 10.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM17 11a3 3 0 1 0 0-6M17 14.5h1a4 4 0 0 1 4 4V20"/></svg><span>Profiles</span></a>
       <a href="/admin/shop/" class="btn ghost admin-profile-link"><svg class="admin-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l1.5 12H4.5L6 7ZM9 7a3 3 0 0 1 6 0M9 12h6M9 16h6"/></svg><span>Shop</span></a>
       <button id="refresh" class="btn ghost" type="button"><svg class="admin-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.9-3M4 5v4h4M4 13a8 8 0 0 0 14.9 3M20 19v-4h-4"/></svg><span>Refresh</span></button>
       <button id="logout" class="btn ghost" type="button"><svg class="admin-btn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 5H5v14h5M14 8l4 4-4 4M9 12h9"/></svg><span>Log out</span></button>
@@ -204,7 +203,7 @@ const GAME_ICONS = {
   'Leaf Simulator': 'https://tr.rbxcdn.com/180DAY-71ab0dbb49e54809aea4bbcb3f3420c7/512/512/Image/Png/noFilter',
   'RIVALS': 'https://tr.rbxcdn.com/180DAY-fb02f48458ff689309df8d52bf516d04/512/512/Image/Png/noFilter',
   'Search For The Needle': 'https://tr.rbxcdn.com/180DAY-19a201f37929cac782ac0b884693b6d7/512/512/Image/Png/noFilter',
-  'Universal': '/assets/Oxide.png'
+  'Universal': '/assets/Arc.png'
 };
 const loginView=document.getElementById('login-view');
 const dashboardView=document.getElementById('dashboard-view');
@@ -219,7 +218,7 @@ const filterEl=document.getElementById('game-filter');
 const syncEl=document.getElementById('sync-label');
 let clients=[];
 let loading=false;
-let adminPass = sessionStorage.getItem('oxide_admin_pass') || '';
+let adminPass = sessionStorage.getItem('arc_admin_pass') || '';
 const esc=(v)=>String(v??'');
 const initials=(v)=>{const parts=esc(v).trim().split(/\s+|_/).filter(Boolean);return (parts.slice(0,2).map(x=>x[0]).join('')||'?').toUpperCase();};
 const gameName=(c)=>GAME_NAMES[Number(c.placeId)]||String(c.placeId||'Unknown');
@@ -258,8 +257,8 @@ const actions=document.createElement('td');const actionWrap=document.createEleme
 async function loadClients(){if(loading)return;setLoading(true);dashboardError.textContent='';try{const data=await api('/admin/api/clients');clients=Array.isArray(data.clients)?data.clients:[];populateFilters();refreshSummary();renderClients();const now=new Date();document.getElementById('stat-sync').textContent=formatTime(now);syncEl.textContent='Last synced '+formatTime(now);}catch(e){if(e.status===401){showLogin();return;}dashboardError.textContent=e.message;}finally{setLoading(false);}}
 async function kickClient(userId,button){if(!confirm('Queue this client for disconnect?'))return;button.disabled=true;try{await api('/admin/api/kick',{method:'POST',body:JSON.stringify({user_id:userId})});await loadClients();}catch(e){dashboardError.textContent=e.message;button.disabled=false;}}
 document.getElementById('reveal-password').addEventListener('click',()=>{const visible=password.type==='text';password.type=visible?'password':'text';document.getElementById('reveal-password').setAttribute('aria-label',visible?'Show password':'Hide password');});
-loginForm.addEventListener('submit',async(e)=>{e.preventDefault();loginError.textContent='';try{const pass=password.value;adminPass=pass;await api('/admin/login',{method:'POST',body:JSON.stringify({password:pass})});sessionStorage.setItem('oxide_admin_pass',pass);showDashboard();}catch(err){adminPass='';sessionStorage.removeItem('oxide_admin_pass');loginError.textContent=err.message||'Login failed';}});
-searchEl.addEventListener('input',renderClients);filterEl.addEventListener('change',renderClients);document.getElementById('refresh').addEventListener('click',loadClients);document.getElementById('logout').addEventListener('click',async()=>{try{await api('/admin/logout',{method:'POST'});}catch(_){}adminPass='';sessionStorage.removeItem('oxide_admin_pass');showLogin();});
+loginForm.addEventListener('submit',async(e)=>{e.preventDefault();loginError.textContent='';try{const pass=password.value;adminPass=pass;await api('/admin/login',{method:'POST',body:JSON.stringify({password:pass})});sessionStorage.setItem('arc_admin_pass',pass);showDashboard();}catch(err){adminPass='';sessionStorage.removeItem('arc_admin_pass');loginError.textContent=err.message||'Login failed';}});
+searchEl.addEventListener('input',renderClients);filterEl.addEventListener('change',renderClients);document.getElementById('refresh').addEventListener('click',loadClients);document.getElementById('logout').addEventListener('click',async()=>{try{await api('/admin/logout',{method:'POST'});}catch(_){}adminPass='';sessionStorage.removeItem('arc_admin_pass');showLogin();});
 api('/admin/api/clients').then(showDashboard).catch(()=>showLogin());setInterval(()=>{if(!dashboardView.hidden)loadClients();},15000);
 </script>
 </body>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Robux Shop — Oxide HUB</title>
+<title>Robux Shop — Arc HUB</title>
 <meta name="description" content="Buy Robux with crypto. Limited packs, instant on-chain payment detection, delivered to your Roblox account.">
-<link rel="icon" type="image/png" href="/assets/Oxide.png?v=2">
-<link rel="apple-touch-icon" href="/assets/Oxide.png?v=2">
+<link rel="icon" type="image/png" href="/assets/Arc.png?v=2">
+<link rel="apple-touch-icon" href="/assets/Arc.png?v=2">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
 <style>
@@ -32,20 +32,20 @@
 .pack-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--text-2);font-size:12px;font-weight:600}
 .packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
 .pack{position:relative;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px 22px;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition)}
-.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(130% 80% at 50% -30%,rgba(129,163,214,.16),transparent 62%);opacity:0;transition:opacity var(--transition)}
+.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(130% 80% at 50% -30%,rgba(255,255,255,.16),transparent 62%);opacity:0;transition:opacity var(--transition)}
 .pack:hover::after{opacity:1}
 .pack>*{position:relative;z-index:1}
 .pack:hover{transform:translateY(-3px);border-color:var(--border-strong)}
-.pack.best{border-color:rgba(129,163,214,.45);box-shadow:0 20px 60px rgba(129,163,214,.12)}
+.pack.best{border-color:rgba(255,255,255,.45);box-shadow:0 20px 60px rgba(255,255,255,.12)}
 /* the entry pack: the card that has to feel like the easy first step */
-.pack.starter{border-color:rgba(129,163,214,.38);background:linear-gradient(180deg,rgba(129,163,214,.13),rgba(18,19,22,.55) 48%),var(--panel);box-shadow:0 20px 64px rgba(129,163,214,.13),inset 0 1px 0 rgba(255,255,255,.06)}
-.pack.starter:hover{border-color:rgba(129,163,214,.6);box-shadow:0 30px 78px rgba(129,163,214,.22),inset 0 1px 0 rgba(255,255,255,.08)}
+.pack.starter{border-color:rgba(255,255,255,.38);background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(18,19,22,.55) 48%),var(--panel);box-shadow:0 20px 64px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.06)}
+.pack.starter:hover{border-color:rgba(255,255,255,.6);box-shadow:0 30px 78px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
 .pack.starter::before{content:"";position:absolute;left:14%;right:14%;top:0;height:2px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,transparent,var(--accent-light),transparent);opacity:.85}
 .pack.starter .pack-amount{font-size:44px}
 .pack.starter .pack-name{color:var(--text)}
 .pack.starter .pack-price{font-size:19px}
 .pack.starter .btn{box-shadow:0 12px 30px var(--accent-glow)}
-.pack.starter .btn:hover{box-shadow:0 16px 38px rgba(129,163,214,.36)}
+.pack.starter .btn:hover{box-shadow:0 16px 38px rgba(255,255,255,.36)}
 .pack-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
 .pack-name{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
 .pack-badge{font-size:10.5px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text-2)}
@@ -126,7 +126,7 @@
 .coin .g{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);font-size:12px;font-weight:700;color:var(--accent-light)}
 .cd{color:var(--muted);font-size:12.5px;margin-top:12px;font-variant-numeric:tabular-nums}
 .status-card{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:rgba(0,0,0,.28)}
-.status-card.wait{border-color:rgba(129,163,214,.3)}
+.status-card.wait{border-color:rgba(255,255,255,.3)}
 .status-card.ok{border-color:rgba(107,203,119,.4);background:rgba(107,203,119,.07)}
 .status-card.bad{border-color:rgba(230,103,103,.4);background:rgba(230,103,103,.07)}
 .status-card .h{display:flex;align-items:center;gap:9px;font-weight:680;font-size:14.5px}
@@ -146,7 +146,7 @@
 <body>
 <nav class="topnav">
   <div class="topnav-inner">
-    <a class="brand" href="/" aria-label="Oxide HUB home"><img src="/assets/Oxide.png?v=2" alt=""><span>Oxide HUB</span></a>
+    <a class="brand" href="/" aria-label="Arc HUB home"><img src="/assets/Arc.png?v=2" alt=""><span>Arc HUB</span></a>
     <div class="topnav-links" aria-label="Primary navigation">
       <a href="/">Home</a>
       <a href="/script/">Script</a>
@@ -160,7 +160,7 @@
 <main class="wrap">
   <section class="shop-hero">
     <div>
-      <div class="page-kicker"><span class="status-dot"></span> Oxide Shop</div>
+      <div class="page-kicker"><span class="status-dot"></span> Arc Shop</div>
       <h1>Robux, delivered<br>without the wait.</h1>
       <p class="lede">Pick a limited pack or set your own amount. Pay in crypto, and our watcher reads the blockchain directly — the moment your transfer lands, your order flips to paid and we hand the Robux to your account.</p>
       <div class="trust-row">
@@ -235,10 +235,10 @@
     </div>
   </section>
 
-  <p class="fine">Oxide HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending.</p>
+  <p class="fine">Arc HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending.</p>
 </main>
 
-<footer class="footer"><div class="footer-content"><span class="footer-brand">Oxide HUB</span><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
+<footer class="footer"><div class="footer-content"><span class="footer-brand">Arc HUB</span><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="/admin/">Admin</a><a href="https://discord.gg/oxidehub" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
 
 <div class="sheet-bg" id="sheetBg"></div>
 <aside class="sheet" id="sheet" aria-hidden="true" aria-labelledby="sheetTitle">
@@ -396,7 +396,7 @@ function renderCheckoutStep() {
     <div class="row"><span class="lbl">Rate</span><span class="val">$${((draft.usdCents / 100) / (draft.robux / 1000)).toFixed(2)} / 1,000</span></div>
     <div class="field" style="margin-top:20px">
       <label for="robloxUser">Roblox username receiving the Robux</label>
-      <div class="amount-input" style="padding:12px 14px"><input id="robloxUser" autocomplete="off" placeholder="e.g. OxideBuyer" style="font-size:15px;font-weight:600" value="${esc(draft.robloxUsername)}"></div>
+      <div class="amount-input" style="padding:12px 14px"><input id="robloxUser" autocomplete="off" placeholder="e.g. ArcBuyer" style="font-size:15px;font-weight:600" value="${esc(draft.robloxUsername)}"></div>
     </div>
     <div class="field" style="margin-top:14px">
       <label for="discordUser">Discord (optional — for support)</label>
@@ -445,7 +445,7 @@ async function submitOrder() {
     if (draft.kind === 'pack') payload.pack = draft.pack; else payload.robux = draft.robux;
     const res = await api('/shop/order', { method: 'POST', body: payload });
     currentOrder = res.order;
-    try { localStorage.setItem('oxide_shop_order', currentOrder.id); } catch (_) {}
+    try { localStorage.setItem('arc_shop_order', currentOrder.id); } catch (_) {}
     showPaymentStep();
   } catch (e) {
     err.textContent = e.message;
@@ -636,7 +636,7 @@ $('customBuy').onclick = () => {
   refreshQuote();
 
   let saved = '';
-  try { saved = localStorage.getItem('oxide_shop_order') || ''; } catch (_) {}
+  try { saved = localStorage.getItem('arc_shop_order') || ''; } catch (_) {}
   if (saved) {
     try {
       const r = await api('/shop/order/' + encodeURIComponent(saved));
