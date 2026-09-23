@@ -21,7 +21,6 @@
     { href: "/script/games/", label: "Games", d: "M4 6h16v12H4zM8 10h8M8 14h5" },
     { href: "/script/statistics/", label: "Stats", d: "M5 19V9M12 19V5M19 19v-6" },
     { href: "/shop/", label: "Shop", d: "M6 7h12l1.5 12H4.5L6 7ZM9 7a3 3 0 0 1 6 0" },
-    { href: "/admin/", label: "Admin", d: "M12 3l7 4v5c0 4-3 7-7 9-4-2-7-5-7-9V7l7-4Z" },
   ];
 
   var CSS =
@@ -40,11 +39,8 @@
     ".arc-dock a:hover{color:#fff;background:rgba(255,255,255,.07)}" +
     ".arc-dock svg{width:15px;height:15px;flex:none;display:block}" +
     ".arc-dock .sep{width:1px;height:20px;margin:0 4px;background:rgba(255,255,255,.1)}" +
-    ".arc-dock .mark{display:grid;place-items:center;width:26px;height:26px;margin:0 4px 0 3px;" +
-    "place-items:center;border-radius:7px;background:#f0f0f0;color:#0d0d0d;font-size:11px;" +
-    "font-weight:800;letter-spacing:.02em}" +
     "@media (max-width:620px){.arc-dock{gap:0;padding:4px}.arc-dock a{padding:8px 9px}" +
-    ".arc-dock a span{display:none}.arc-dock .mark{margin:0 2px}}" +
+    ".arc-dock a span{display:none}}" +
     "@media (prefers-reduced-motion:reduce){.arc-dock a{transition:none}}";
 
   var style = document.createElement("style");
@@ -54,11 +50,6 @@
   var dock = document.createElement("nav");
   dock.className = "arc-dock";
   dock.setAttribute("aria-label", "Arc hub");
-
-  var mark = document.createElement("span");
-  mark.className = "mark";
-  mark.textContent = "A";
-  dock.appendChild(mark);
 
   ITEMS.forEach(function (item) {
     var a = document.createElement("a");
@@ -76,7 +67,7 @@
   dock.appendChild(sep);
 
   var discord = document.createElement("a");
-  discord.href = "https://discord.gg/HWS8wfthFe";
+  discord.href = "https://discord.gg/bbYM8kcaZd";
   discord.target = "_blank";
   discord.rel = "noopener noreferrer";
   discord.innerHTML =
@@ -101,7 +92,7 @@
     { href: "/script/statistics/", label: "Stats", d: "M5 19V9M12 19V5M19 19v-6" },
     { href: "/shop/", label: "Shop", d: "M6 7h12l1.5 12H4.5L6 7ZM9 7a3 3 0 0 1 6 0" },
   ];
-  var NAV_DISCORD = "https://discord.gg/HWS8wfthFe";
+  var NAV_DISCORD = "https://discord.gg/bbYM8kcaZd";
 
   function buildNav() {
     var nav = document.createElement("header");
