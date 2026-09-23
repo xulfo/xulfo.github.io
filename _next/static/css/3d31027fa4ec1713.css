@@ -2,3 +2,10 @@
 /* Arc: the logo anchor has no text, but the UA link colour leaves a saturated
    computed style behind. Inherit so the whole page is strictly monochrome. */
 .landing-logo{color:inherit}
+
+/*! arc-unified-chrome */
+main:has(.doc){padding-top:88px}
+main:has(.doc) .doc-header{display:none}
+main:has(.auth-shell) .auth-brand{display:none}
+.docs-header{padding:0 max(20px,calc((100vw - 1200px) / 2))}
+.docs-brand img{display:block;width:38px;height:38px;object-fit:contain}

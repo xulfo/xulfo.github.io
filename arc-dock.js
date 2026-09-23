@@ -76,7 +76,7 @@
   dock.appendChild(sep);
 
   var discord = document.createElement("a");
-  discord.href = "https://discord.gg/8VxyzMMjfh";
+  discord.href = "https://discord.gg/HWS8wfthFe";
   discord.target = "_blank";
   discord.rel = "noopener noreferrer";
   discord.innerHTML =
@@ -85,21 +85,167 @@
     '<span>Discord</span>';
   dock.appendChild(discord);
 
+  // ------------------------------------------------------------------ top nav
+  // Pages below the landing page ship one of three different headers: the doc
+  // layout's `.doc-header`, the auth layout's floating `.auth-brand` mark, or
+  // the hand-built `.topnav`. The first two are hidden by the unified stylesheet
+  // and replaced here, so every one of those pages carries the same bar as the
+  // landing page.
+  //
+  // This reuses the landing page's own class names (`.landing-nav`, `.landing-
+  // nav-inner`, `.landing-logo`, `.landing-chip`) rather than copying styles, so
+  // the injected bar is style-identical by construction and keeps tracking any
+  // future change to the landing nav.
+  var NAV_LINKS = [
+    { href: "/script/", label: "Loader", d: "M4 4h16v5H4zM4 13h16v7H4z" },
+    { href: "/script/statistics/", label: "Stats", d: "M5 19V9M12 19V5M19 19v-6" },
+    { href: "/shop/", label: "Shop", d: "M6 7h12l1.5 12H4.5L6 7ZM9 7a3 3 0 0 1 6 0" },
+  ];
+  var NAV_DISCORD = "https://discord.gg/HWS8wfthFe";
+
+  function buildNav() {
+    var nav = document.createElement("header");
+    nav.className = "landing-nav arc-nav";
+    nav.setAttribute("aria-label", "Arc");
+
+    var inner = document.createElement("div");
+    inner.className = "landing-nav-inner";
+
+    var logo = document.createElement("a");
+    logo.className = "landing-logo";
+    logo.href = "/";
+    logo.setAttribute("aria-label", "Arc home");
+    var img = document.createElement("img");
+    img.src = "/arc-logo-white.png";
+    img.width = 38;
+    img.height = 38;
+    img.alt = "";
+    logo.appendChild(img);
+
+    var actions = document.createElement("div");
+    actions.className = "landing-nav-actions";
+
+    NAV_LINKS.forEach(function (item) {
+      actions.appendChild(chip(item.href, item.label, item.d, false));
+    });
+    actions.appendChild(chip(NAV_DISCORD, "Discord", "", true));
+
+    inner.appendChild(logo);
+    inner.appendChild(actions);
+    nav.appendChild(inner);
+    return nav;
+  }
+
+  function chip(href, label, path, external) {
+    var a = document.createElement("a");
+    a.className = "landing-chip landing-chip-nav";
+    a.href = href;
+    if (external) {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
+    if (external) {
+      // Discord mark (filled), matching the dock's.
+      a.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+        '<path d="M19.6 5.6A16 16 0 0 0 15.7 4.4l-.2.4a13 13 0 0 0-7 0l-.2-.4a16 16 0 0 0-3.9 1.2C1.6 9.4 1 13.1 1.3 16.7a16 16 0 0 0 4.8 2.4l.6-1a11 11 0 0 1-1.7-.8l.4-.3a11 11 0 0 0 9.2 0l.4.3a11 11 0 0 1-1.7.8l.6 1a16 16 0 0 0 4.8-2.4c.4-4.2-.6-7.9-2.8-11.1ZM8.6 14.4c-1 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Zm6.8 0c-1 0-1.7-.9-1.7-2s.8-2 1.7-2 1.7.9 1.7 2-.8 2-1.7 2Z"/></svg>';
+    } else {
+      a.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
+        'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="' +
+        path + '"/></svg>';
+    }
+    var span = document.createElement("span");
+    span.textContent = label;
+    a.appendChild(span);
+    return a;
+  }
+
+  // Every Arc page shows the same chips in its bar, so the landing page (whose
+  // actions slot held only the login chip, now removed) gets them too.
+  function fillActions(slot) {
+    if (!slot || slot.querySelector(".landing-chip")) return;
+    NAV_LINKS.forEach(function (item) {
+      slot.appendChild(chip(item.href, item.label, item.d, false));
+    });
+    slot.appendChild(chip(NAV_DISCORD, "Discord", "", true));
+  }
+
+  // Only pages with no chrome of their own get the injected bar: the landing
+  // page already renders it (so we top up its chips instead), the hand-built
+  // pages carry `.topnav`, and the docs sub-app needs its own header for the
+  // sidebar toggle.
+  //
+  // Every lookup below is re-queried on each pass on purpose: hydration can
+  // replace these nodes wholesale, and a captured reference would then point at
+  // a detached element while the live one sits empty.
+  var injectedNav = document.querySelector(".landing-nav, .topnav, .docs-header")
+    ? null
+    : buildNav();
+
+  function topUpLandingNav() {
+    var bar = document.querySelector(".landing-nav");
+    if (!bar) return;
+    fillActions(bar.querySelector(".landing-nav-actions"));
+  }
+
+  function stateOk() {
+    if (!dock.isConnected) return false;
+    if (injectedNav && !injectedNav.isConnected) return false;
+    var bar = document.querySelector(".landing-nav");
+    if (bar) {
+      var slot = bar.querySelector(".landing-nav-actions");
+      if (slot && !slot.querySelector(".landing-chip")) return false;
+    }
+    return true;
+  }
+
   function attach() {
     if (!dock.isConnected) document.body.appendChild(dock);
+    if (injectedNav && !injectedNav.isConnected) document.body.appendChild(injectedNav);
+    topUpLandingNav();
+  }
+
+  // React stamps every node it owns with a fiber key when hydration commits.
+  // Appending before that is what makes React report a hydration mismatch (and
+  // then throw the whole subtree away), so wait for the stamp. This is a poll,
+  // not a promise: it is bounded and the fallback still attaches.
+  function hydrated() {
+    var el = document.querySelector("main") || document.body;
+    if (!el) return false;
+    return Object.keys(el).some(function (k) {
+      return k.indexOf("__reactFiber$") === 0;
+    });
+  }
+
+  function whenHydrated(fn, tries) {
+    if (hydrated()) return fn();
+    if (tries <= 0) return fn();
+    window.setTimeout(function () {
+      whenHydrated(fn, tries - 1);
+    }, 100);
   }
 
   function start() {
-    attach();
-    // React owns <body> here, so if a re-render ever removes the dock, put it back.
-    if (window.MutationObserver) {
-      new MutationObserver(function () {
-        if (!dock.isConnected && document.body) attach();
-      }).observe(document.body, { childList: true });
-    }
+    whenHydrated(function () {
+      attach();
+      // React owns <body> here, so if a re-render ever drops any of this, put it
+      // back. Coalesced to one check per frame because a busy page mutates a lot.
+      if (window.MutationObserver) {
+        var queued = false;
+        new MutationObserver(function () {
+          if (queued) return;
+          queued = true;
+          window.requestAnimationFrame(function () {
+            queued = false;
+            if (!stateOk()) attach();
+          });
+        }).observe(document.body, { childList: true, subtree: true });
+      }
+    }, 50);
   }
 
-  // `load` guarantees hydration is done; fall back if it already fired.
+  // `load` is the earliest sane point; the hydration gate above handles the rest.
   if (document.readyState === "complete") start();
   else window.addEventListener("load", start, { once: true });
 })();
