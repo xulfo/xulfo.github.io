@@ -3,313 +3,291 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Shop — Robux &amp; Arc plans | Arc HUB</title>
-<meta name="description" content="Buy Robux or an Arc plan with crypto. Weekly $5, monthly $9.99, lifetime $19.99 — a hardware-bound key is generated the moment your payment confirms.">
+<title>Shop — Arc</title>
+<meta name="description" content="Buy Robux or an Arc plan with crypto. Weekly $5, monthly $9.99, lifetime $19.99.">
 <link rel="icon" type="image/png" href="/assets/Arc.png?v=2">
-<link rel="apple-touch-icon" href="/assets/Arc.png?v=2">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script>if(location.protocol==='http:'&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){location.replace('https://'+location.host+location.pathname+location.search+location.hash);}</script>
 <style>
-/* ── Shop ──────────────────────────────────────────────────────── */
-.shop-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:34px;align-items:center;padding:34px 0 10px}
-.shop-hero h1{font-size:clamp(34px,5.2vw,56px);line-height:1.02;letter-spacing:-.045em;font-weight:800;margin:14px 0 0}
-.shop-hero p.lede{color:var(--text-2);font-size:16.5px;max-width:56ch;margin-top:16px}
-.trust-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
-.trust-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 13px;border:1px solid var(--border);border-radius:999px;background:var(--panel);font-size:12.5px;color:var(--text-2)}
-.trust-chip b{color:var(--text);font-weight:640}
-.dot-live{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 3px rgba(107,203,119,.16)}
-.hero-stats{display:grid;gap:12px}
-.hero-stat{border:1px solid var(--border);border-radius:14px;background:var(--panel);padding:16px 18px;backdrop-filter:blur(var(--blur))}
-.hero-stat .k{color:var(--muted);font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700}
-.hero-stat .v{font-size:24px;font-weight:760;letter-spacing:-.03em;margin-top:6px;font-variant-numeric:tabular-nums}
-.hero-stat .s{color:var(--muted);font-size:12px;margin-top:3px}
+  /* Same language as the landing page: flat #111113 panels, mono micro-labels,
+     heavy tight headings, no borders, no glow. */
+  html, body { background: #0a0a0b; }
+  body { color: #bababa; font-weight: 500; }
+  body::before, body::after { display: none; }
 
-.shop-notice{display:none;margin:18px 0 0;padding:13px 16px;border-radius:12px;border:1px solid rgba(230,103,103,.35);background:rgba(230,103,103,.09);color:#f3c9c9;font-size:13.5px}
-.shop-notice.show{display:block}
-.announce{margin:18px 0 0;padding:12px 16px;border-radius:12px;border:1px solid var(--border-strong);background:var(--accent-wash);color:var(--accent-light);font-size:13.5px}
+  .shop { min-height: 100vh; padding: 0 0 90px; }
 
-.pack-chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:-4px}
-.pack-chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--text-2);font-size:12px;font-weight:600}
-.packs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
-.pack{position:relative;display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px 22px;transition:transform var(--transition),border-color var(--transition),box-shadow var(--transition)}
-.pack::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(130% 80% at 50% -30%,rgba(255,255,255,.16),transparent 62%);opacity:0;transition:opacity var(--transition)}
-.pack:hover::after{opacity:1}
-.pack>*{position:relative;z-index:1}
-.pack:hover{transform:translateY(-3px);border-color:var(--border-strong)}
-.pack.best{border-color:rgba(255,255,255,.45);box-shadow:0 20px 60px rgba(255,255,255,.12)}
-/* the entry pack: the card that has to feel like the easy first step */
-.pack.starter{border-color:rgba(255,255,255,.38);background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(18,19,22,.55) 48%),var(--panel);box-shadow:0 20px 64px rgba(255,255,255,.13),inset 0 1px 0 rgba(255,255,255,.06)}
-.pack.starter:hover{border-color:rgba(255,255,255,.6);box-shadow:0 30px 78px rgba(255,255,255,.22),inset 0 1px 0 rgba(255,255,255,.08)}
-.pack.starter::before{content:"";position:absolute;left:14%;right:14%;top:0;height:2px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,transparent,var(--accent-light),transparent);opacity:.85}
-.pack.starter .pack-amount{font-size:44px}
-.pack.starter .pack-name{color:var(--text)}
-.pack.starter .pack-price{font-size:19px}
-.pack.starter .btn{box-shadow:0 12px 30px var(--accent-glow)}
-.pack.starter .btn:hover{box-shadow:0 16px 38px rgba(255,255,255,.36)}
-.pack-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.pack-name{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2)}
-.pack-badge{font-size:10.5px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border-radius:999px;border:1px solid var(--border-strong);color:var(--text-2)}
-.pack-badge.hot{color:var(--accent-text-on);background:var(--accent);border-color:transparent}
-.pack-amount{margin-top:18px;font-size:38px;font-weight:800;letter-spacing:-.045em;line-height:1;font-variant-numeric:tabular-nums}
-.pack-amount span{font-size:15px;font-weight:600;color:var(--muted);letter-spacing:0;margin-left:6px}
-.pack-price{margin-top:10px;font-size:17px;font-weight:680;color:var(--accent-light)}
-.pack-price small{color:var(--muted);font-weight:500;font-size:12.5px;margin-left:6px}
-.pack-list{list-style:none;margin:18px 0 0;display:grid;gap:9px}
-.pack-list li{display:flex;gap:9px;align-items:flex-start;color:var(--text-2);font-size:13.5px;line-height:1.45}
-.pack-list svg{width:15px;height:15px;flex:none;margin-top:2px;color:var(--accent)}
-.pack-stock{margin-top:20px}
-.pack-stock .bar{height:5px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
-.pack-stock .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px}
-.pack-stock .lbl{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);margin-bottom:7px;font-variant-numeric:tabular-nums}
-.pack .btn{margin-top:18px;width:100%;justify-content:center}
-.pack.soldout{opacity:.62}
-.pack.soldout .btn{pointer-events:none;opacity:.6}
+  .shop-nav { position: fixed; top: 0; right: 0; left: 0; z-index: 100; height: 64px; border-bottom: 1px solid rgba(255,255,255,.045); background: rgba(11,11,12,.94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+  .shop-nav-inner { display: flex; align-items: center; justify-content: space-between; width: min(1200px, calc(100% - 40px)); height: 100%; margin: 0 auto; }
+  .shop-logo { display: flex; }
+  .shop-logo img { width: 40px; height: 40px; object-fit: contain; }
+  .shop-nav-right { display: flex; align-items: center; gap: .5rem; }
+  .shop-nav-right a { padding: .55rem .7rem; border-radius: 8px; color: #7a7a7a; font-size: .76rem; font-weight: 500; text-decoration: none; transition: color .16s ease, background .16s ease; }
+  .shop-nav-right a:hover { background: #141416; color: #d8d8d8; }
 
-.custom-card{margin-top:20px;border:1px solid var(--border);border-radius:18px;background:var(--panel);backdrop-filter:blur(var(--blur));padding:24px 22px}
-.custom-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:22px;align-items:end}
-.field{display:grid;gap:8px}
-.field label{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.amount-input{display:flex;align-items:center;gap:12px;border:1px solid var(--border);border-radius:13px;background:var(--field);padding:14px 16px}
-.amount-input input{flex:1;min-width:0;background:none;border:0;outline:none;color:var(--text);font-size:22px;font-weight:700;font-variant-numeric:tabular-nums;font-family:var(--font)}
-.amount-input .suffix{color:var(--muted);font-size:13px;font-weight:600}
-.quick-picks{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.quick{padding:7px 12px;border:1px solid var(--border);border-radius:99px;background:rgba(255,255,255,.02);color:var(--text-2);font-size:12.5px;cursor:pointer;transition:var(--transition)}
-.quick:hover{border-color:var(--border-strong);color:var(--text)}
-.quick.on{border-color:var(--accent);background:var(--accent-wash);color:var(--accent-light)}
-.custom-price{border:1px solid var(--border);border-radius:14px;background:rgba(0,0,0,.3);padding:16px 18px;display:grid;gap:4px}
-.custom-price .p{font-size:30px;font-weight:800;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
-.custom-price .r{font-size:12px;color:var(--muted)}
-.hint-line{font-size:12.5px;color:var(--muted);margin-top:9px}
-.hint-line.warn{color:#e0b06a}
+  .chip { display: inline-flex; align-items: center; justify-content: center; gap: .48rem; min-height: 36px; padding: .52rem .82rem; border: 2px solid rgba(255,255,255,.09); border-radius: 6px; background: #131315; color: #bababa; font: inherit; font-size: .74rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: border-color .16s ease, background .16s ease, color .16s ease; }
+  .chip:hover { border-color: rgba(255,255,255,.18); background: #171719; color: #eee; }
+  .chip svg { width: 16px; height: 16px; flex: none; color: #888; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+  .chip:disabled { opacity: .45; cursor: default; }
+  .chip[disabled]:hover { background: #131315; border-color: rgba(255,255,255,.09); color: #bababa; }
 
-.steps{margin-top:44px}
-.step-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:20px}
-.step{border:1px solid var(--border);border-radius:14px;background:var(--panel);padding:20px 18px}
-.step .n{font-size:11px;font-weight:750;letter-spacing:.1em;color:var(--accent);text-transform:uppercase}
-.step h4{margin:12px 0 7px;font-size:15px}
-.step p{color:var(--text-2);font-size:13px;line-height:1.55}
+  .shell { width: min(1120px, calc(100% - 48px)); margin: 0 auto; }
 
-.fine{margin:34px 0 0;padding:16px 18px;border:1px solid var(--border);border-radius:13px;background:rgba(0,0,0,.25);color:var(--muted);font-size:12.5px;line-height:1.6}
+  /* hero — same glow + faint mark the landing page leans on */
+  .shop-head { position: relative; overflow: hidden; padding: 148px 0 8px; }
+  .hero-glow { position: absolute; left: 50%; top: -210px; width: 880px; height: 620px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(circle, rgba(160,160,172,.20), rgba(130,130,142,.05) 46%, transparent 70%); filter: blur(22px); pointer-events: none; }
+  .hero-mark { position: absolute; right: -60px; top: 54px; width: 320px; height: 320px; object-fit: contain; opacity: .05; pointer-events: none; }
+  .shop-head > :not(.hero-glow):not(.hero-mark) { position: relative; z-index: 1; }
+  .shop-head .k { color: #808080; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .6rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+  .shop-head h1 { margin-top: 1.1rem; color: #f1f1f3; font-size: clamp(2.9rem, 6.4vw, 5rem); font-weight: 620; letter-spacing: -.058em; line-height: 1; }
+  .shop-head p { max-width: 520px; margin-top: 1.15rem; color: #8b8b8b; font-size: .9rem; line-height: 1.7; }
 
-/* checkout drawer */
-.sheet-bg{position:fixed;inset:0;background:rgba(3,4,6,.72);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .22s ease;z-index:80}
-.sheet-bg.open{opacity:1;pointer-events:auto}
-.sheet{position:fixed;top:0;right:0;height:100%;width:min(560px,100%);background:var(--page-alt);border-left:1px solid var(--border-strong);box-shadow:-30px 0 80px rgba(0,0,0,.5);transform:translateX(102%);transition:transform .26s cubic-bezier(.32,.72,.28,1);z-index:81;display:flex;flex-direction:column}
-.sheet.open{transform:none}
-.sheet-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 22px;border-bottom:1px solid var(--border)}
-.sheet-head .t{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.sheet-head h3{font-size:19px;letter-spacing:-.02em;margin-top:3px}
-.sheet-close{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--text-2);cursor:pointer;font-size:17px;line-height:1}
-.sheet-close:hover{color:var(--text);border-color:var(--border-strong)}
-.sheet-body{padding:22px;overflow-y:auto;flex:1}
-.sheet-foot{padding:18px 22px;border-top:1px solid var(--border);background:rgba(0,0,0,.24);display:grid;gap:10px}
-.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 0;border-bottom:1px solid var(--border)}
-.row:last-of-type{border-bottom:0}
-.row .lbl{color:var(--muted);font-size:13px}
-.row .val{font-weight:680;font-size:14.5px;text-align:right;font-variant-numeric:tabular-nums}
-.big-amount{text-align:center;padding:22px 16px;border:1px dashed var(--border-strong);border-radius:14px;background:rgba(0,0,0,.3);margin-top:6px}
-.big-amount .k{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.big-amount .v{font-size:26px;font-weight:800;letter-spacing:-.03em;margin-top:8px;word-break:break-all;font-variant-numeric:tabular-nums}
-.big-amount .u{color:var(--accent-light);font-size:13px;font-weight:650;margin-top:4px}
-.addr{display:flex;align-items:center;gap:10px;border:1px solid var(--border);border-radius:12px;background:var(--field);padding:12px 14px;margin-top:10px}
-.addr code{flex:1;min-width:0;font-size:12.5px;word-break:break-all;color:var(--text-2);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-.copy{border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text-2);border-radius:9px;padding:7px 11px;font-size:12px;cursor:pointer;white-space:nowrap}
-.copy:hover{color:var(--text);border-color:var(--border-strong)}
-.copy.done{color:var(--success);border-color:rgba(107,203,119,.4)}
-.qr{display:grid;place-items:center;margin:16px auto 4px;padding:10px;background:#fff;border-radius:14px;width:176px;height:176px}
-.qr img{width:156px;height:156px;display:block}
-.coin-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
-.coin{display:flex;align-items:center;gap:9px;padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:rgba(255,255,255,.02);cursor:pointer;transition:var(--transition);font-size:13.5px}
-.coin:hover{border-color:var(--border-strong)}
-.coin.on{border-color:var(--accent);background:var(--accent-wash)}
-.coin.off{opacity:.4;pointer-events:none;text-decoration:line-through}
-.coin .g{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.06);font-size:12px;font-weight:700;color:var(--accent-light)}
-.cd{color:var(--muted);font-size:12.5px;margin-top:12px;font-variant-numeric:tabular-nums}
-.status-card{margin-top:16px;padding:15px 16px;border-radius:13px;border:1px solid var(--border);background:rgba(0,0,0,.28)}
-.status-card.wait{border-color:rgba(255,255,255,.3)}
-.status-card.ok{border-color:rgba(107,203,119,.4);background:rgba(107,203,119,.07)}
-.status-card.bad{border-color:rgba(230,103,103,.4);background:rgba(230,103,103,.07)}
-.status-card .h{display:flex;align-items:center;gap:9px;font-weight:680;font-size:14.5px}
-.status-card .d{color:var(--text-2);font-size:13px;margin-top:7px;line-height:1.55}
-.spin{width:13px;height:13px;border-radius:50%;border:2px solid rgba(255,255,255,.2);border-top-color:var(--accent);animation:sp .8s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.tiny{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.55}
-.err{display:none;margin-top:12px;padding:11px 13px;border-radius:10px;border:1px solid rgba(230,103,103,.4);background:rgba(230,103,103,.1);color:#f0c6c6;font-size:13px}
-.err.show{display:block}
-.track{margin-top:26px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.track input{flex:1;min-width:200px;border:1px solid var(--border);background:var(--field);border-radius:11px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;font-family:var(--font)}
-.track input:focus{border-color:var(--border-strong)}
-/* ── Buy Robux / Buy a plan ──────────────────────────────────── */
-.mode-switch{display:flex;gap:6px;padding:6px;border:1px solid var(--border);border-radius:14px;background:var(--panel);margin-top:26px;width:fit-content;max-width:100%;flex-wrap:wrap}
-.mode-switch button{appearance:none;border:0;background:none;color:var(--text-2);font:inherit;font-weight:660;font-size:14px;padding:11px 22px;border-radius:10px;cursor:pointer;transition:var(--transition);white-space:nowrap}
-.mode-switch button:hover{color:var(--text)}
-.mode-switch button.on{background:var(--accent);color:var(--accent-text-on);box-shadow:0 10px 26px var(--accent-glow)}
-.mode-note{color:var(--muted);font-size:12.5px;margin-top:12px;line-height:1.6}
-.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
-.plan .pack-amount span{font-size:14px}
-.plan .pack-price{color:var(--text-2);font-weight:620}
-.plan.lifetime{border-color:rgba(255,255,255,.45);background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(18,19,22,.55) 46%),var(--panel);box-shadow:0 20px 60px rgba(255,255,255,.1)}
-.plan.lifetime::before{content:"";position:absolute;left:14%;right:14%;top:0;height:2px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,transparent,var(--accent-light),transparent);opacity:.85}
-.plan .pack-list li span{color:var(--text-2)}
-.price-note{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(9px); } to { opacity: 1; transform: none; } }
+  .fade { opacity: 0; animation: fadeUp .5s cubic-bezier(.22,1,.36,1) forwards; }
+  .fade-1 { animation-delay: .04s; }
+  .fade-2 { animation-delay: .12s; }
+  .fade-3 { animation-delay: .2s; }
+  .fade-4 { animation-delay: .28s; }
+  .is-in { animation: fadeUp .38s cubic-bezier(.22,1,.36,1) both; }
+  @media (prefers-reduced-motion: reduce) { .fade, .is-in { animation: none; opacity: 1; } }
 
-/* the key itself has to be impossible to misread */
-.license-box{margin-top:16px;border:1px solid var(--border-strong);border-radius:16px;background:rgba(0,0,0,.34);padding:20px 18px;text-align:center}
-.license-box .k{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
-.license-box code{display:block;margin-top:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(17px,4.6vw,23px);font-weight:750;letter-spacing:.07em;word-break:break-all}
-.license-box .meta{color:var(--muted);font-size:12.5px;margin-top:10px}
-.license-box .acts{display:flex;gap:9px;justify-content:center;margin-top:15px;flex-wrap:wrap}
-.how-list{list-style:none;display:grid;gap:10px;margin-top:14px}
-.how-list li{display:flex;gap:10px;color:var(--text-2);font-size:13.5px;line-height:1.5}
-.how-list b{color:var(--text)}
+  .grid { display: grid; gap: .75rem; grid-template-columns: repeat(3, 1fr); margin-top: 2.4rem; }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
 
-@media (max-width:1000px){.packs,.plans{grid-template-columns:1fr}.shop-hero{grid-template-columns:1fr}.step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.custom-grid{grid-template-columns:1fr}}
-@media (max-width:620px){.step-grid{grid-template-columns:1fr}.sheet{width:100%}}
+  .card { position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; min-height: 215px; padding: 1.7rem; border: 0; border-radius: 10px; background: linear-gradient(180deg, rgba(255,255,255,.022), rgba(255,255,255,0) 44%), #111113; color: inherit; font: inherit; text-align: left; transition: background .18s ease, transform .18s ease; }
+  .card::after { content: ""; position: absolute; left: 1.7rem; right: 1.7rem; top: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,.17), transparent); opacity: 0; transition: opacity .2s ease; }
+  .card:hover::after { opacity: 1; }
+  .card.link { cursor: pointer; min-height: 265px; }
+  .card:hover { background: #151517; transform: translateY(-3px); }
+  .card:focus-visible { outline: 2px solid #3a3a3c; outline-offset: 2px; }
+  .card svg { width: 26px; height: 26px; margin-bottom: 2.4rem; color: #86868b; fill: none; transition: color .18s ease, transform .18s ease; }
+  .card:hover svg { color: #d8d8d8; transform: translateY(-1px); }
+  .card svg path, .card svg rect, .card svg circle { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .card .k { display: block; color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; }
+  .card h3 { margin-top: .65rem; color: #d8d8d8; font-size: 1.45rem; font-weight: 600; letter-spacing: -.03em; }
+  .card h3 em { color: #6e6e6e; font-style: normal; font-size: .8rem; font-weight: 600; letter-spacing: -.01em; }
+  .card p { max-width: 300px; margin-top: .6rem; color: #6e6e6e; font-size: .78rem; line-height: 1.6; }
+  .card .foot { margin-top: auto; padding-top: 1.4rem; display: flex; align-items: center; gap: .6rem; color: #8b8b8b; font-size: .72rem; font-weight: 600; }
+  .card .foot i { font-style: normal; transition: transform .18s ease; }
+  .card:hover .foot { color: #d8d8d8; }
+  .card:hover .foot i { transform: translateX(3px); }
+  .card .chip { margin-top: auto; }
+  .card .chip, .card .foot { align-self: stretch; }
+  .card .foot { align-self: flex-start; }
+  .card .chip { align-self: stretch; margin-top: 1.5rem; }
+  .card.sold { opacity: .5; }
+  .stock { display: flex; align-items: center; gap: .5rem; width: 100%; margin-top: .9rem; }
+  .stock i { flex: 1; height: 2px; border-radius: 2px; background: #1e1e21; overflow: hidden; }
+  .stock i b { display: block; height: 100%; background: #3f3f45; }
+  .stock span { color: #565658; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .52rem; font-weight: 650; letter-spacing: .06em; text-transform: uppercase; }
+
+  .back { margin-top: 2.6rem; border: 0; background: none; padding: 0; color: #8b8b8b; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .58rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: color .16s ease; }
+  .back:hover { color: #d8d8d8; }
+
+  .section { margin-top: 3.2rem; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .section-head h2 { color: #f1f1f3; font-size: clamp(1.85rem, 3.6vw, 2.6rem); font-weight: 620; letter-spacing: -.05em; }
+  .section-head span { color: #808080; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .6rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+
+  .line { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-top: 1.4rem; padding: 1.1rem 1.3rem; border-radius: 10px; background: #111113; }
+  .line .k { color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; }
+  .line .amount { flex: 1; min-width: 160px; display: flex; align-items: baseline; gap: .4rem; }
+  .line input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; color: #f1f1f3; font: inherit; font-size: 1.15rem; font-weight: 600; letter-spacing: -.02em; }
+  .line input::placeholder { color: #4a4a4c; }
+  .line .unit { color: #6e6e6e; font-size: .8rem; font-weight: 600; }
+  .line .price { color: #d8d8d8; font-size: .95rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .line.track { padding: .8rem 1.3rem; }
+  .line.track input { font-size: .82rem; font-weight: 500; }
+
+  .quick { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+  .quick button { border: 0; border-radius: 6px; background: #111113; color: #7a7a7a; font: inherit; font-size: .7rem; font-weight: 600; padding: .4rem .6rem; cursor: pointer; transition: background .16s ease, color .16s ease; }
+  .quick button:hover { background: #171719; color: #d8d8d8; }
+  .quick button.on { background: #26262a; color: #f1f1f3; }
+  .hint { margin-top: .7rem; color: #5c5c5c; font-size: .7rem; }
+  .hint.warn { color: #b98b8b; }
+
+  .note { margin: 1.4rem 0 0; padding: .9rem 1.1rem; border-radius: 8px; background: #141114; color: #b98b8b; font-size: .76rem; }
+  .note[hidden] { display: none; }
+  .notice { margin-top: 1.2rem; color: #6e6e6e; font-size: .74rem; }
+
+  .foot-links { width: min(1120px, calc(100% - 48px)); margin: 5rem auto 0; display: flex; align-items: center; justify-content: center; gap: 1.35rem; flex-wrap: wrap; }
+  .foot-links a { color: #585858; font-size: .68rem; font-weight: 600; text-decoration: none; transition: color .18s ease; }
+  .foot-links a:hover { color: #d6d6d6; }
+  .fine { width: min(1120px, calc(100% - 48px)); margin: 1.6rem auto 0; color: #454547; font-size: .66rem; line-height: 1.6; text-align: center; }
+
+  /* ── checkout sheet ──────────────────────────────────────────── */
+  .sheet-bg { position: fixed; inset: 0; z-index: 80; background: rgba(5,5,6,.72); backdrop-filter: blur(4px); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
+  .sheet-bg.open { opacity: 1; pointer-events: auto; }
+  .sheet { position: fixed; top: 0; right: 0; z-index: 81; display: flex; flex-direction: column; width: min(520px, 100%); height: 100%; background: #0d0d0e; border-left: 1px solid rgba(255,255,255,.06); transform: translateX(102%); transition: transform .24s cubic-bezier(.32,.72,.28,1); }
+  .sheet.open { transform: none; }
+  .sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.4rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .sheet-head .t { color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+  .sheet-head h3 { margin-top: .4rem; color: #f1f1f3; font-size: 1.3rem; font-weight: 620; letter-spacing: -.035em; }
+  .sheet-close { border: 0; background: #141416; color: #7a7a7a; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; font-size: .9rem; }
+  .sheet-close:hover { background: #1b1b1d; color: #d8d8d8; }
+  .sheet-body { flex: 1; overflow-y: auto; padding: 1.5rem; }
+  .sheet-foot { display: grid; gap: .5rem; padding: 1.1rem 1.5rem; border-top: 1px solid rgba(255,255,255,.05); background: #0b0b0c; }
+
+  .row { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .7rem 0; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .row .lbl { color: #6e6e6e; font-size: .78rem; }
+  .row .val { color: #f1f1f3; font-size: .85rem; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+  .field { display: grid; gap: .45rem; margin-top: 1.3rem; }
+  .field label { color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; }
+  .field input { width: 100%; border: 0; border-radius: 8px; background: #141416; color: #f1f1f3; font: inherit; font-size: .85rem; font-weight: 600; padding: .8rem .9rem; outline: none; }
+  .field input:focus { background: #191a1c; }
+  .coin-row { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .2rem; }
+  .coin { display: inline-flex; align-items: center; gap: .5rem; border: 0; border-radius: 8px; background: #141416; color: #bababa; font: inherit; font-size: .78rem; font-weight: 600; padding: .6rem .8rem; cursor: pointer; transition: background .16s ease; }
+  .coin:hover { background: #1b1b1d; }
+  .coin.on { background: #26262a; color: #f1f1f3; }
+  .coin.off { opacity: .35; pointer-events: none; text-decoration: line-through; }
+  .coin .g { color: #808080; font-weight: 700; }
+  .big-amount { margin-top: 1.2rem; padding: 1.1rem; border-radius: 10px; background: #111113; text-align: center; }
+  .big-amount .k { color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; }
+  .big-amount .v { margin-top: .6rem; color: #f1f1f3; font-size: 1.35rem; font-weight: 700; letter-spacing: -.02em; word-break: break-all; }
+  .big-amount .u { margin-top: .3rem; color: #6e6e6e; font-size: .75rem; }
+  .qr { display: grid; place-items: center; width: 168px; height: 168px; margin: 1.1rem auto .4rem; border-radius: 10px; background: #fff; }
+  .qr img { width: 148px; height: 148px; }
+  .addr { display: flex; align-items: center; gap: .6rem; margin-top: .8rem; padding: .8rem .9rem; border-radius: 8px; background: #141416; }
+  .addr code { flex: 1; min-width: 0; color: #bababa; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .72rem; word-break: break-all; }
+  .copy { border: 0; border-radius: 6px; background: #1c1c1e; color: #bababa; font: inherit; font-size: .7rem; font-weight: 600; padding: .45rem .6rem; cursor: pointer; }
+  .copy:hover { background: #232326; color: #f1f1f3; }
+  .copy.done { color: #8fd6a0; }
+  .cd { margin-top: .8rem; color: #6e6e6e; font-size: .74rem; }
+  .status-card { margin-top: 1.1rem; padding: 1rem 1.1rem; border-radius: 10px; background: #111113; }
+  .status-card .h { color: #d8d8d8; font-size: .85rem; font-weight: 620; }
+  .status-card .d { margin-top: .4rem; color: #6e6e6e; font-size: .76rem; line-height: 1.6; }
+  .status-card.ok .h { color: #8fd6a0; }
+  .status-card.bad .h { color: #c98b8b; }
+  .spin { display: inline-block; width: 12px; height: 12px; margin-right: .5rem; border-radius: 50%; border: 2px solid rgba(255,255,255,.2); border-top-color: #d8d8d8; animation: sp .8s linear infinite; }
+  @keyframes sp { to { transform: rotate(360deg); } }
+  .tiny { margin-top: .8rem; color: #5c5c5c; font-size: .7rem; line-height: 1.6; }
+  .err { display: none; margin-top: .9rem; padding: .7rem .8rem; border-radius: 8px; background: #171114; color: #c98b8b; font-size: .74rem; }
+  .err.show { display: block; }
+  .license-box { margin-top: .4rem; padding: 1.3rem 1.1rem; border-radius: 10px; background: #111113; text-align: center; }
+  .license-box .k { color: #585858; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .55rem; font-weight: 650; letter-spacing: .07em; text-transform: uppercase; }
+  .license-box code { display: block; margin-top: .7rem; color: #f1f1f3; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: clamp(1rem, 4.6vw, 1.3rem); font-weight: 700; letter-spacing: .06em; word-break: break-all; }
+  .license-box .meta { margin-top: .5rem; color: #6e6e6e; font-size: .72rem; }
+  .license-box .acts { margin-top: .9rem; }
+  .steps { display: grid; gap: .5rem; margin-top: 1.2rem; }
+  .steps li { display: flex; gap: .6rem; color: #6e6e6e; font-size: .76rem; line-height: 1.55; }
+  .steps b { color: #8b8b8b; font-weight: 650; }
+
+  @media (max-width: 900px) { .grid, .grid.two { grid-template-columns: 1fr; } .shop-head { padding-top: 118px; } .card.link { min-height: 200px; } }
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <div class="topnav-inner">
-    <a class="brand" href="/" aria-label="Arc HUB home"><img src="/assets/Arc.png?v=2" alt=""><span>Arc HUB</span></a>
-    <div class="topnav-links" aria-label="Primary navigation">
-      <a href="/">Home</a>
-      <a href="/script/">Script</a>
-      <a href="/shop/" class="active" aria-current="page">Shop</a>
-      
-      <a href="https://discord.gg/bbYM8kcaZd" target="_blank" rel="noopener noreferrer" class="discord-link">Discord</a>
+
+<div class="shop">
+  <header class="shop-nav">
+    <div class="shop-nav-inner">
+      <a class="shop-logo" href="/" aria-label="Arc home"><img src="/arc-logo-white.png" alt=""></a>
+      <nav class="shop-nav-right">
+        <a href="/">Home</a>
+        <a href="/script/">Script</a>
+        <a class="chip" href="https://discord.gg/bbYM8kcaZd" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 9.5c1.5-1 2.4-1 3.5-1s2 0 3.5 1"/><path d="M6.5 6.2C9 5.4 15 5.4 17.5 6.2c1.7 3.4 2.2 7.4 1.7 10.6a17 17 0 0 1-3.6 1.4l-.9-1.5M6.5 6.2c-1.7 3.4-2.2 7.4-1.7 10.6a17 17 0 0 0 3.6 1.4l.9-1.5"/><path d="M9.5 14.4h.01M14.5 14.4h.01"/></svg>
+          <span>Discord</span>
+        </a>
+      </nav>
     </div>
-  </div>
-</nav>
+  </header>
 
-<main class="wrap">
-  <section class="shop-hero">
-    <div>
-      <div class="page-kicker"><span class="status-dot"></span> Arc Shop</div>
-      <h1>Robux or a plan.<br>One shop.</h1>
-      <p class="lede">Take a limited Robux pack, set your own amount, or buy an Arc plan and get a key that unlocks the executor. Pay in crypto — our watcher reads the blockchain directly, so your order flips to paid the moment your transfer lands.</p>
-      <div class="trust-row">
-        <span class="trust-chip"><span class="dot-live"></span> <b>Live</b>&nbsp;on-chain tracking</span>
-        <span class="trust-chip">Pay with <b>BTC · LTC · ETH</b></span>
-        <span class="trust-chip">Plans from <b>$5</b></span>
-        <span class="trust-chip">Keys bound to <b>one PC</b></span>
-        <span class="trust-chip">Support on <b>Discord</b></span>
-      </div>
-    </div>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="k">Orders delivered</div><div class="v" id="stat-delivered">—</div><div class="s">completed and handed over</div></div>
-      <div class="hero-stat"><div class="k">Robux delivered</div><div class="v" id="stat-robux">—</div><div class="s">across all packs</div></div>
-      <div class="hero-stat"><div class="k">Pack stock</div><div class="v" id="stat-stock">—</div><div class="s">limited packs remaining</div></div>
-      <div class="hero-stat"><div class="k">Keys issued</div><div class="v" id="stat-keys">—</div><div class="s">plan keys handed out</div></div>
-    </div>
-  </section>
-
-  <div class="announce" id="announce" hidden></div>
-  <div class="shop-notice" id="shop-notice"></div>
-
-  <div class="mode-switch" role="tablist" aria-label="What do you want to buy?">
-    <button type="button" class="on" data-mode="robux" id="tab-robux" role="tab" aria-selected="true">Buy Robux</button>
-    <button type="button" data-mode="plan" id="tab-plan" role="tab" aria-selected="false">Buy a plan</button>
-  </div>
-  <p class="mode-note" id="modeNote">Robux is delivered to your Roblox account. An Arc plan gives you a key for the executor instead.</p>
-
-  <div id="mode-robux">
-  <section class="steps" aria-labelledby="packs-title">
-    <div class="section-heading compact"><div><div class="eyebrow">Limited packs</div><h2 id="packs-title">Three ways in.</h2></div></div>
-    <div class="pack-chips">
-      <span class="pack-chip"><i class="dot-live"></i>Live stock</span>
-      <span class="pack-chip">Price locked for 30 minutes</span>
-      <span class="pack-chip">BTC · LTC · ETH</span>
-    </div>
-    <div class="packs" id="packs"></div>
-  </section>
-
-  <section class="steps" aria-labelledby="custom-title">
-    <div class="section-heading compact"><div><div class="eyebrow">Custom amount</div><h2 id="custom-title">Or pick your own.</h2></div></div>
-    <div class="custom-card">
-      <div class="custom-grid">
-        <div>
-          <div class="field">
-            <label for="robuxInput">Robux amount</label>
-            <div class="amount-input">
-              <input id="robuxInput" type="text" inputmode="numeric" autocomplete="off" placeholder="10,000" value="50000">
-              <span class="suffix">R$</span>
-            </div>
-          </div>
-          <div class="quick-picks" id="quickPicks"></div>
-          <div class="hint-line" id="customHint"></div>
-        </div>
-        <div>
-          <div class="custom-price">
-            <div class="lbl" style="color:var(--muted);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;font-weight:700">You pay</div>
-            <div class="p" id="customPrice">—</div>
-            <div class="r" id="customRate">per 1,000 Robux: —</div>
-          </div>
-          <button class="btn accent big" id="customBuy" style="width:100%;justify-content:center;margin-top:14px">
-            <svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-bolt"></use></svg>Buy custom amount
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="track">
-      <input id="trackInput" placeholder="Already ordered? Paste your order ID or reference" autocomplete="off">
-      <button class="btn ghost" id="trackBtn"><svg class="ui-icon" aria-hidden="true"><use href="/assets/icons.svg#icon-radio"></use></svg>Track order</button>
-    </div>
-  </section>
-
-  <section class="steps" aria-labelledby="how-title">
-    <div class="section-heading compact"><div><div class="eyebrow">How it works</div><h2 id="how-title">Four steps, no account.</h2></div></div>
-    <div class="step-grid">
-      <div class="step"><div class="n">Step 01</div><h4>Choose your amount</h4><p>Take one of the limited packs or enter any custom amount from 10,000 Robux.</p></div>
-      <div class="step"><div class="n">Step 02</div><h4>Pick your coin</h4>      <p>Bitcoin, Litecoin or Ethereum. The exact amount is reserved for you alone.</p></div>
-      <div class="step"><div class="n">Step 03</div><h4>Send the exact amount</h4><p>Scan the QR or copy the address. We watch the chain and detect your transfer automatically.</p></div>
-      <div class="step"><div class="n">Step 04</div><h4>Get your Robux</h4><p>Once confirmed, we deliver to the Roblox account you entered. You get an order reference to track it.</p></div>
-    </div>
-  </section>
-  </div>
-
-  <div id="mode-plan" hidden>
-    <section class="steps" aria-labelledby="plans-title">
-      <div class="section-heading compact"><div><div class="eyebrow">Arc plans</div><h2 id="plans-title">One key. One PC. Full access.</h2></div></div>
-      <div class="pack-chips">
-        <span class="pack-chip"><i class="dot-live"></i>Key issued automatically</span>
-        <span class="pack-chip">Bound to the first PC that activates it</span>
-        <span class="pack-chip">No free plan</span>
-      </div>
-      <div class="plans" id="plans"></div>
-      <div class="price-note">
-        <span class="trust-chip">Pay with <b>BTC · LTC · ETH</b></span>
-        <span class="trust-chip">Key delivered <b>right after confirmation</b></span>
-        <span class="trust-chip">Support on <b>Discord</b></span>
-      </div>
+  <main class="shell">
+    <section class="shop-head">
+      <span class="hero-glow" aria-hidden="true"></span>
+      <img class="hero-mark" src="/arc-logo-white.png" alt="" aria-hidden="true">
+      <div class="k fade fade-1">Arc shop</div>
+      <h1 id="shopTitle" class="fade fade-2">Robux or a plan.</h1>
+      <p id="shopLede" class="fade fade-3">Pay in crypto. Robux goes to your Roblox account, a plan unlocks the executor.</p>
     </section>
 
-    <section class="steps" aria-labelledby="planhow-title">
-      <div class="section-heading compact"><div><div class="eyebrow">How plans work</div><h2 id="planhow-title">From payment to key, in four steps.</h2></div></div>
-      <div class="step-grid">
-        <div class="step"><div class="n">Step 01</div><h4>Pick your plan</h4><p>Weekly, monthly or lifetime. Every plan unlocks the whole catalog — there is no free tier.</p></div>
-        <div class="step"><div class="n">Step 02</div><h4>Pay in crypto</h4><p>Bitcoin, Litecoin or Ethereum. Your exact amount is reserved for you, so a payment can never be mixed up.</p></div>
-        <div class="step"><div class="n">Step 03</div><h4>Copy your key</h4><p>The moment the transfer confirms we generate your key and show it on this page — <b>ARC-XXXX-XXXX-XXXX</b>.</p></div>
-        <div class="step"><div class="n">Step 04</div><h4>Activate in Arc</h4><p>Open the executor and paste the key into the popup. It binds itself to that PC — one key, one machine.</p></div>
-      </div>
-      <ul class="how-list">
-        <li><b>Hardware-bound.</b> <span>Your key locks onto the first PC that activates it, so a leaked key is useless to anyone else. Switched PCs? Ask on Discord and we unbind it for you.</span></li>
-        <li><b>Self-deleting keys.</b> <span>An expired or revoked key is removed from our system the moment it stops being valid — the executor drops it and asks for a new one.</span></li>
-        <li><b>No Roblox login needed.</b> <span>Plans are for the executor, so buying one never asks for your account details.</span></li>
-      </ul>
+    <div class="note" id="shop-notice" hidden></div>
+    <div class="note" id="announce" hidden></div>
+
+    <!-- the two cards the shop opens on -->
+    <section class="grid two" id="chooser" aria-label="Choose what to buy">
+      <button type="button" class="card link fade fade-3" data-mode="robux">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4.5 7v10L12 21l7.5-4V7L12 3Z"/><path d="M4.5 7 12 11l7.5-4M12 11v10"/></svg>
+        <span class="k">Packs &middot; Custom</span>
+        <h3>Robux</h3>
+        <p>Delivered to your Roblox account.</p>
+        <span class="foot">From $50 <i>&rarr;</i></span>
+      </button>
+      <button type="button" class="card link fade fade-4" data-mode="plan">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 3.5a5 5 0 1 0-4.2 7.7L4 18.5V21h3l1-1v-2h2v-2h2l1.6-1.6a5 5 0 0 0 1.9-9.9Z"/><path d="M17 6.5h.01"/></svg>
+        <span class="k">Weekly &middot; Monthly &middot; Lifetime</span>
+        <h3>Plans</h3>
+        <p>A key for the executor, bound to one PC.</p>
+        <span class="foot">From $5 <i>&rarr;</i></span>
+      </button>
     </section>
+
+    <button type="button" class="back" id="backLink" data-mode="choose" hidden>&larr; Both options</button>
+
+    <!-- ── Robux ─────────────────────────────────────────────────── -->
+    <div id="mode-robux" hidden>
+      <section class="section">
+        <div class="section-head"><h2>Packs</h2><span>Limited stock</span></div>
+        <div class="grid" id="packs"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head"><h2>Custom amount</h2><span>$1 per 1,000</span></div>
+        <div class="line">
+          <span class="k">Robux</span>
+          <div class="amount">
+            <input id="robuxInput" type="text" inputmode="numeric" autocomplete="off" placeholder="10,000" value="50000">
+            <span class="unit">R$</span>
+          </div>
+          <span class="price" id="customPrice">—</span>
+          <button class="chip" id="customBuy" disabled>Buy</button>
+        </div>
+        <div class="quick" id="quickPicks"></div>
+        <p class="hint" id="customHint"></p>
+        <p class="hint" id="customRate"></p>
+      </section>
+
+      <section class="section">
+        <div class="line track">
+          <span class="k">Order</span>
+          <input id="trackInput" placeholder="Paste your order ID or reference" autocomplete="off">
+          <button class="chip" id="trackBtn">Track</button>
+        </div>
+      </section>
+    </div>
+
+    <!-- ── Plans ─────────────────────────────────────────────────── -->
+    <div id="mode-plan" hidden>
+      <section class="section">
+        <div class="section-head"><h2>Plans</h2><span>One key, one PC</span></div>
+        <div class="grid" id="plans"></div>
+        <p class="hint">The key is generated when your payment confirms. It binds to the first PC that activates it and stops working when the plan ends.</p>
+      </section>
+
+      <section class="section">
+        <div class="line track">
+          <span class="k">Key</span>
+          <input id="trackInputPlan" placeholder="Paste your order reference to see the key again" autocomplete="off">
+          <button class="chip" id="trackBtnPlan">Find</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="foot-links">
+    <a href="/">Home</a>
+    <a href="/script/">Script</a>
+    <a href="/shop/">Shop</a>
+    <a href="https://discord.gg/bbYM8kcaZd" target="_blank" rel="noopener noreferrer">Discord</a>
   </div>
-
-  <p class="fine">Arc HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending. Plan keys are personal: they bind to one PC and are removed automatically once they expire or are revoked.</p>
-</main>
-
-<footer class="footer"><div class="footer-content"><span class="footer-brand">Arc HUB</span><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="https://discord.gg/bbYM8kcaZd" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
+  <p class="fine">Prices in USD at the live market rate. Crypto transfers are irreversible. Arc is not affiliated with Roblox Corporation.</p>
+</div>
 
 <div class="sheet-bg" id="sheetBg"></div>
 <aside class="sheet" id="sheet" aria-hidden="true" aria-labelledby="sheetTitle">
   <div class="sheet-head">
     <div><div class="t" id="sheetKicker">Checkout</div><h3 id="sheetTitle">Your order</h3></div>
-    <button class="sheet-close" id="sheetClose" aria-label="Close">✕</button>
+    <button class="sheet-close" id="sheetClose" aria-label="Close">&#10005;</button>
   </div>
   <div class="sheet-body" id="sheetBody"></div>
   <div class="sheet-foot" id="sheetFoot"></div>
@@ -323,20 +301,13 @@ const el = (tag, cls, html) => { const n = document.createElement(tag); if (cls)
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money = c => '$' + (c / 100).toFixed(2);
 const nf = n => Number(n || 0).toLocaleString('en-US');
-const num = n => n >= 1e6 ? (n/1e6).toFixed(n % 1e6 ? 1 : 0) + 'M' : nf(n);
 
 let CATALOG = null;
 let custom = 50000;
 let customQuote = null;
-let selectedCoin = '';
 let currentOrder = null;
 let pollTimer = null;
-let MODE = 'robux';   // 'robux' | 'plan'
-
-const MODE_NOTE = {
-  robux: 'Robux is delivered to your Roblox account. An Arc plan gives you a key for the executor instead.',
-  plan: 'A plan key unlocks the Arc executor. There is no free plan, and every key binds to a single PC.'
-};
+let MODE = 'choose';   // 'choose' (the two cards) | 'robux' | 'plan'
 
 async function api(path, opts) {
   const res = await fetch(API + path, {
@@ -351,104 +322,77 @@ async function api(path, opts) {
 }
 
 /* ── storefront ─────────────────────────────────────────────────── */
-const CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
 
 function renderPacks() {
   const host = $('packs');
-  host.innerHTML = '';
-  const bestValue = CATALOG.packs.reduce((a, b) => (a.usdCents / a.robux < b.usdCents / b.robux ? a : b));
+  host.replaceChildren();
   for (const p of CATALOG.packs) {
     const soldOut = p.remaining <= 0;
-    const pct = p.limit ? Math.min(100, Math.round((p.sold / p.limit) * 100)) : 0;
     const rate = (p.usdCents / 100) / (p.robux / 1000);
-    const isStarter = p.id === 'starter';
-    const isBest = p.id === bestValue.id;
-    const card = el('article', 'pack' + (isStarter ? ' starter' : '') + (isBest ? ' best' : '') + (soldOut ? ' soldout' : ''));
+    const card = el('article', 'card' + (soldOut ? ' sold' : ''));
     card.innerHTML = `
-      <div class="pack-top">
-        <span class="pack-name">${esc(p.label)}</span>
-        <span class="pack-badge${isStarter || isBest ? ' hot' : ''}">${soldOut ? 'Sold out' : (isStarter ? 'Start here' : 'Limited · ' + pct + '% gone')}</span>
-      </div>
-      <div class="pack-amount">${nf(p.robux)}<span>R$</span></div>
-      <div class="pack-price">${money(p.usdCents)}<small>$${rate.toFixed(2)} per 1,000</small></div>
-      <ul class="pack-list">
-        <li>${CHECK}<span>${nf(p.robux)} Robux to your Roblox account</span></li>
-        <li>${CHECK}<span>${isBest ? 'Best value per Robux' : (isStarter ? 'Smallest way in — lowest price' : 'Locked price for 30 minutes')}</span></li>
-        <li>${CHECK}<span>Pay with BTC, LTC or ETH</span></li>
-        <li>${CHECK}<span>Automatic on-chain payment detection</span></li>
-      </ul>
-      <div class="pack-stock">
-        <div class="lbl"><span>${soldOut ? 'No stock left' : p.remaining + ' left of ' + p.limit}</span><span>${pct}% gone</span></div>
-        <div class="bar"><i style="width:${pct}%"></i></div>
-      </div>
-      <button class="btn accent" data-pack="${esc(p.id)}" ${soldOut ? 'disabled' : ''}>${soldOut ? 'Sold out' : 'Buy ' + esc(p.label)}</button>`;
+      <span class="k">${esc(p.label)}</span>
+      <h3>${nf(p.robux)} <em>R$</em></h3>
+      <p>${money(p.usdCents)} · $${rate.toFixed(2)} per 1,000</p>
+      <div class="stock"><i><b style="width:${p.limit ? Math.max(2, Math.round((p.remaining / p.limit) * 100)) : 100}%"></b></i><span>${soldOut ? 'Sold out' : p.remaining + ' left'}</span></div>
+      <button class="chip" ${soldOut ? 'disabled' : ''}>${soldOut ? 'Sold out' : 'Buy'}</button>`;
     card.querySelector('button').onclick = () => openCheckout({ kind: 'pack', pack: p.id, robux: p.robux, usdCents: p.usdCents, label: p.label });
     host.appendChild(card);
   }
 }
 
-/* ── plans ──────────────────────────────────────────────────────
-   No free tier by design: every card is a paid key, and the only thing that
-   differs between them is how long the key stays alive. */
+/* No free tier by design: every plan is a paid key, and the only thing that
+   differs between them is how long that key stays alive. */
 const PLAN_UNIT = { weekly: '/ week', monthly: '/ month', lifetime: 'once' };
 
 function planCard(p) {
   const days = Number(p.days) || 0;
   const usd = p.usdCents / 100;
   const perDay = days ? usd / days : 0;
-  const card = el('article', 'pack plan' + (p.best ? ' best' : '') + (p.id === 'lifetime' ? ' lifetime' : ''));
+  const card = el('article', 'card');
   card.innerHTML = `
-    <div class="pack-top">
-      <span class="pack-name">${esc(p.label)}</span>
-      <span class="pack-badge${p.best || p.id === 'lifetime' ? ' hot' : ''}">${p.id === 'lifetime' ? 'Never expires' : days + ' days'}</span>
-    </div>
-    <div class="pack-amount">$${usd.toFixed(p.usdCents % 100 ? 2 : 0)}<span>${esc(PLAN_UNIT[p.id] || '')}</span></div>
-    <div class="pack-price">${days ? '$' + perDay.toFixed(2) + ' per day' : 'Pay once, keep it'}</div>
-    <p class="tiny" style="margin-top:10px">${esc(p.blurb || '')}</p>
-    <ul class="pack-list">
-      ${(p.perks || []).map(t => `<li>${CHECK}<span>${esc(t)}</span></li>`).join('')}
-      <li>${CHECK}<span>Works on exactly <b>one PC</b> (hardware-bound key)</span></li>
-    </ul>
-    <div class="pack-stock">
-      <div class="lbl"><span>${days ? 'Key valid for ' + days + ' days' : 'Key never expires'}</span><span>1 PC per key</span></div>
-      <div class="bar"><i style="width:100%"></i></div>
-    </div>
-    <button class="btn accent">Buy ${esc(p.label)}</button>`;
+    <span class="k">${esc(p.label)}${p.best ? ' · Most popular' : ''}</span>
+    <h3>$${usd.toFixed(p.usdCents % 100 ? 2 : 0)} <em>${esc(PLAN_UNIT[p.id] || '')}</em></h3>
+    <p>${days ? days + ' days of access' : 'Never expires'}</p>
+    <p>${days ? '$' + perDay.toFixed(2) + ' per day' : 'Pay once'}</p>
+    <button class="chip">Buy ${esc(p.label)}</button>`;
   card.querySelector('button').onclick = () => openCheckout({ kind: 'plan', plan: p.id, label: p.label, usdCents: p.usdCents, robux: 0, days: p.days });
   return card;
 }
 
 function renderPlans() {
   const host = $('plans');
-  if (!host) return;
-  host.innerHTML = '';
+  if (!host || host.childElementCount) return;
   const plans = (CATALOG && CATALOG.plans) || [];
-  if (!plans.length) {
-    host.innerHTML = '<div class="custom-card"><p class="tiny" style="margin:0">Plans could not be loaded right now. Refresh the page, or open a Discord ticket and we will sort it out.</p></div>';
-    return;
-  }
+  if (!plans.length) { host.innerHTML = '<article class="card"><p>Plans are unavailable right now — ask on Discord.</p></article>'; return; }
   for (const p of plans) host.appendChild(planCard(p));
 }
 
-function setMode(mode) {
-  MODE = mode === 'plan' ? 'plan' : 'robux';
+/* The shop opens on two cards; the other two states reveal one half of it. */
+function setMode(mode, opts) {
+  MODE = mode === 'plan' ? 'plan' : (mode === 'robux' ? 'robux' : 'choose');
+  $('chooser').hidden = MODE !== 'choose';
+  $('backLink').hidden = MODE === 'choose';
   $('mode-robux').hidden = MODE !== 'robux';
   $('mode-plan').hidden = MODE !== 'plan';
-  for (const b of document.querySelectorAll('.mode-switch button')) {
-    const on = b.dataset.mode === MODE;
-    b.classList.toggle('on', on);
-    b.setAttribute('aria-selected', on ? 'true' : 'false');
-  }
-  $('modeNote').textContent = MODE_NOTE[MODE];
   if (MODE === 'plan') renderPlans();
+  // Reveal the chosen half with the same small fade the landing page uses.
+  for (const id of ['mode-robux', 'mode-plan']) $(id).classList.remove('is-in');
+  if (MODE !== 'choose') { const shown = $(MODE === 'plan' ? 'mode-plan' : 'mode-robux'); void shown.offsetWidth; shown.classList.add('is-in'); }
+  // /shop/#plans and /shop/#robux stay shareable.
+  try { history.replaceState(null, '', MODE === 'choose' ? location.pathname + location.search : (MODE === 'plan' ? '#plans' : '#robux')); } catch (_) {}
+  if (opts && opts.scroll) {
+    const target = MODE === 'choose' ? $('chooser') : $('backLink');
+    try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) {}
+  }
+  return MODE;
 }
 
 function renderQuickPicks() {
   const host = $('quickPicks');
-  const values = [10000, 25000, 50000, 100000, 150000, 300000];
-  host.innerHTML = '';
-  for (const v of values) {
-    const b = el('button', 'quick' + (v === custom ? ' on' : ''), nf(v));
+  host.replaceChildren();
+  for (const v of [10000, 25000, 50000, 100000, 150000, 300000]) {
+    const b = el('button', v === custom ? 'on' : '', nf(v));
     b.onclick = () => { $('robuxInput').value = nf(v); custom = v; refreshQuote(); renderQuickPicks(); };
     host.appendChild(b);
   }
@@ -463,9 +407,9 @@ function refreshQuote() {
     if (custom < CATALOG.minRobux) {
       customQuote = null;
       $('customPrice').textContent = '—';
-      $('customRate').textContent = 'minimum ' + nf(CATALOG.minRobux) + ' Robux';
-      $('customHint').textContent = 'Minimum order is ' + nf(CATALOG.minRobux) + ' Robux — smaller amounts are not accepted.';
-      $('customHint').className = 'hint-line warn';
+      $('customRate').textContent = '';
+      $('customHint').textContent = 'Minimum ' + nf(CATALOG.minRobux) + ' R$.';
+      $('customHint').className = 'hint warn';
       $('customBuy').disabled = true;
       return;
     }
@@ -474,14 +418,14 @@ function refreshQuote() {
       const q = await api('/shop/quote', { method: 'POST', body: { robux: custom } });
       customQuote = q;
       $('customPrice').textContent = '$' + q.usd;
-      $('customRate').textContent = '$' + Number(q.usdPer1k).toFixed(2) + ' per 1,000 Robux';
-      $('customHint').textContent = 'You get ' + nf(q.robux) + ' Robux for $' + q.usd + '.';
-      $('customHint').className = 'hint-line';
+      $('customRate').textContent = '$' + Number(q.usdPer1k).toFixed(2) + ' per 1,000 R$';
+      $('customHint').textContent = '';
+      $('customHint').className = 'hint';
       $('customBuy').disabled = false;
     } catch (e) {
       customQuote = null;
       $('customHint').textContent = e.message;
-      $('customHint').className = 'hint-line warn';
+      $('customHint').className = 'hint warn';
     }
   }, 220);
 }
@@ -509,10 +453,8 @@ let draft = null;
 
 function openCheckout(item) {
   draft = { ...item, coin: '', robloxUsername: '', discord: '' };
-  selectedCoin = '';
   renderCheckoutStep();
-  if (item.kind === 'plan') sheetOpen('Buy ' + item.label + ' plan', 'Arc plan');
-  else sheetOpen('Checkout', item.kind === 'pack' ? 'Limited pack' : 'Custom order');
+  sheetOpen(item.kind === 'plan' ? item.label + ' plan' : 'Checkout', item.kind === 'plan' ? 'Arc plan' : (item.kind === 'pack' ? 'Pack' : 'Custom amount'));
 }
 
 function renderCheckoutStep() {
@@ -522,53 +464,51 @@ function renderCheckoutStep() {
   body.innerHTML = isPlan ? `
     <div class="row"><span class="lbl">Plan</span><span class="val">${esc(draft.label)}</span></div>
     <div class="row"><span class="lbl">Price</span><span class="val">${money(draft.usdCents)}</span></div>
-    <div class="row"><span class="lbl">Key lasts</span><span class="val">${draft.days > 0 ? draft.days + ' days' : 'Forever'}</span></div>
-    <div class="field" style="margin-top:20px">
+    <div class="field">
       <label>Pay with</label>
       <div class="coin-row" id="coinRow"></div>
     </div>
-    <div class="field" style="margin-top:16px">
-      <label for="discordUser">Discord (optional — so we can find you if a key ever needs unbinding)</label>
-      <div class="amount-input" style="padding:12px 14px"><input id="discordUser" autocomplete="off" placeholder="yourname" style="font-size:15px;font-weight:600" value="${esc(draft.discord)}"></div>
+    <div class="field">
+      <label for="discordUser">Discord (optional)</label>
+      <input id="discordUser" autocomplete="off" placeholder="yourname" value="${esc(draft.discord)}">
     </div>
     <div class="err" id="checkoutErr"></div>
-    <p class="tiny">Your key is generated the moment the payment confirms and shown right on this page. It binds itself to the first PC that activates it — that is what keeps it yours — so never share it.</p>` : `
-    <div class="row"><span class="lbl">Amount</span><span class="val">${nf(draft.robux)} Robux</span></div>
+    <p class="tiny">Your key appears here once the payment confirms. It binds to the first PC that activates it.</p>` : `
+    <div class="row"><span class="lbl">Amount</span><span class="val">${nf(draft.robux)} R$</span></div>
     <div class="row"><span class="lbl">Price</span><span class="val">${money(draft.usdCents)}</span></div>
-    <div class="row"><span class="lbl">Rate</span><span class="val">$${((draft.usdCents / 100) / (draft.robux / 1000)).toFixed(2)} / 1,000</span></div>
-    <div class="field" style="margin-top:20px">
-      <label for="robloxUser">Roblox username receiving the Robux</label>
-      <div class="amount-input" style="padding:12px 14px"><input id="robloxUser" autocomplete="off" placeholder="e.g. ArcBuyer" style="font-size:15px;font-weight:600" value="${esc(draft.robloxUsername)}"></div>
+    <div class="field">
+      <label for="robloxUser">Roblox username</label>
+      <input id="robloxUser" autocomplete="off" placeholder="who receives the Robux" value="${esc(draft.robloxUsername)}">
     </div>
-    <div class="field" style="margin-top:14px">
-      <label for="discordUser">Discord (optional — for support)</label>
-      <div class="amount-input" style="padding:12px 14px"><input id="discordUser" autocomplete="off" placeholder="yourname" style="font-size:15px;font-weight:600" value="${esc(draft.discord)}"></div>
+    <div class="field">
+      <label for="discordUser">Discord (optional)</label>
+      <input id="discordUser" autocomplete="off" placeholder="yourname" value="${esc(draft.discord)}">
     </div>
-    <div class="field" style="margin-top:20px">
+    <div class="field">
       <label>Pay with</label>
       <div class="coin-row" id="coinRow"></div>
     </div>
     <div class="err" id="checkoutErr"></div>
-    <p class="tiny">Your exact crypto amount is reserved the moment you continue. Each order gets a unique amount, so payments never get mixed up. The rate is locked for 30 minutes.</p>`;
+    <p class="tiny">Your amount is reserved for 30 minutes. Each order gets a unique amount, so payments never get mixed up.</p>`;
 
   const row = $('coinRow');
-  if (!avail.length) {
-    row.innerHTML = '<span class="tiny">No coin is configured yet. Please open a Discord ticket.</span>';
-  }
+  if (!avail.length) row.innerHTML = '<span class="tiny">No coin is configured yet — ask on Discord.</span>';
   for (const c of CATALOG.coins) {
     const b = el('button', 'coin' + (c.available ? '' : ' off') + (draft.coin === c.key ? ' on' : ''));
-    b.innerHTML = `<span class="g">${COIN_GLYPH[c.key] || c.symbol[0]}</span><span>${esc(c.symbol)}<br><span style="color:var(--muted);font-size:11.5px">${esc(c.name)}</span></span>`;
+    b.innerHTML = `<span class="g">${COIN_GLYPH[c.key] || c.symbol[0]}</span><span>${esc(c.symbol)}</span>`;
     b.onclick = () => { draft.coin = c.key; renderCheckoutStep(); };
     row.appendChild(b);
   }
 
   const foot = $('sheetFoot');
-  foot.innerHTML = '';
-  const back = el('button', 'btn ghost', 'Cancel');
-  back.onclick = sheetShut;
-  const go = el('button', 'btn accent big', 'Continue to payment');
-  go.style.justifyContent = 'center';
+  foot.replaceChildren();
+  const go = el('button', 'chip', 'Continue to payment');
+  go.style.minHeight = '44px';
   go.onclick = submitOrder;
+  const back = el('button', 'chip', 'Cancel');
+  back.style.minHeight = '40px';
+  back.style.background = 'transparent';
+  back.onclick = sheetShut;
   foot.appendChild(go);
   foot.appendChild(back);
 }
@@ -578,10 +518,10 @@ async function submitOrder() {
   draft.discord = ($('discordUser') || {}).value ? $('discordUser').value.trim() : draft.discord;
   const err = $('checkoutErr');
   err.classList.remove('show');
-  if (!draft.coin) { err.textContent = 'Pick a coin to pay with.'; err.classList.add('show'); return; }
-  if (draft.kind !== 'plan' && !/^[A-Za-z0-9_]{3,20}$/.test(draft.robloxUsername)) { err.textContent = 'Enter the Roblox username that should receive the Robux (3–20 letters, numbers or _).'; err.classList.add('show'); return; }
-  const btn = $('sheetFoot').querySelector('.btn.accent');
-  if (btn) { btn.disabled = true; btn.textContent = 'Reserving your amount…'; }
+  if (!draft.coin) { err.textContent = 'Pick a coin.'; err.classList.add('show'); return; }
+  if (draft.kind !== 'plan' && !/^[A-Za-z0-9_]{3,20}$/.test(draft.robloxUsername)) { err.textContent = 'Enter the Roblox username (3–20 letters, numbers or _).'; err.classList.add('show'); return; }
+  const btn = $('sheetFoot').querySelector('.chip');
+  if (btn) { btn.disabled = true; btn.textContent = 'Reserving…'; }
   try {
     const payload = { coin: draft.coin, robloxUsername: draft.robloxUsername, discord: draft.discord };
     if (draft.kind === 'plan') { payload.kind = 'plan'; payload.plan = draft.plan; }
@@ -604,29 +544,27 @@ function qrUrl(order) {
 }
 
 const STATUS_META = {
-  awaiting_payment: { cls: 'wait', h: 'Waiting for your payment', d: 'Send the exact amount below from your wallet. This page updates on its own — no need to tell us anything.' },
-  detected: { cls: 'wait', h: 'Payment detected on-chain', d: 'We can see your transfer. Waiting for confirmations before delivery.' },
-  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Thanks! Your Robux are queued for delivery to your account — this normally takes minutes.' },
-  delivered: { cls: 'ok', h: 'Delivered', d: 'The Robux have been handed over. Check your Roblox account.' },
-  underpaid: { cls: 'bad', h: 'We received less than the exact amount', d: 'Open a Discord ticket with your order reference and we will fix it manually.' },
-  expired: { cls: 'bad', h: 'This order expired', d: 'The locked rate ran out. Create a new order to get a current price.' },
-  cancelled: { cls: 'bad', h: 'Order cancelled', d: 'This order was cancelled. Create a new one whenever you like.' }
+  awaiting_payment: { cls: 'wait', h: 'Waiting for your payment', d: 'Send the exact amount below. This page updates on its own.' },
+  detected: { cls: 'wait', h: 'Payment detected', d: 'Waiting for confirmations.' },
+  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Your Robux are queued for delivery.' },
+  delivered: { cls: 'ok', h: 'Delivered', d: 'The Robux are in your account.' },
+  underpaid: { cls: 'bad', h: 'Less than the exact amount arrived', d: 'Open a Discord ticket with your reference.' },
+  expired: { cls: 'bad', h: 'This order expired', d: 'Create a new one for a current price.' },
+  cancelled: { cls: 'bad', h: 'Order cancelled', d: 'Create a new one whenever you like.' }
 };
 
-// Plans are not delivered by hand, so they get their own copy — nobody should read
-// "your Robux are queued" after buying a key.
 const PLAN_STATUS_META = {
-  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Thanks! Your key below is live and ready to activate — it binds to the first PC that uses it.' },
-  delivered: { cls: 'ok', h: 'Key issued', d: 'Your plan is active. The key below is the only thing you need.' }
+  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Your key below is live.' },
+  delivered: { cls: 'ok', h: 'Key issued', d: 'Your plan is active.' }
 };
 
 function statusCard(order) {
   const meta = (order.kind === 'plan' && PLAN_STATUS_META[order.status]) || STATUS_META[order.status] || STATUS_META.awaiting_payment;
-  const confs = order.confirmations ? `<div class="tiny">Confirmations: ${order.confirmations}${order.status === 'detected' ? ' of ' + order.requiredConfirmations + ' needed' : ''}</div>` : '';
+  const confs = order.confirmations ? `<div class="tiny">Confirmations: ${order.confirmations}${order.status === 'detected' ? ' of ' + order.requiredConfirmations : ''}</div>` : '';
   return `<div class="status-card ${meta.cls}">
-    <div class="h">${meta.cls === 'wait' && order.status !== 'paid' && order.status !== 'delivered' ? '<span class="spin"></span>' : ''}${esc(meta.h)}</div>
+    <div class="h">${meta.cls === 'wait' ? '<span class="spin"></span>' : ''}${esc(meta.h)}</div>
     <div class="d">${esc(meta.d)}</div>${confs}
-    ${order.txid ? `<div class="tiny">Transaction: <code style="word-break:break-all">${esc(order.txid)}</code>${order.explorer ? ` · <a href="${esc(order.explorer)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent-light)">view on explorer</a>` : ''}</div>` : ''}
+    ${order.txid ? `<div class="tiny">Tx <code style="word-break:break-all">${esc(order.txid)}</code>${order.explorer ? ` · <a href="${esc(order.explorer)}" target="_blank" rel="noopener noreferrer" style="color:#bababa">explorer</a>` : ''}</div>` : ''}
   </div>`;
 }
 
@@ -636,35 +574,33 @@ function showPaymentStep() {
   const isPlan = o.kind === 'plan';
   const body = $('sheetBody');
   body.innerHTML = `
-    <div class="row"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row"><span class="lbl">Reference</span><span class="val">${esc(o.ref)}</span></div>
     ${isPlan
-      ? `<div class="row"><span class="lbl">Plan</span><span class="val">${esc(o.planLabel || 'Arc plan')}</span></div>
-         <div class="row"><span class="lbl">Key lasts</span><span class="val">${o.planDays > 0 ? o.planDays + ' days' : 'Forever'}</span></div>`
-      : `<div class="row"><span class="lbl">Amount</span><span class="val">${nf(o.robux)} Robux</span></div>
-         <div class="row"><span class="lbl">Receiving account</span><span class="val">${esc(o.robloxUsername)}</span></div>`}
+      ? `<div class="row"><span class="lbl">Plan</span><span class="val">${esc(o.planLabel || 'Arc plan')}</span></div>`
+      : `<div class="row"><span class="lbl">Amount</span><span class="val">${nf(o.robux)} R$</span></div>
+         <div class="row"><span class="lbl">Account</span><span class="val">${esc(o.robloxUsername)}</span></div>`}
     <div class="row"><span class="lbl">Price</span><span class="val">$${esc(o.usd)}</span></div>
     ${paying ? `
     <div class="big-amount">
       <div class="k">Send exactly</div>
       <div class="v">${esc(o.amount)}</div>
-      <div class="u">${esc(o.symbol)} · ${esc(o.coinName)}</div>
+      <div class="u">${esc(o.symbol)}</div>
     </div>
-    <div style="display:flex;justify-content:center;margin-top:14px"><button class="copy" id="copyAmount">Copy amount</button></div>
     <div class="qr"><img src="${qrUrl(o)}" alt="Payment QR code" loading="lazy" referrerpolicy="no-referrer"></div>
-    <p class="tiny" style="text-align:center;margin-top:4px">Scan with your wallet app, or copy the address below.</p>
     <div class="addr"><code>${esc(o.address)}</code><button class="copy" id="copyAddr">Copy</button></div>
+    <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap">
+      <button class="copy" id="copyAmount">Copy amount</button>
+      <button class="copy" id="ivePaid">I sent it — check now</button>
+    </div>
     <div class="cd" id="countdown"></div>` : ''}
     <div id="statusHost">${statusCard(o)}</div>
-    ${paying ? `<div class="err" id="payErr"></div>
-      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
-        <button class="btn ghost" id="ivePaid" style="flex:1;justify-content:center">I already sent it — check now</button>
-      </div>
-      <p class="tiny">Keep this reference: <b>${esc(o.ref)}</b>. You can reopen this page any time with it, or with the order ID in the field on the shop page.${isPlan ? ' Your key appears here the second it is generated.' : ''}</p>` : ''}`;
+    <div class="err" id="payErr"></div>
+    <p class="tiny">Keep this reference: <b>${esc(o.ref)}</b>${isPlan ? ' — your key shows up here once it is generated' : ''}.</p>`;
 
   const foot = $('sheetFoot');
-  foot.innerHTML = '';
-  const done = el('button', 'btn accent big', o.status === 'delivered' ? 'Done' : 'Close');
-  done.style.justifyContent = 'center';
+  foot.replaceChildren();
+  const done = el('button', 'chip', o.status === 'delivered' ? 'Done' : 'Close');
+  done.style.minHeight = '44px';
   done.onclick = sheetShut;
   foot.appendChild(done);
 
@@ -676,9 +612,9 @@ function showPaymentStep() {
     if (ad) ad.onclick = () => copy(o.address, ad);
     const ip = $('ivePaid');
     if (ip) ip.onclick = async () => {
-      ip.disabled = true; ip.textContent = 'Checking the blockchain…';
+      ip.disabled = true; ip.textContent = 'Checking…';
       try { const r = await api('/shop/order/' + encodeURIComponent(o.id) + '/check', { method: 'POST' }); currentOrder = r.order; } catch (e) { const pe = $('payErr'); if (pe) { pe.textContent = e.message; pe.classList.add('show'); } }
-      ip.disabled = false; ip.textContent = 'I already sent it — check now';
+      ip.disabled = false; ip.textContent = 'I sent it — check now';
       updatePaymentView();
     };
     startPolling();
@@ -691,9 +627,7 @@ function tickCountdown() {
   if (!box || !currentOrder) return;
   const left = Math.max(0, Math.round((currentOrder.expiresAt - Date.now()) / 1000));
   const m = Math.floor(left / 60), s = left % 60;
-  box.innerHTML = left > 0
-    ? `Amount and rate locked for <b style="color:var(--text)">${m}:${String(s).padStart(2, '0')}</b>`
-    : 'The locked rate has expired — create a new order for a current price. Late payments are still detected, but contact support on Discord.';
+  box.innerHTML = left > 0 ? `Locked for ${m}:${String(s).padStart(2, '0')}` : 'The locked rate expired — create a new order.';
 }
 setInterval(tickCountdown, 1000);
 
@@ -704,13 +638,13 @@ function updatePaymentView() {
   if (currentOrder.status !== 'awaiting_payment' && currentOrder.status !== 'detected') {
     clearInterval(pollTimer);
     if (currentOrder.status === 'paid' || currentOrder.status === 'delivered') {
-      $('sheetKicker').textContent = 'Complete';
-      $('sheetTitle').textContent = currentOrder.status === 'delivered' ? 'Delivered' : 'Payment received';
       if (currentOrder.kind === 'plan') {
         $('sheetKicker').textContent = 'Your key';
-        $('sheetTitle').textContent = 'Your Arc key';
+        $('sheetTitle').textContent = 'Arc key';
         renderPlanKeyStep();
       } else {
+        $('sheetKicker').textContent = 'Complete';
+        $('sheetTitle').textContent = currentOrder.status === 'delivered' ? 'Delivered' : 'Payment received';
         renderDeliveredStep();
       }
     }
@@ -720,72 +654,71 @@ function updatePaymentView() {
 function renderDeliveredStep() {
   const o = currentOrder;
   $('sheetBody').innerHTML = `
-    <div class="big-amount" style="border-style:solid;border-color:rgba(107,203,119,.35);background:rgba(107,203,119,.06)">
+    <div class="big-amount">
       <div class="k">${o.status === 'delivered' ? 'Delivered' : 'Payment confirmed'}</div>
-      <div class="v">${nf(o.robux)}<span style="font-size:15px;font-weight:600;color:var(--muted)"> R$</span></div>
+      <div class="v">${nf(o.robux)} R$</div>
       <div class="u">to ${esc(o.robloxUsername)}</div>
     </div>
     ${statusCard(o)}
-    <div class="row" style="margin-top:8px"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row" style="margin-top:1rem"><span class="lbl">Reference</span><span class="val">${esc(o.ref)}</span></div>
     <div class="row"><span class="lbl">Paid</span><span class="val">$${esc(o.usd)} in ${esc(o.symbol)}</span></div>
-    ${o.txid ? `<div class="row"><span class="lbl">Transaction</span><span class="val" style="font-size:12px;word-break:break-all">${esc(o.txid)}</span></div>` : ''}
-    <p class="tiny">Save your order reference (${esc(o.ref)}) — it is the fastest way to get help on Discord if anything looks off.</p>`;
+    ${o.txid ? `<div class="row"><span class="lbl">Transaction</span><span class="val" style="font-size:.72rem;word-break:break-all">${esc(o.txid)}</span></div>` : ''}
+    <p class="tiny">Keep ${esc(o.ref)} — it is the fastest way to get help on Discord.</p>`;
   const foot = $('sheetFoot');
-  foot.innerHTML = '';
-  const b = el('button', 'btn accent big', 'Done');
-  b.style.justifyContent = 'center';
+  foot.replaceChildren();
+  const b = el('button', 'chip', 'Done');
+  b.style.minHeight = '44px';
   b.onclick = sheetShut;
   foot.appendChild(b);
 }
 
-/* The moment a plan order is paid the key exists — it gets the whole screen, with
-   the exact steps for getting it into the executor. */
+/* A paid plan order exists to hand over one key — that is the whole panel. */
 function renderPlanKeyStep() {
   const o = currentOrder;
   const lic = o.license;
   const body = $('sheetBody');
   const foot = $('sheetFoot');
   if (!lic) {
-    body.innerHTML = statusCard(o) + `
-      <p class="tiny">Payment confirmed — your key is being written now. This page refreshes on its own, or hit the button below.</p>`;
-    foot.innerHTML = '';
-    const re = el('button', 'btn ghost', 'Check again now');
-    re.style.justifyContent = 'center';
-    re.onclick = async () => { re.disabled = true; re.textContent = 'Checking…'; try { const r = await api('/shop/order/' + encodeURIComponent(o.id)); currentOrder = r.order; updatePaymentView(); } catch (_) {} re.disabled = false; re.textContent = 'Check again now'; };
+    body.innerHTML = statusCard(o) + '<p class="tiny">Your key is being written — this page updates by itself.</p>';
+    foot.replaceChildren();
+    const re = el('button', 'chip', 'Check again');
+    re.style.minHeight = '44px';
+    re.onclick = async () => { re.disabled = true; try { const r = await api('/shop/order/' + encodeURIComponent(o.id)); currentOrder = r.order; updatePaymentView(); } catch (_) {} re.disabled = false; };
     foot.appendChild(re);
     startPolling();
     return;
   }
-  const until = lic.expiresAt ? 'valid until ' + new Date(lic.expiresAt).toLocaleDateString([], { dateStyle: 'medium' }) : 'never expires';
+  const until = lic.expiresAt ? 'until ' + new Date(lic.expiresAt).toLocaleDateString([], { dateStyle: 'medium' }) : 'never expires';
   body.innerHTML = `
     <div class="license-box">
-      <div class="k">Your Arc key</div>
+      <div class="k">Your key</div>
       <code>${esc(lic.key)}</code>
-      <div class="meta">${esc(lic.planLabel || 'Plan')} · ${esc(until)} · ${lic.bound ? 'bound to a PC' : 'not activated yet'}</div>
+      <div class="meta">${esc(lic.planLabel || 'Plan')} · ${esc(until)}</div>
       <div class="acts"><button class="copy" id="copyKey">Copy key</button></div>
     </div>
-    <ul class="how-list" style="margin-top:18px">
-      <li><b>1.</b> <span>Open Arc on the PC you want to use it on.</span></li>
-      <li><b>2.</b> <span>Paste this key into the popup that shows up on launch.</span></li>
-      <li><b>3.</b> <span>Done — the key locks to that PC. Keep it somewhere safe.</span></li>
+    <ul class="steps">
+      <li><b>1.</b><span>Open Arc on the PC you want to use.</span></li>
+      <li><b>2.</b><span>Paste the key into the popup.</span></li>
+      <li><b>3.</b><span>It binds to that PC.</span></li>
     </ul>
     ${statusCard(o)}
-    <div class="row" style="margin-top:8px"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row" style="margin-top:1rem"><span class="lbl">Reference</span><span class="val">${esc(o.ref)}</span></div>
     <div class="row"><span class="lbl">Paid</span><span class="val">$${esc(o.usd)} in ${esc(o.symbol)}</span></div>
-    ${o.txid ? `<div class="row"><span class="lbl">Transaction</span><span class="val" style="font-size:12px;word-break:break-all">${esc(o.txid)}</span></div>` : ''}
-    <p class="tiny">Keep your order reference (<b>${esc(o.ref)}</b>) — paste it into the tracking field on the shop page any time to see this key again. Need it moved to another PC? Open a Discord ticket with the reference.</p>`;
-  foot.innerHTML = '';
-  const copy = el('button', 'btn accent big', 'Copy key');
-  copy.style.justifyContent = 'center';
+    <p class="tiny">Lost the key? Paste ${esc(o.ref)} in the field on the shop page to see it again. Moved to a new PC? Ask on Discord.</p>`;
+  foot.replaceChildren();
+  const copy = el('button', 'chip', 'Copy key');
+  copy.style.minHeight = '44px';
   const flash = () => { copy.textContent = 'Copied'; setTimeout(() => { copy.textContent = 'Copy key'; }, 1700); };
   copy.onclick = () => { navigator.clipboard.writeText(lic.key).then(flash).catch(flash); };
-  const done = el('button', 'btn ghost', 'Close');
+  const done = el('button', 'chip', 'Close');
+  done.style.minHeight = '40px';
+  done.style.background = 'transparent';
   done.onclick = sheetShut;
   foot.appendChild(copy);
   foot.appendChild(done);
   const inline = $('copyKey');
   if (inline) inline.onclick = () => {
-    navigator.clipboard.writeText(lic.key).then(() => { inline.textContent = 'Copied'; inline.classList.add('done'); setTimeout(() => { inline.textContent = 'Copy key'; inline.classList.remove('done'); }, 1700); }).catch(() => { inline.textContent = 'Select and copy it manually'; });
+    navigator.clipboard.writeText(lic.key).then(() => { inline.textContent = 'Copied'; inline.classList.add('done'); setTimeout(() => { inline.textContent = 'Copy key'; inline.classList.remove('done'); }, 1700); }).catch(() => { inline.textContent = 'Copy it manually'; });
   };
 }
 
@@ -802,8 +735,8 @@ function startPolling() {
 }
 
 /* ── tracking ───────────────────────────────────────────────────── */
-async function trackOrder() {
-  const key = $('trackInput').value.trim();
+async function trackOrder(inputId) {
+  const key = $(inputId).value.trim();
   if (!key) return;
   try {
     const r = await api('/shop/order/' + encodeURIComponent(key));
@@ -814,7 +747,7 @@ async function trackOrder() {
     if (settled) {
       if (currentOrder.kind === 'plan') {
         $('sheetKicker').textContent = 'Plan ' + currentOrder.ref;
-        $('sheetTitle').textContent = 'Your key';
+        $('sheetTitle').textContent = 'Arc key';
         renderPlanKeyStep();
       } else {
         renderDeliveredStep();
@@ -824,8 +757,10 @@ async function trackOrder() {
     alert('Could not find that order: ' + e.message);
   }
 }
-$('trackBtn').onclick = trackOrder;
-$('trackInput').addEventListener('keydown', e => { if (e.key === 'Enter') trackOrder(); });
+$('trackBtn').onclick = () => trackOrder('trackInput');
+$('trackInput').addEventListener('keydown', e => { if (e.key === 'Enter') trackOrder('trackInput'); });
+$('trackBtnPlan').onclick = () => trackOrder('trackInputPlan');
+$('trackInputPlan').addEventListener('keydown', e => { if (e.key === 'Enter') trackOrder('trackInputPlan'); });
 $('robuxInput').addEventListener('input', e => {
   const digits = e.target.value.replace(/[^0-9]/g, '');
   e.target.value = digits ? nf(digits) : '';
@@ -844,22 +779,19 @@ $('customBuy').onclick = () => {
   } catch (e) {
     const n = $('shop-notice');
     n.textContent = 'The shop could not load: ' + e.message;
-    n.classList.add('show');
+    n.hidden = false;
     return;
   }
-  $('stat-delivered').textContent = nf(CATALOG.stats.delivered);
-  $('stat-robux').textContent = num(CATALOG.stats.robuxDelivered);
-  $('stat-stock').textContent = nf(CATALOG.packs.reduce((a, p) => a + p.remaining, 0));
-  const lic = CATALOG.license || {};
-  $('stat-keys').textContent = nf(lic.issued || lic.total || 0);
   if (CATALOG.announcement) { $('announce').textContent = CATALOG.announcement; $('announce').hidden = false; }
-  if (!CATALOG.enabled) { const n = $('shop-notice'); n.textContent = 'The shop is paused right now — orders are temporarily disabled. Follow the Discord for updates.'; n.classList.add('show'); }
-  if (!CATALOG.coins.some(c => c.available)) { const n = $('shop-notice'); n.textContent = 'No payment coin is configured yet. Please open a Discord ticket and we will get you sorted.'; n.classList.add('show'); }
+  if (!CATALOG.enabled) { const n = $('shop-notice'); n.textContent = 'The shop is paused right now.'; n.hidden = false; }
+  if (!CATALOG.coins.some(c => c.available)) { const n = $('shop-notice'); n.textContent = 'No payment coin is configured yet — ask on Discord.'; n.hidden = false; }
   renderPacks();
+  renderPlans();
   refreshQuote();
-  // Buying a plan is a first-class entry point: #plans opens straight on that tab.
-  for (const b of document.querySelectorAll('.mode-switch button')) b.onclick = () => setMode(b.dataset.mode);
-  setMode(/plan/i.test(location.hash || '') ? 'plan' : 'robux');
+
+  for (const b of document.querySelectorAll('[data-mode]')) b.onclick = () => setMode(b.dataset.mode, { scroll: true });
+  const hash = (location.hash || '').toLowerCase();
+  setMode(hash.indexOf('plan') >= 0 ? 'plan' : (hash.indexOf('robux') >= 0 ? 'robux' : 'choose'));
 
   let saved = '';
   try { saved = localStorage.getItem('arc_shop_order') || ''; } catch (_) {}
