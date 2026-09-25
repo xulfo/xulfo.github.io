@@ -72,12 +72,13 @@
   <a class="brand" href="/"><img src="/assets/Arc.png?v=2" alt="">Arc HUB</a>
   <nav class="navlinks">
     <a class="back" href="/admin/">← Control room</a>
+    <a class="back" href="/admin/keys/">License keys</a>
     <a class="back" href="/shop/" target="_blank" rel="noopener">Open shop ↗</a>
   </nav>
 </header>
 
 <section class="heading">
-  <div><div class="eyebrow">Robux shop</div><h1>Orders</h1><p>Every crypto payment is detected on-chain and matched to a unique amount. Mark orders delivered once the Robux are handed over.</p></div>
+  <div><div class="eyebrow">Robux &amp; plans</div><h1>Orders</h1><p>Every crypto payment is detected on-chain and matched to a unique amount. Robux orders get delivered by hand; plan orders mint their key automatically the moment the payment confirms.</p></div>
   <div class="tools">
     <input class="input" id="search" type="search" placeholder="Search ref, roblox user, txid">
     <select class="select" id="statusFilter">
@@ -216,12 +217,13 @@ function render() {
   for (const o of list) {
     const [cls, label] = STATUS[o.status] || ['wait', o.status];
     const tr = document.createElement('tr');
+    const isPlan = o.kind === 'plan';
     tr.innerHTML = `
-      <td><div class="mono" style="font-weight:700">${esc(o.ref)}</div><div class="sub">${esc(o.id)}${o.packId ? ' · ' + esc(o.packId) : ' · custom'}</div></td>
+      <td><div class="mono" style="font-weight:700">${esc(o.ref)}</div><div class="sub">${esc(o.id)}${isPlan ? ' · ' + esc(o.planLabel || o.plan || 'plan') + ' plan' : (o.packId ? ' · ' + esc(o.packId) : ' · custom')}</div></td>
       <td><span class="badge ${cls}"><span class="badge-dot"></span>${esc(label)}</span>${o.confirmations ? `<div class="sub">${o.confirmations} conf${o.requiredConfirmations ? '/' + o.requiredConfirmations : ''}</div>` : ''}</td>
-      <td><div style="font-weight:650">${nf(o.robux)} R$</div><div class="sub">${money(Math.round(o.usd * 100))}</div></td>
+      <td><div style="font-weight:650">${isPlan ? esc(o.planLabel || 'Plan') + ' key' : nf(o.robux) + ' R$'}</div><div class="sub">${money(Math.round(o.usd * 100))}${isPlan && o.planDays > 0 ? ' · ' + o.planDays + ' days' : (isPlan ? ' · never expires' : '')}</div></td>
       <td><div class="mono">${esc(o.amount)} ${esc(o.symbol)}</div><div class="sub">${esc(o.coinName)}</div></td>
-      <td><div style="font-weight:640">${esc(o.robloxUsername)}</div><div class="sub">${esc(o.discord || 'no discord')}</div></td>
+      <td><div style="font-weight:640">${esc(o.robloxUsername || '—')}</div><div class="sub">${esc(o.discord || 'no discord')}</div>${o.license ? `<div class="sub"><a class="mono" href="/admin/keys/" style="color:var(--blue)">${esc(o.license.key)}</a>${o.license.bound ? ' · bound' : ' · unused'}</div>` : ''}</td>
       <td class="sub">${new Date(o.createdAt).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</td>
       <td>${o.txid ? `<a class="mono" href="${esc(o.explorer || '#')}" target="_blank" rel="noopener noreferrer" style="color:var(--blue)">${esc(String(o.txid).slice(0, 12))}…</a>${o.received ? `<div class="sub">received ${esc(o.received)}</div>` : ''}` : '<span class="sub">—</span>'}</td>
       <td></td>`;
@@ -230,6 +232,7 @@ function render() {
     const wrap = document.createElement('div');
     wrap.className = 'row-actions';
     const mk = (text, cls, fn) => { const b = document.createElement('button'); b.className = 'button ' + cls; b.textContent = text; b.onclick = fn; return b; };
+    if (o.license) wrap.append(mk('Copy key', 'ghost', e => { const btn = e.target; navigator.clipboard.writeText(o.license.key).then(() => { btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy key'; }, 1400); }).catch(() => {}); }));
     if (['awaiting_payment', 'detected', 'underpaid', 'expired'].includes(o.status)) {
       wrap.append(mk('Recheck', '', async e => { e.target.disabled = true; try { await api('/admin/api/shop/orders/' + encodeURIComponent(o.id) + '/check', { method: 'POST' }); await load(); } catch (err) { alert(err.message); e.target.disabled = false; } }));
     }

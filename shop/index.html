@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Robux Shop — Arc HUB</title>
-<meta name="description" content="Buy Robux with crypto. Limited packs, instant on-chain payment detection, delivered to your Roblox account.">
+<title>Shop — Robux &amp; Arc plans | Arc HUB</title>
+<meta name="description" content="Buy Robux or an Arc plan with crypto. Weekly $5, monthly $9.99, lifetime $19.99 — a hardware-bound key is generated the moment your payment confirms.">
 <link rel="icon" type="image/png" href="/assets/Arc.png?v=2">
 <link rel="apple-touch-icon" href="/assets/Arc.png?v=2">
 <link rel="stylesheet" href="/assets/css/style.css">
@@ -139,7 +139,31 @@
 .track{margin-top:26px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .track input{flex:1;min-width:200px;border:1px solid var(--border);background:var(--field);border-radius:11px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;font-family:var(--font)}
 .track input:focus{border-color:var(--border-strong)}
-@media (max-width:1000px){.packs{grid-template-columns:1fr}.shop-hero{grid-template-columns:1fr}.step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.custom-grid{grid-template-columns:1fr}}
+/* ── Buy Robux / Buy a plan ──────────────────────────────────── */
+.mode-switch{display:flex;gap:6px;padding:6px;border:1px solid var(--border);border-radius:14px;background:var(--panel);margin-top:26px;width:fit-content;max-width:100%;flex-wrap:wrap}
+.mode-switch button{appearance:none;border:0;background:none;color:var(--text-2);font:inherit;font-weight:660;font-size:14px;padding:11px 22px;border-radius:10px;cursor:pointer;transition:var(--transition);white-space:nowrap}
+.mode-switch button:hover{color:var(--text)}
+.mode-switch button.on{background:var(--accent);color:var(--accent-text-on);box-shadow:0 10px 26px var(--accent-glow)}
+.mode-note{color:var(--muted);font-size:12.5px;margin-top:12px;line-height:1.6}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:20px}
+.plan .pack-amount span{font-size:14px}
+.plan .pack-price{color:var(--text-2);font-weight:620}
+.plan.lifetime{border-color:rgba(255,255,255,.45);background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(18,19,22,.55) 46%),var(--panel);box-shadow:0 20px 60px rgba(255,255,255,.1)}
+.plan.lifetime::before{content:"";position:absolute;left:14%;right:14%;top:0;height:2px;border-radius:0 0 99px 99px;background:linear-gradient(90deg,transparent,var(--accent-light),transparent);opacity:.85}
+.plan .pack-list li span{color:var(--text-2)}
+.price-note{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+
+/* the key itself has to be impossible to misread */
+.license-box{margin-top:16px;border:1px solid var(--border-strong);border-radius:16px;background:rgba(0,0,0,.34);padding:20px 18px;text-align:center}
+.license-box .k{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);font-weight:750}
+.license-box code{display:block;margin-top:13px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:clamp(17px,4.6vw,23px);font-weight:750;letter-spacing:.07em;word-break:break-all}
+.license-box .meta{color:var(--muted);font-size:12.5px;margin-top:10px}
+.license-box .acts{display:flex;gap:9px;justify-content:center;margin-top:15px;flex-wrap:wrap}
+.how-list{list-style:none;display:grid;gap:10px;margin-top:14px}
+.how-list li{display:flex;gap:10px;color:var(--text-2);font-size:13.5px;line-height:1.5}
+.how-list b{color:var(--text)}
+
+@media (max-width:1000px){.packs,.plans{grid-template-columns:1fr}.shop-hero{grid-template-columns:1fr}.step-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.custom-grid{grid-template-columns:1fr}}
 @media (max-width:620px){.step-grid{grid-template-columns:1fr}.sheet{width:100%}}
 </style>
 </head>
@@ -161,13 +185,13 @@
   <section class="shop-hero">
     <div>
       <div class="page-kicker"><span class="status-dot"></span> Arc Shop</div>
-      <h1>Robux, delivered<br>without the wait.</h1>
-      <p class="lede">Pick a limited pack or set your own amount. Pay in crypto, and our watcher reads the blockchain directly — the moment your transfer lands, your order flips to paid and we hand the Robux to your account.</p>
+      <h1>Robux or a plan.<br>One shop.</h1>
+      <p class="lede">Take a limited Robux pack, set your own amount, or buy an Arc plan and get a key that unlocks the executor. Pay in crypto — our watcher reads the blockchain directly, so your order flips to paid the moment your transfer lands.</p>
       <div class="trust-row">
         <span class="trust-chip"><span class="dot-live"></span> <b>Live</b>&nbsp;on-chain tracking</span>
         <span class="trust-chip">Pay with <b>BTC · LTC · ETH</b></span>
-        <span class="trust-chip">Locked price for <b>30 min</b></span>
-        <span class="trust-chip">Minimum <b>10,000</b> Robux</span>
+        <span class="trust-chip">Plans from <b>$5</b></span>
+        <span class="trust-chip">Keys bound to <b>one PC</b></span>
         <span class="trust-chip">Support on <b>Discord</b></span>
       </div>
     </div>
@@ -175,12 +199,20 @@
       <div class="hero-stat"><div class="k">Orders delivered</div><div class="v" id="stat-delivered">—</div><div class="s">completed and handed over</div></div>
       <div class="hero-stat"><div class="k">Robux delivered</div><div class="v" id="stat-robux">—</div><div class="s">across all packs</div></div>
       <div class="hero-stat"><div class="k">Pack stock</div><div class="v" id="stat-stock">—</div><div class="s">limited packs remaining</div></div>
+      <div class="hero-stat"><div class="k">Keys issued</div><div class="v" id="stat-keys">—</div><div class="s">plan keys handed out</div></div>
     </div>
   </section>
 
   <div class="announce" id="announce" hidden></div>
   <div class="shop-notice" id="shop-notice"></div>
 
+  <div class="mode-switch" role="tablist" aria-label="What do you want to buy?">
+    <button type="button" class="on" data-mode="robux" id="tab-robux" role="tab" aria-selected="true">Buy Robux</button>
+    <button type="button" data-mode="plan" id="tab-plan" role="tab" aria-selected="false">Buy a plan</button>
+  </div>
+  <p class="mode-note" id="modeNote">Robux is delivered to your Roblox account. An Arc plan gives you a key for the executor instead.</p>
+
+  <div id="mode-robux">
   <section class="steps" aria-labelledby="packs-title">
     <div class="section-heading compact"><div><div class="eyebrow">Limited packs</div><h2 id="packs-title">Three ways in.</h2></div></div>
     <div class="pack-chips">
@@ -234,8 +266,41 @@
       <div class="step"><div class="n">Step 04</div><h4>Get your Robux</h4><p>Once confirmed, we deliver to the Roblox account you entered. You get an order reference to track it.</p></div>
     </div>
   </section>
+  </div>
 
-  <p class="fine">Arc HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending.</p>
+  <div id="mode-plan" hidden>
+    <section class="steps" aria-labelledby="plans-title">
+      <div class="section-heading compact"><div><div class="eyebrow">Arc plans</div><h2 id="plans-title">One key. One PC. Full access.</h2></div></div>
+      <div class="pack-chips">
+        <span class="pack-chip"><i class="dot-live"></i>Key issued automatically</span>
+        <span class="pack-chip">Bound to the first PC that activates it</span>
+        <span class="pack-chip">No free plan</span>
+      </div>
+      <div class="plans" id="plans"></div>
+      <div class="price-note">
+        <span class="trust-chip">Pay with <b>BTC · LTC · ETH</b></span>
+        <span class="trust-chip">Key delivered <b>right after confirmation</b></span>
+        <span class="trust-chip">Support on <b>Discord</b></span>
+      </div>
+    </section>
+
+    <section class="steps" aria-labelledby="planhow-title">
+      <div class="section-heading compact"><div><div class="eyebrow">How plans work</div><h2 id="planhow-title">From payment to key, in four steps.</h2></div></div>
+      <div class="step-grid">
+        <div class="step"><div class="n">Step 01</div><h4>Pick your plan</h4><p>Weekly, monthly or lifetime. Every plan unlocks the whole catalog — there is no free tier.</p></div>
+        <div class="step"><div class="n">Step 02</div><h4>Pay in crypto</h4><p>Bitcoin, Litecoin or Ethereum. Your exact amount is reserved for you, so a payment can never be mixed up.</p></div>
+        <div class="step"><div class="n">Step 03</div><h4>Copy your key</h4><p>The moment the transfer confirms we generate your key and show it on this page — <b>ARC-XXXX-XXXX-XXXX</b>.</p></div>
+        <div class="step"><div class="n">Step 04</div><h4>Activate in Arc</h4><p>Open the executor and paste the key into the popup. It binds itself to that PC — one key, one machine.</p></div>
+      </div>
+      <ul class="how-list">
+        <li><b>Hardware-bound.</b> <span>Your key locks onto the first PC that activates it, so a leaked key is useless to anyone else. Switched PCs? Ask on Discord and we unbind it for you.</span></li>
+        <li><b>Self-deleting keys.</b> <span>An expired or revoked key is removed from our system the moment it stops being valid — the executor drops it and asks for a new one.</span></li>
+        <li><b>No Roblox login needed.</b> <span>Plans are for the executor, so buying one never asks for your account details.</span></li>
+      </ul>
+    </section>
+  </div>
+
+  <p class="fine">Arc HUB is an independent community project and is not affiliated with, endorsed by or sponsored by Roblox Corporation. All prices are shown in USD; the crypto amount is calculated with a live market rate at the moment your order is created. Crypto transfers are irreversible — always double-check the address and the exact amount before sending. Plan keys are personal: they bind to one PC and are removed automatically once they expire or are revoked.</p>
 </main>
 
 <footer class="footer"><div class="footer-content"><span class="footer-brand">Arc HUB</span><a href="/script/">Script</a><a href="/script/games/">Games</a><a href="/script/statistics/">Stats</a><a href="/shop/">Shop</a><a href="https://discord.gg/bbYM8kcaZd" target="_blank" rel="noopener noreferrer">Discord</a></div></footer>
@@ -266,6 +331,12 @@ let customQuote = null;
 let selectedCoin = '';
 let currentOrder = null;
 let pollTimer = null;
+let MODE = 'robux';   // 'robux' | 'plan'
+
+const MODE_NOTE = {
+  robux: 'Robux is delivered to your Roblox account. An Arc plan gives you a key for the executor instead.',
+  plan: 'A plan key unlocks the Arc executor. There is no free plan, and every key binds to a single PC.'
+};
 
 async function api(path, opts) {
   const res = await fetch(API + path, {
@@ -314,6 +385,62 @@ function renderPacks() {
     card.querySelector('button').onclick = () => openCheckout({ kind: 'pack', pack: p.id, robux: p.robux, usdCents: p.usdCents, label: p.label });
     host.appendChild(card);
   }
+}
+
+/* ── plans ──────────────────────────────────────────────────────
+   No free tier by design: every card is a paid key, and the only thing that
+   differs between them is how long the key stays alive. */
+const PLAN_UNIT = { weekly: '/ week', monthly: '/ month', lifetime: 'once' };
+
+function planCard(p) {
+  const days = Number(p.days) || 0;
+  const usd = p.usdCents / 100;
+  const perDay = days ? usd / days : 0;
+  const card = el('article', 'pack plan' + (p.best ? ' best' : '') + (p.id === 'lifetime' ? ' lifetime' : ''));
+  card.innerHTML = `
+    <div class="pack-top">
+      <span class="pack-name">${esc(p.label)}</span>
+      <span class="pack-badge${p.best || p.id === 'lifetime' ? ' hot' : ''}">${p.id === 'lifetime' ? 'Never expires' : days + ' days'}</span>
+    </div>
+    <div class="pack-amount">$${usd.toFixed(p.usdCents % 100 ? 2 : 0)}<span>${esc(PLAN_UNIT[p.id] || '')}</span></div>
+    <div class="pack-price">${days ? '$' + perDay.toFixed(2) + ' per day' : 'Pay once, keep it'}</div>
+    <p class="tiny" style="margin-top:10px">${esc(p.blurb || '')}</p>
+    <ul class="pack-list">
+      ${(p.perks || []).map(t => `<li>${CHECK}<span>${esc(t)}</span></li>`).join('')}
+      <li>${CHECK}<span>Works on exactly <b>one PC</b> (hardware-bound key)</span></li>
+    </ul>
+    <div class="pack-stock">
+      <div class="lbl"><span>${days ? 'Key valid for ' + days + ' days' : 'Key never expires'}</span><span>1 PC per key</span></div>
+      <div class="bar"><i style="width:100%"></i></div>
+    </div>
+    <button class="btn accent">Buy ${esc(p.label)}</button>`;
+  card.querySelector('button').onclick = () => openCheckout({ kind: 'plan', plan: p.id, label: p.label, usdCents: p.usdCents, robux: 0, days: p.days });
+  return card;
+}
+
+function renderPlans() {
+  const host = $('plans');
+  if (!host) return;
+  host.innerHTML = '';
+  const plans = (CATALOG && CATALOG.plans) || [];
+  if (!plans.length) {
+    host.innerHTML = '<div class="custom-card"><p class="tiny" style="margin:0">Plans could not be loaded right now. Refresh the page, or open a Discord ticket and we will sort it out.</p></div>';
+    return;
+  }
+  for (const p of plans) host.appendChild(planCard(p));
+}
+
+function setMode(mode) {
+  MODE = mode === 'plan' ? 'plan' : 'robux';
+  $('mode-robux').hidden = MODE !== 'robux';
+  $('mode-plan').hidden = MODE !== 'plan';
+  for (const b of document.querySelectorAll('.mode-switch button')) {
+    const on = b.dataset.mode === MODE;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  }
+  $('modeNote').textContent = MODE_NOTE[MODE];
+  if (MODE === 'plan') renderPlans();
 }
 
 function renderQuickPicks() {
@@ -384,13 +511,28 @@ function openCheckout(item) {
   draft = { ...item, coin: '', robloxUsername: '', discord: '' };
   selectedCoin = '';
   renderCheckoutStep();
-  sheetOpen('Checkout', item.kind === 'pack' ? 'Limited pack' : 'Custom order');
+  if (item.kind === 'plan') sheetOpen('Buy ' + item.label + ' plan', 'Arc plan');
+  else sheetOpen('Checkout', item.kind === 'pack' ? 'Limited pack' : 'Custom order');
 }
 
 function renderCheckoutStep() {
   const avail = CATALOG.coins.filter(c => c.available);
   const body = $('sheetBody');
-  body.innerHTML = `
+  const isPlan = draft.kind === 'plan';
+  body.innerHTML = isPlan ? `
+    <div class="row"><span class="lbl">Plan</span><span class="val">${esc(draft.label)}</span></div>
+    <div class="row"><span class="lbl">Price</span><span class="val">${money(draft.usdCents)}</span></div>
+    <div class="row"><span class="lbl">Key lasts</span><span class="val">${draft.days > 0 ? draft.days + ' days' : 'Forever'}</span></div>
+    <div class="field" style="margin-top:20px">
+      <label>Pay with</label>
+      <div class="coin-row" id="coinRow"></div>
+    </div>
+    <div class="field" style="margin-top:16px">
+      <label for="discordUser">Discord (optional — so we can find you if a key ever needs unbinding)</label>
+      <div class="amount-input" style="padding:12px 14px"><input id="discordUser" autocomplete="off" placeholder="yourname" style="font-size:15px;font-weight:600" value="${esc(draft.discord)}"></div>
+    </div>
+    <div class="err" id="checkoutErr"></div>
+    <p class="tiny">Your key is generated the moment the payment confirms and shown right on this page. It binds itself to the first PC that activates it — that is what keeps it yours — so never share it.</p>` : `
     <div class="row"><span class="lbl">Amount</span><span class="val">${nf(draft.robux)} Robux</span></div>
     <div class="row"><span class="lbl">Price</span><span class="val">${money(draft.usdCents)}</span></div>
     <div class="row"><span class="lbl">Rate</span><span class="val">$${((draft.usdCents / 100) / (draft.robux / 1000)).toFixed(2)} / 1,000</span></div>
@@ -437,12 +579,14 @@ async function submitOrder() {
   const err = $('checkoutErr');
   err.classList.remove('show');
   if (!draft.coin) { err.textContent = 'Pick a coin to pay with.'; err.classList.add('show'); return; }
-  if (!/^[A-Za-z0-9_]{3,20}$/.test(draft.robloxUsername)) { err.textContent = 'Enter the Roblox username that should receive the Robux (3–20 letters, numbers or _).'; err.classList.add('show'); return; }
+  if (draft.kind !== 'plan' && !/^[A-Za-z0-9_]{3,20}$/.test(draft.robloxUsername)) { err.textContent = 'Enter the Roblox username that should receive the Robux (3–20 letters, numbers or _).'; err.classList.add('show'); return; }
   const btn = $('sheetFoot').querySelector('.btn.accent');
   if (btn) { btn.disabled = true; btn.textContent = 'Reserving your amount…'; }
   try {
     const payload = { coin: draft.coin, robloxUsername: draft.robloxUsername, discord: draft.discord };
-    if (draft.kind === 'pack') payload.pack = draft.pack; else payload.robux = draft.robux;
+    if (draft.kind === 'plan') { payload.kind = 'plan'; payload.plan = draft.plan; }
+    else if (draft.kind === 'pack') payload.pack = draft.pack;
+    else payload.robux = draft.robux;
     const res = await api('/shop/order', { method: 'POST', body: payload });
     currentOrder = res.order;
     try { localStorage.setItem('arc_shop_order', currentOrder.id); } catch (_) {}
@@ -469,8 +613,15 @@ const STATUS_META = {
   cancelled: { cls: 'bad', h: 'Order cancelled', d: 'This order was cancelled. Create a new one whenever you like.' }
 };
 
+// Plans are not delivered by hand, so they get their own copy — nobody should read
+// "your Robux are queued" after buying a key.
+const PLAN_STATUS_META = {
+  paid: { cls: 'ok', h: 'Payment confirmed', d: 'Thanks! Your key below is live and ready to activate — it binds to the first PC that uses it.' },
+  delivered: { cls: 'ok', h: 'Key issued', d: 'Your plan is active. The key below is the only thing you need.' }
+};
+
 function statusCard(order) {
-  const meta = STATUS_META[order.status] || STATUS_META.awaiting_payment;
+  const meta = (order.kind === 'plan' && PLAN_STATUS_META[order.status]) || STATUS_META[order.status] || STATUS_META.awaiting_payment;
   const confs = order.confirmations ? `<div class="tiny">Confirmations: ${order.confirmations}${order.status === 'detected' ? ' of ' + order.requiredConfirmations + ' needed' : ''}</div>` : '';
   return `<div class="status-card ${meta.cls}">
     <div class="h">${meta.cls === 'wait' && order.status !== 'paid' && order.status !== 'delivered' ? '<span class="spin"></span>' : ''}${esc(meta.h)}</div>
@@ -482,12 +633,16 @@ function statusCard(order) {
 function showPaymentStep() {
   const o = currentOrder;
   const paying = o.status === 'awaiting_payment' || o.status === 'detected';
+  const isPlan = o.kind === 'plan';
   const body = $('sheetBody');
   body.innerHTML = `
     <div class="row"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
-    <div class="row"><span class="lbl">Amount</span><span class="val">${nf(o.robux)} Robux</span></div>
+    ${isPlan
+      ? `<div class="row"><span class="lbl">Plan</span><span class="val">${esc(o.planLabel || 'Arc plan')}</span></div>
+         <div class="row"><span class="lbl">Key lasts</span><span class="val">${o.planDays > 0 ? o.planDays + ' days' : 'Forever'}</span></div>`
+      : `<div class="row"><span class="lbl">Amount</span><span class="val">${nf(o.robux)} Robux</span></div>
+         <div class="row"><span class="lbl">Receiving account</span><span class="val">${esc(o.robloxUsername)}</span></div>`}
     <div class="row"><span class="lbl">Price</span><span class="val">$${esc(o.usd)}</span></div>
-    <div class="row"><span class="lbl">Receiving account</span><span class="val">${esc(o.robloxUsername)}</span></div>
     ${paying ? `
     <div class="big-amount">
       <div class="k">Send exactly</div>
@@ -504,7 +659,7 @@ function showPaymentStep() {
       <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
         <button class="btn ghost" id="ivePaid" style="flex:1;justify-content:center">I already sent it — check now</button>
       </div>
-      <p class="tiny">Keep this reference: <b>${esc(o.ref)}</b>. You can reopen this page any time with it, or with the order ID in the field on the shop page.</p>` : ''}`;
+      <p class="tiny">Keep this reference: <b>${esc(o.ref)}</b>. You can reopen this page any time with it, or with the order ID in the field on the shop page.${isPlan ? ' Your key appears here the second it is generated.' : ''}</p>` : ''}`;
 
   const foot = $('sheetFoot');
   foot.innerHTML = '';
@@ -551,7 +706,13 @@ function updatePaymentView() {
     if (currentOrder.status === 'paid' || currentOrder.status === 'delivered') {
       $('sheetKicker').textContent = 'Complete';
       $('sheetTitle').textContent = currentOrder.status === 'delivered' ? 'Delivered' : 'Payment received';
-      renderDeliveredStep();
+      if (currentOrder.kind === 'plan') {
+        $('sheetKicker').textContent = 'Your key';
+        $('sheetTitle').textContent = 'Your Arc key';
+        renderPlanKeyStep();
+      } else {
+        renderDeliveredStep();
+      }
     }
   }
 }
@@ -577,6 +738,57 @@ function renderDeliveredStep() {
   foot.appendChild(b);
 }
 
+/* The moment a plan order is paid the key exists — it gets the whole screen, with
+   the exact steps for getting it into the executor. */
+function renderPlanKeyStep() {
+  const o = currentOrder;
+  const lic = o.license;
+  const body = $('sheetBody');
+  const foot = $('sheetFoot');
+  if (!lic) {
+    body.innerHTML = statusCard(o) + `
+      <p class="tiny">Payment confirmed — your key is being written now. This page refreshes on its own, or hit the button below.</p>`;
+    foot.innerHTML = '';
+    const re = el('button', 'btn ghost', 'Check again now');
+    re.style.justifyContent = 'center';
+    re.onclick = async () => { re.disabled = true; re.textContent = 'Checking…'; try { const r = await api('/shop/order/' + encodeURIComponent(o.id)); currentOrder = r.order; updatePaymentView(); } catch (_) {} re.disabled = false; re.textContent = 'Check again now'; };
+    foot.appendChild(re);
+    startPolling();
+    return;
+  }
+  const until = lic.expiresAt ? 'valid until ' + new Date(lic.expiresAt).toLocaleDateString([], { dateStyle: 'medium' }) : 'never expires';
+  body.innerHTML = `
+    <div class="license-box">
+      <div class="k">Your Arc key</div>
+      <code>${esc(lic.key)}</code>
+      <div class="meta">${esc(lic.planLabel || 'Plan')} · ${esc(until)} · ${lic.bound ? 'bound to a PC' : 'not activated yet'}</div>
+      <div class="acts"><button class="copy" id="copyKey">Copy key</button></div>
+    </div>
+    <ul class="how-list" style="margin-top:18px">
+      <li><b>1.</b> <span>Open Arc on the PC you want to use it on.</span></li>
+      <li><b>2.</b> <span>Paste this key into the popup that shows up on launch.</span></li>
+      <li><b>3.</b> <span>Done — the key locks to that PC. Keep it somewhere safe.</span></li>
+    </ul>
+    ${statusCard(o)}
+    <div class="row" style="margin-top:8px"><span class="lbl">Order reference</span><span class="val">${esc(o.ref)}</span></div>
+    <div class="row"><span class="lbl">Paid</span><span class="val">$${esc(o.usd)} in ${esc(o.symbol)}</span></div>
+    ${o.txid ? `<div class="row"><span class="lbl">Transaction</span><span class="val" style="font-size:12px;word-break:break-all">${esc(o.txid)}</span></div>` : ''}
+    <p class="tiny">Keep your order reference (<b>${esc(o.ref)}</b>) — paste it into the tracking field on the shop page any time to see this key again. Need it moved to another PC? Open a Discord ticket with the reference.</p>`;
+  foot.innerHTML = '';
+  const copy = el('button', 'btn accent big', 'Copy key');
+  copy.style.justifyContent = 'center';
+  const flash = () => { copy.textContent = 'Copied'; setTimeout(() => { copy.textContent = 'Copy key'; }, 1700); };
+  copy.onclick = () => { navigator.clipboard.writeText(lic.key).then(flash).catch(flash); };
+  const done = el('button', 'btn ghost', 'Close');
+  done.onclick = sheetShut;
+  foot.appendChild(copy);
+  foot.appendChild(done);
+  const inline = $('copyKey');
+  if (inline) inline.onclick = () => {
+    navigator.clipboard.writeText(lic.key).then(() => { inline.textContent = 'Copied'; inline.classList.add('done'); setTimeout(() => { inline.textContent = 'Copy key'; inline.classList.remove('done'); }, 1700); }).catch(() => { inline.textContent = 'Select and copy it manually'; });
+  };
+}
+
 function startPolling() {
   clearInterval(pollTimer);
   pollTimer = setInterval(async () => {
@@ -597,8 +809,17 @@ async function trackOrder() {
     const r = await api('/shop/order/' + encodeURIComponent(key));
     currentOrder = r.order;
     showPaymentStep();
-    if (currentOrder.status === 'paid' || currentOrder.status === 'delivered') renderDeliveredStep();
+    const settled = currentOrder.status === 'paid' || currentOrder.status === 'delivered';
     sheetOpen('Order ' + currentOrder.ref, 'Tracking');
+    if (settled) {
+      if (currentOrder.kind === 'plan') {
+        $('sheetKicker').textContent = 'Plan ' + currentOrder.ref;
+        $('sheetTitle').textContent = 'Your key';
+        renderPlanKeyStep();
+      } else {
+        renderDeliveredStep();
+      }
+    }
   } catch (e) {
     alert('Could not find that order: ' + e.message);
   }
@@ -629,11 +850,16 @@ $('customBuy').onclick = () => {
   $('stat-delivered').textContent = nf(CATALOG.stats.delivered);
   $('stat-robux').textContent = num(CATALOG.stats.robuxDelivered);
   $('stat-stock').textContent = nf(CATALOG.packs.reduce((a, p) => a + p.remaining, 0));
+  const lic = CATALOG.license || {};
+  $('stat-keys').textContent = nf(lic.issued || lic.total || 0);
   if (CATALOG.announcement) { $('announce').textContent = CATALOG.announcement; $('announce').hidden = false; }
   if (!CATALOG.enabled) { const n = $('shop-notice'); n.textContent = 'The shop is paused right now — orders are temporarily disabled. Follow the Discord for updates.'; n.classList.add('show'); }
   if (!CATALOG.coins.some(c => c.available)) { const n = $('shop-notice'); n.textContent = 'No payment coin is configured yet. Please open a Discord ticket and we will get you sorted.'; n.classList.add('show'); }
   renderPacks();
   refreshQuote();
+  // Buying a plan is a first-class entry point: #plans opens straight on that tab.
+  for (const b of document.querySelectorAll('.mode-switch button')) b.onclick = () => setMode(b.dataset.mode);
+  setMode(/plan/i.test(location.hash || '') ? 'plan' : 'robux');
 
   let saved = '';
   try { saved = localStorage.getItem('arc_shop_order') || ''; } catch (_) {}
